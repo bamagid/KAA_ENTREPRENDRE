@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('experience')->nullable();
             $table->text('activite')->nullable();
             $table->text('realisation')->nullable();           
-            $table->string('progression');
+            $table->string('progression')->nullable();
             $table->foreignIdFor(Guide::class)->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Role::class)->constrained()->onDelete('cascade');
             $table->rememberToken();
