@@ -65,4 +65,13 @@ class User extends Authenticatable
     public function etudeCas(){
         return $this->hasMany(EtudeCas::class);
     }
+    public function getJWTIdentifier()
+    {
+      return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+      return [];
+    }
 }
