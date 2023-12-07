@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('contenu');
             $table->text('phases');
             $table->string('reaction');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -24,6 +25,17 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+
+     public function getJWTIdentifier()
+     {
+       return $this->getKey();
+     }
+
+     public function getJWTCustomClaims()
+     {
+       return [];
+     }
     protected $hidden = [
         'password',
         'remember_token',
@@ -41,8 +53,9 @@ class User extends Authenticatable
     public function guides(){
         return $this->hasMany(Guide::class);
     }
-    public function role(){
-        return $this->belongsTo(Role::class);
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
     public function evenements(){
         return $this->hasMany(Evenement::class);
@@ -64,14 +77,5 @@ class User extends Authenticatable
     }
     public function etudeCas(){
         return $this->hasMany(EtudeCas::class);
-    }
-    public function getJWTIdentifier()
-    {
-      return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-      return [];
     }
 }
