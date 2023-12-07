@@ -24,7 +24,7 @@ class RessourceController extends Controller
             'lien' => 'required|string',
         ]);
     
-        // Gestion du téléchargement de l'image
+       
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -32,7 +32,7 @@ class RessourceController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
     
-        // Vérification de l'authentification de l'utilisateur
+      
         $user = auth()->user();
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non authentifié'], 401);
@@ -63,27 +63,25 @@ class RessourceController extends Controller
             return response()->json(['message' => 'Utilisateur non authentifié'], 401);
         }
     
-        $request->validate([
-            'titre' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'required|string',
-            'lien' => 'required|string',
-        ]);
+       
     
         $ressource = Ressource::find($id);
     
         if (!$ressource) {
             return response()->json(['message' => 'Ressource non trouvée'], 404);
         }
-    
-       
-    
-        $ressource->update([
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
+        $ressource->fill([
             'titre' => $request->titre,
             'description' => $request->description,
-            'image' => $request->image,
+            'image' =>  $imagePath,
             'lien' => $request->lien,
-        ]);
+        ])->save();
     
         return response()->json(['message' => 'Ressource modifiée avec succès'], 200);
     }

@@ -63,6 +63,10 @@ class User extends Authenticatable implements JWTSubject
     public function ressources(){
         return $this->hasMany(Ressource::class);
     }
+    public function isAdmin()
+{
+    return $this->role === 'admin'; 
+}
     public function forums(){
         return $this->hasMany(Forum::class);
     }
