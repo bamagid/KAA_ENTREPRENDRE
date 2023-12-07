@@ -10,7 +10,12 @@ class Role extends Model
     use HasFactory;
     protected $guarded = [];
     public function users()
-    {
-        return $this->hasMany(User::class);
-    }
+{
+    return $this->belongsToMany(User::class);
+}
+    
+    public function hasRole($role)
+{
+    return $this->roles()->where('nomRole', $role)->exists();
+}
 }
