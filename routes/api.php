@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EtudeCasController;
+use App\Http\Controllers\GuideController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,3 +48,15 @@ Route::post('/commentaire/archive', [CommentaireController::class, 'archiveComme
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+//ajouter guide
+Route::post('/create', [GuideController::class, 'create']);
+//afficher guide
+Route::get('/index', [GuideController::class, 'index']);
+//modifier le guide
+
+Route::post('/update/{id}', [GuideController::class, 'update']);
+Route::post('/create', [EtudeCasController::class, 'create']);
+

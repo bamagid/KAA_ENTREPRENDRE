@@ -18,10 +18,31 @@ class EtudeCasController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+
+
+        public function create(Request $request)
+        {
+            $etudeCas=$request->validate([
+
+                'contenu'=>'required',
+                'image'=>'required',
+
+            ]);
+            $etudeCas =new EtudeCas ($etudeCas);
+
+           $etudeCas->contenu=$request->contenu;
+           $etudeCas->image=$request->image;
+           $etudeCas->user_id=1;
+           $etudeCas->secteur_id=1;
+
+
+            $etudeCas->save();
+
+            return response()->json(['message' => 'etudeCas ajouter avec succée', 'etudeCas' => $etudeCas], 200);
+
+
+        }
+
 
     /**
      * Store a newly created resource in storage.

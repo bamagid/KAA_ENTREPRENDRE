@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function ajouterUtilisateurEntrepreneurNovice(Request $request)
     {
-       
+
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -44,11 +44,12 @@ class UserController extends Controller
             'region'=> $request->region,
             'role_id' => $roleEntrepreneurNovice->id, // Obtenir l'ID du rôle
             'statut' => $request->statut,
-            'image'=> $imagePath
+            'image'=> $imagePath,
+            'progression'=>$request->progression
         ]);
-    
+
         $user->roles()->attach($roleEntrepreneurNovice);
-    
+
         return response()->json(['message' => 'Utilisateur ajouté avec succès'], 201);
     }
 
@@ -57,15 +58,15 @@ class UserController extends Controller
     public function ajouterUtilisateurEntrepreneurExperimente(Request $request)
     {
         $imagePath = null;
-    
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
-    
+
         $roleEntrepreneurExperimente = Role::where('nomRole', 'entrepreneur_experimente')->first();
-    
+
         $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -80,9 +81,9 @@ class UserController extends Controller
             'activite' =>$request->activite,
             'realisation'=>$request->realisation
         ]);
-    
+
         $user->roles()->attach($roleEntrepreneurExperimente);
-    
+
         return response()->json(['message' => 'Entrepreneur expérimenté ajouté avec succès'], 201);
     }
 
@@ -91,15 +92,15 @@ class UserController extends Controller
     public function ajouterUtilisateurAdmin(Request $request)
     {
         $imagePath = null;
-    
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
-    
+
         $roleAdmin = Role::where('nomRole', 'admin')->first();
-    
+
         $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -111,13 +112,13 @@ class UserController extends Controller
             'statut' => $request->statut,
             'image' => $imagePath
         ]);
-    
+
         $user->roles()->attach($roleAdmin);
-    
+
         return response()->json(['message' => 'Admin ajouté avec succès'], 201);
     }
     public function login(Request $request){
-        
+
         // data validation
         $request->validate([
             "email" => "required|email",
