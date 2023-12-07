@@ -22,6 +22,14 @@ class EtudeCasController extends Controller
 
         public function create(Request $request)
         {
+
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time().'.'.$image->getClientOriginalExtension();
+                $imagePath = $image->storeAs('images', $imageName, 'public');
+            }
+
             $etudeCas=$request->validate([
 
                 'contenu'=>'required',
@@ -31,9 +39,9 @@ class EtudeCasController extends Controller
             $etudeCas =new EtudeCas ($etudeCas);
 
            $etudeCas->contenu=$request->contenu;
-           $etudeCas->image=$request->image;
-           $etudeCas->user_id=1;
-           $etudeCas->secteur_id=1;
+           $etudeCas->$imagePath=$request->$imagePath;
+           $etudeCas->user_id=$request->user_id;
+           $etudeCas->secteur_id=$request->secteur_id;
 
 
             $etudeCas->save();
@@ -71,16 +79,49 @@ class EtudeCasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EtudeCas $etudeCas)
+    public function update(Request $request)
     {
-        //
-    }
 
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
+
+
+        $etudeCas = EtudeCas::find($request->id);
+        // dd($etudeCas);
+        $etudeCas->contenu=$request->contenu;
+        $etudeCas->image=$imagePath;
+        $etudeCas->user_id=$request->user_id;
+        $etudeCas->secteur_id=$request->secteur_id;
+        $etudeCas->save();
+
+        return response()->json(['message' => 'etude cas modifer avec succée', 'etudecas' => $etudeCas], 200);
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EtudeCas $etudeCas)
+    public function archive(Request $request){
+
+        $etudeCas = EtudeCas::find($request->id);
+
+        $etudeCas->is_deleted=true;
+
+        $etudeCas->save();
+
+        return response()->json(['message' => 'etude cas archiver avec succée', 'etudecas' => $etudeCas], 200);
+    }
+
+
+    public function delete(Request $request)
     {
-        //
+        $etudeCas = EtudeCas::find($request->id);
+
+
+        $etudeCas->delete();
+
+        return response()->json(['message' => 'etude cas supprimer avec succée', 'etudecas' => $etudeCas], 200);
     }
 }

@@ -80,13 +80,23 @@ Route::get('/events/{id}', [EvenementController::class, 'show']);
 Route::post('/events', [EvenementController::class, 'store']);
 Route::post('/events/{id}', [EvenementController::class, 'update']);
 Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
-Route::post('/secteurs', [SecteurController::class, 'store']);
+
 Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
 
-
+Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
     Route::post('login', [UserController::class, 'login']);
+
+
+    Route::post('create', [GuideController::class, 'create']);
+    Route::post('update/{id}', [GuideController::class, 'update']);
+
+    Route::post('create/{id}', [EtudeCasController::class, 'create']);
+    Route::post('update/{id}', [EtudeCasController::class, 'update']);
+    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
+    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
+    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');

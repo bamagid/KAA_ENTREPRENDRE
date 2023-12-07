@@ -20,7 +20,7 @@ class UserController extends Controller
             'nomRole' => $request->nomRole,
         ]);
 
-        return response()->json(['message' => 'Rôle ajouté avec succès'], 201);
+        return response()->json(['message' => 'Rôle ajouté avec succès','role'=>$role], 201);
     }
 
 
@@ -33,8 +33,7 @@ class UserController extends Controller
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
-        $roleEntrepreneurNovice = Role::where('nomRole', 'entrepreneur_novice')->first();
-
+        $roleEntrepreneurNovice = Role::where('nomRole', 'novice')->first();
         $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -74,7 +73,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
             'region' => $request->region,
-            'role_id' => $roleEntrepreneurExperimente->id,
+            'role_id' => $request->role_id,
             'statut' => $request->statut,
             'image' => $imagePath,
             'experience'=>$request->experience,
@@ -108,7 +107,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
             'region' => $request->region,
-            'role_id' => $roleAdmin->id,
+            'role_id' => $request->role_id,
             'statut' => $request->statut,
             'image' => $imagePath
         ]);
