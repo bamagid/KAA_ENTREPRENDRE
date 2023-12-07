@@ -28,9 +28,19 @@ class SecteurController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+      
+        $request->validate([
+            'nomSecteur' => 'required|string',
+        ]);
 
+       
+        $secteur = Secteur::create([
+            'nomSecteur' => $request->nomSecteur,
+            'user_id' => 3, 
+        ]);
+
+        return response()->json(['message' => 'Sector created successfully', 'secteur' => $secteur], 201);
+    }
     /**
      * Display the specified resource.
      */
@@ -38,7 +48,24 @@ class SecteurController extends Controller
     {
         //
     }
+    public function destroy($id)
+    {
+       
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+    
 
+        $secteur = Secteur::find($id);
+
+        if (!$secteur) {
+            return response()->json(['message' => 'Secteur not found'], 404);
+        }
+
+        $secteur->delete();
+    
+        return response()->json(['message' => 'Secteur deleted successfully'], 200);
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -58,8 +85,5 @@ class SecteurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Secteur $secteur)
-    {
-        //
-    }
+    
 }

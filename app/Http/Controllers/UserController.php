@@ -135,14 +135,14 @@ class UserController extends Controller
 
             return response()->json([
                 "status" => true,
-                "message" => "User logged in succcessfully",
+                "message" => "utilisateur connecter avec succe",
                 "token" => $token
             ]);
         }
 
         return response()->json([
             "status" => false,
-            "message" => "Invalid details"
+            "message" => "details invalide"
         ]);
     }
 
