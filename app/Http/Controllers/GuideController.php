@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guide;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Guid\Guid;
 
 class GuideController extends Controller
 {
@@ -12,7 +13,9 @@ class GuideController extends Controller
      */
     public function index()
     {
-        //
+        $guides=Guide::all();
+
+
     }
 
     /**
@@ -34,9 +37,21 @@ class GuideController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Guide $guide)
+    public function show(Request $request)
     {
-        //
+        $guides=$request->validate([
+            'titre' => 'required',
+            'contenu'=>'required',
+            'phase'=>'required',
+              'reaction'=>'required',
+        ]);
+        $guide =new Guide($guides);
+       $guide->titre = $request->titre;
+       $guide->contenu=$request->contenu;
+       $guide->phase=$request->phase;
+       $guide->reaction=$request->reaction;
+        $guide->save();
+
     }
 
     /**
