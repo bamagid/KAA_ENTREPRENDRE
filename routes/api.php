@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EtudeCasController;
+use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\GuideController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 /* gestion des forums*/
 //lister les forums
-Route::get('/forums',[ForumController::class,'index']);
+Route::get('/forums', [ForumController::class, 'index']);
 //creer un forum
 Route::post('/forum/create', [ForumController::class, 'store'])->name('forum.create');
 //supprimer un forum
@@ -27,7 +28,7 @@ Route::post('/forum/delete', [ForumController::class, 'destroy'])->name('forum.d
 //modifier un forum
 Route::post('forum/edit', [ForumController::class, 'update'])->name('forum.edit');
 //afficher le forum selectionne
-Route::post('/forum',[ForumController::class,'show'])->name('forum.show');
+Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
 //archiver une rubrique d'un forum
 Route::post('/forum/archiveRubrique', [ForumController::class, 'archiveRubrique'])->name('forum.archiveRubrique');
 /* gestion des commentaires du forums */
@@ -36,27 +37,38 @@ Route::get('/commentaires', [CommentaireController::class, 'index']);
 //lister  commentaire d'un forum
 Route::post('/commentaire', [CommentaireController::class, 'show']);
 //ajouter un commentaire a un forum
-Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('comment.add');
+Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('commentaire.add');
 //supprimer un commentaire d'un forum
-Route::post('/commentaire/delete', [CommentaireController::class, 'destroy'])->name('comment.delete');
+Route::post('/commentaire/delete', [CommentaireController::class, 'destroy'])->name('commentaire.delete');
 //modifier un commentaire d'un forum
-Route::post('/commentaire/edit', [CommentaireController::class, 'update'])->name('comment.edit');
+Route::post('/commentaire/edit', [CommentaireController::class, 'update'])->name('commentaire.edit');
 //archiver un commentaire de forum
-Route::post('/commentaire/archive', [CommentaireController::class, 'archiveCommentaire'])->name('comment.archive');
+Route::post('/commentaire/archive', [CommentaireController::class, 'archiveCommentaire'])->name('commentaire.archive');
+
+
+/* gestion des reponses du forums */
+//lister tous les reponses d'un forum
+Route::get('/reponses', [ReponseController::class, 'index']);
+//lister  reponse d'un forum
+Route::post('/reponse', [ReponseController::class, 'show']);
+//ajouter un reponse a un forum
+Route::post('/reponse/create', [ReponseController::class, 'store'])->name('reponse.add');
+//supprimer un reponse d'un forum
+Route::post('/reponse/delete', [ReponseController::class, 'destroy'])->name('reponse.delete');
+//modifier un reponse d'un forum
+Route::post('/reponse/edit', [ReponseController::class, 'update'])->name('reponse.edit');
+//archiver un reponse de forum
+Route::post('/reponse/archive', [ReponseController::class, 'archivereponse'])->name('reponse.archive');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-
-//ajouter guide
-Route::post('/create', [GuideController::class, 'create']);
-//afficher guide
-Route::get('/index', [GuideController::class, 'index']);
-//modifier le guide
-
-Route::post('/update/{id}', [GuideController::class, 'update']);
-Route::post('/create', [EtudeCasController::class, 'create']);
-
+Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+Route::put('/ressources/{id}', [RessourceController::class, 'modifierRessource']);
+    Route::delete('/ressources/{id}', [RessourceController::class, 'supprimerRessource']);
+    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
+    Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
+    Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
+    Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
+    Route::post('login', [UserController::class, 'login']);
