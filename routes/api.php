@@ -84,8 +84,16 @@ Route::post('/secteurs', [SecteurController::class, 'store']);
 Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
 
-
+Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);
+Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class,'updateProfileExperimente']);
+Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'UpdateAdmin']);
+Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class,'toggleBlockAccount']);
     Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
+
+    Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
+        // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
+    });
+
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
