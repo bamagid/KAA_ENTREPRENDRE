@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CommentaireController extends Controller
@@ -12,7 +13,8 @@ class CommentaireController extends Controller
      */
     public function index()
     {
-        //
+        $commentaires=Commentaire::where('is_deleted', 0)->get();
+        return $commentaires;
     }
 
     /**
@@ -28,15 +30,31 @@ class CommentaireController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'contenu' => 'required|string|min:3',
+                'user_id' => 'required|numeric',
+            ]
+
+        );
+        Commentaire::create(
+            [
+                'contenu' => $request->contenu,
+                'user_id' => $request->input('user_id')
+            ]
+        );
+        return response()->json(['message' => "Le commentaire est bien ajouté"]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Commentaire $commentaire)
+    public function show(Request $request)
     {
-        //
+         $commentaire = Commentaire::findOrFail($request->input('id'));
+        if ($commentaire) {
+            return $commentaire;
+        }
     }
 
     /**
@@ -50,16 +68,59 @@ class CommentaireController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Commentaire $commentaire)
+    public function update(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'contenu' => 'required|string|min:3',
+                'user_id' => 'required|numeric',
+                'id' => 'required|numeric'
+            ]
+        );
+        $commentaire = Commentaire::findOrFail($request->input('id'));
+        if ($commentaire->user_id===$request->user_id) {
+            $commentaire->contenu = $request->contenu;
+            $commentaire->update();
+            return response()->json(['message' => "Le commentaire est bien modifié"]);
+        }
+        else{
+            return response()->json(['error'=>"Vous n'avez pas le droit de modifier ce commentaire"],401);
+            }
+            
+    }
+    /**
+     * Archive the specified resource in storage.
+     */
+    public function archiveCommentaire(Request $request)
+    {
+        $request->validate(
+            [
+                'user_id' => 'required|numeric',
+                'id' => 'required|numeric'
+            ]
+        );
+        $commentaire = Commentaire::findOrFail($request->input('id'));
+        if ($commentaire->user_id===$request->user_id) {
+        $commentaire->is_deleted=true;
+        $commentaire->update();
+        return response()->json(['message' => "Le commentaire est bien archivé"]);
+        }else{
+            return response()->json(['error'=>"Vous n'avez pas le droit de supprimer ce commentaire"],401);
+            }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Commentaire $commentaire)
+    public function destroy(Request $request)
     {
-        //
+        $user=User::findOrFail($request->user_id);
+        if ($user->role_id===1){
+        $commentaire = Commentaire::findOrFail($request->input('id'));
+        $commentaire->delete();
+        return response()->json(['message' => "La commentaire est bien supprimé"]);
+    }else{
+        return response()->json(['error'=>"Vous n'avez pas les droits pour effectuer cette action"],401);
+        }
     }
 }
