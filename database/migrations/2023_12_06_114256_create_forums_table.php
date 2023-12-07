@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('rubrique');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

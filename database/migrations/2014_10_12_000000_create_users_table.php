@@ -22,12 +22,12 @@ return new class extends Migration
             $table->string('password');
             $table->string('adresse');
             $table->string('region');
-            $table->enum('statut',['actif','bloque']);
-            $table->string('image');
+            $table->enum('statut',['actif','bloque'])->default('actif');
+            $table->string('image')->nullable();
             $table->text('experience')->nullable();
             $table->text('activite')->nullable();
             $table->text('realisation')->nullable();           
-            $table->string('progression');
+            $table->string('progression')->nullable();
             $table->foreignIdFor(Guide::class)->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(Role::class)->constrained()->onDelete('cascade');
             $table->rememberToken();

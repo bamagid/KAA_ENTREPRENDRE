@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image'); 
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');                      
             $table->foreignIdFor(Secteur::class)->constrained()->onDelete('cascade');                      
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
