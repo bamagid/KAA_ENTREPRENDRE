@@ -12,7 +12,8 @@ class ForumController extends Controller
      */
     public function index()
     {
-        //
+        $forums=Forum::where('is_deleted',0)->get();
+        return $forums;
     }
 
     /**
@@ -20,7 +21,7 @@ class ForumController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -28,7 +29,20 @@ class ForumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'nomRubrique'=>'required|string|min:3',
+                'user_id'=>'required|numeric',
+                ]
+                
+            );
+    Forum::create(
+            [
+                'rubrique'=>$request->nomRubrique,
+                'user_id'=>$request->input('user_id')
+                ]
+            );
+            return response()->json(['message'=>"La rubrique est bien ajoutée"]);
     }
 
     /**
@@ -50,16 +64,28 @@ class ForumController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Forum $forum)
+    public function update(Request $request)
     {
-        //
+        $request->validate(
+        [
+            'nomRubrique'=>'required|string|min:3',
+            'user_id'=>'required|numeric',
+            'id'=>'required|numeric'
+            ]  
+        );
+        $forum = Forum::findOrFail($request->input('id'));
+        $forum->rubrique=$request->nomRubrique;
+        $forum->update();
+        return response()->json(['message'=>"La rubrique est bien modifiée"]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Forum $forum)
+    public function destroy(Request $request)
     {
-        //
+      $forum = Forum::findOrFail($request->input('id'));
+       $forum->delete();
+       return response()->json(['message'=>"La rubrique est bien supprimé"]);
     }
 }
