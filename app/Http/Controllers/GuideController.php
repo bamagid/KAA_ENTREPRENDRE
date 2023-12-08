@@ -23,17 +23,14 @@ class GuideController extends Controller
      */
     public function create(Request $request)
     {
+       
         $guides=$request->validate([
             'titre' => 'required',
             'contenu'=>'required',
             'phases'=>'required',
-              'reaction'=>'required',
+            'reaction'=>'required',
         ]);
         $guide =new Guide($guides);
-       $guide->titre = $request->titre;
-       $guide->contenu=$request->contenu;
-       $guide->phases=$request->phases;
-       $guide->reaction=$request->reaction;
         $guide->save();
 
         return response()->json(['message' => 'guide ajouter avec succée', 'guide' => $guide], 200);

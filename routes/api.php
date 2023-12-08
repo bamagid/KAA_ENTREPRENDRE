@@ -137,7 +137,7 @@ Route::post('create/{id}', [EtudeCasController::class, 'create']);
     Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
 
     //ajouter guide
-Route::post('/create', [GuideController::class, 'create']);
+Route::post('/create_guide', [GuideController::class, 'create']);
 //afficher guide
 Route::get('/index', [GuideController::class, 'index']);
 //modifier le guide
