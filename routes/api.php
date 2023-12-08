@@ -127,3 +127,20 @@ Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilis
 Route::post('login', [UserController::class, 'login']);
 //se deconnecter
 Route::get('deconnecter', [UserController::class, 'deconnect']);
+
+Route::post('create/{id}', [EtudeCasController::class, 'create']);
+    Route::post('update/{id}', [EtudeCasController::class, 'update']);
+    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
+    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
+    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+
+    //ajouter guide
+Route::post('/create', [GuideController::class, 'create']);
+//afficher guide
+Route::get('/index', [GuideController::class, 'index']);
+//modifier le guide
+
+Route::post('/update/{id}', [GuideController::class, 'update']);
+Route::post('/create', [EtudeCasController::class, 'create']);
+
+
