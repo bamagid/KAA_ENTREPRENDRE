@@ -75,7 +75,7 @@ Route::middleware('auth:api')->group(function(){
     Route::delete('/ressources/{id}', [RessourceController::class, 'supprimerRessource']);
 
     //route pour evenement
-    Route::get('/events', [EvenementController::class, 'index']);
+
 Route::get('/events/{id}', [EvenementController::class, 'show']);
 Route::post('/events', [EvenementController::class, 'store']);
 Route::post('/events/{id}', [EvenementController::class, 'update']);
@@ -83,6 +83,7 @@ Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
 
 Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
+Route::get('/events', [EvenementController::class, 'index']);
 
 Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);

@@ -106,9 +106,7 @@ class EtudeCasController extends Controller
     public function archive(Request $request){
 
         $etudeCas = EtudeCas::find($request->id);
-
         $etudeCas->is_deleted=true;
-
         $etudeCas->save();
 
         return response()->json(['message' => 'etude cas archiver avec succée', 'etudecas' => $etudeCas], 200);
@@ -118,8 +116,6 @@ class EtudeCasController extends Controller
     public function delete(Request $request)
     {
         $etudeCas = EtudeCas::find($request->id);
-
-
         $etudeCas->delete();
 
         return response()->json(['message' => 'etude cas supprimer avec succée', 'etudecas' => $etudeCas], 200);
