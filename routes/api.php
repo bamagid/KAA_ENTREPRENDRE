@@ -103,13 +103,14 @@ Route::middleware('auth:api')->group(function () {
     //route pour evenement
 
     Route::get('/events/{id}', [EvenementController::class, 'show']);
-    Route::post('/events', [EvenementController::class, 'store']);
+    Route::get('/events', [EvenementController::class, 'index']);
+    Route::post('/events_add', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
     Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
     Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
-Route::get('/events', [EvenementController::class, 'index']);
+
 
 //blockage d'un utilisateur par l'admin
 Route::middleware(['auth:api', 'admin'])->group(function(){
