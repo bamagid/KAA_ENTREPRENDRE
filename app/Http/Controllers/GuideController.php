@@ -51,8 +51,13 @@ class GuideController extends Controller
         return response()->json(['message' => 'guide modifer avec succée', 'guide' => $guide], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+     public function archiver_guide(Request $request,int $id){
+        $guide = Guide::find($id);
+        $guide->is_deleted=true;
+        $guide->save();
+
+        return response()->json(['message' => 'guide archiver avec succée', 'guide' => $guide], 200);
+
+     }
 
 }

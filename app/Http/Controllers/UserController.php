@@ -50,7 +50,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
-            'region' => $request->region,
+            'region'=> $request->region,
             'role_id' => $roleEntrepreneurNovice->id,
             'statut' => $request->statut,
             'image' => $imagePath,
@@ -181,7 +181,8 @@ class UserController extends Controller
         session()->invalidate();
 
         session()->regenerateToken();
-        return response()->json(['message' => 'Utilisateur deconnecté avec succés'], 201);
+
+        return redirect('/');
     }
 
 
@@ -231,19 +232,19 @@ class UserController extends Controller
     {
         $entrepreneurExperimente = auth()->user();
 
-        $request->validate([
-            'nom' => 'required|string',
-            'prenom' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
-            'password' => 'nullable|min:6',
-            'adresse' => 'required|string',
-            'region' => 'required|string',
-            'statut' => 'required|string',
-            'experience' => 'required|string',
-            'activite' => 'required|string',
-            'realisation' => 'required|string',
+    $request->validate([
+        'nom' => 'required|string',
+        'prenom' => 'required|string',
+        'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
+        'password' => 'nullable|min:6',
+        'adresse' => 'required|string',
+        'region' => 'required|string',
+        'statut' => 'required|string',
+        'experience' => 'required|string',
+        'activite' => 'required|string',
+        'realisation' => 'required|string',
 
-        ]);
+    ]);
 
         $imagePath = $entrepreneurExperimente->image;
 
@@ -253,20 +254,20 @@ class UserController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-        $entrepreneurExperimente->update([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $entrepreneurExperimente->password,
-            'adresse' => $request->adresse,
-            'region' => $request->region,
-            'statut' => $request->statut,
-            'experience' => $request->experience,
-            'activite' => $request->activite,
-            'realisation' => $request->realisation,
-            'image' => $imagePath,
+    $entrepreneurExperimente->update([
+        'nom' => $request->nom,
+        'prenom' => $request->prenom,
+        'email' => $request->email,
+        'password' => $request->password ? Hash::make($request->password) : $entrepreneurExperimente->password,
+        'adresse' => $request->adresse,
+        'region' => $request->region,
+        'statut' => $request->statut,
+        'experience' => $request->experience,
+        'activite' => $request->activite,
+        'realisation' => $request->realisation,
+        'image' => $imagePath,
 
-        ]);
+    ]);
 
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
@@ -277,17 +278,17 @@ class UserController extends Controller
 
         $admin = auth()->user();
 
-        $request->validate([
-            'nom' => 'required|string',
-            'prenom' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $admin->id,
-            'password' => 'nullable|min:6',
-            'adresse' => 'required|string',
-            'region' => 'required|string',
-            'statut' => 'required|string',
+    $request->validate([
+        'nom' => 'required|string',
+        'prenom' => 'required|string',
+        'email' => 'required|email|unique:users,email,' . $admin->id,
+        'password' => 'nullable|min:6',
+        'adresse' => 'required|string',
+        'region' => 'required|string',
+        'statut' => 'required|string',
 
 
-        ]);
+    ]);
 
         $imagePath = $admin->image;
 
@@ -297,18 +298,18 @@ class UserController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-        $admin->update([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $admin->password,
-            'adresse' => $request->adresse,
-            'region' => $request->region,
+    $admin->update([
+        'nom' => $request->nom,
+        'prenom' => $request->prenom,
+        'email' => $request->email,
+        'password' => $request->password ? Hash::make($request->password) : $admin->password,
+        'adresse' => $request->adresse,
+        'region' => $request->region,
 
 
-            'image' => $imagePath,
+        'image' => $imagePath,
 
-        ]);
+    ]);
 
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }

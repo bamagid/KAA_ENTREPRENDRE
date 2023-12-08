@@ -113,7 +113,8 @@ class ForumController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)
-    { 
+
+    {
         $user=Auth::user();
         if ($user->role_id===1){
         $forum = Forum::findOrFail($request->input('id'));
