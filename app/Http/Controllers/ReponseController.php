@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reponse;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReponseController extends Controller
 {
@@ -33,7 +34,6 @@ class ReponseController extends Controller
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
                 'commentaire_id' => 'required|numeric',
             ]
 
@@ -41,7 +41,7 @@ class ReponseController extends Controller
         Reponse::create(
             [
                 'contenu' => $request->contenu,
-                'user_id' => $request->input('user_id'),
+                'user_id' => Auth::user()->id,
                 'commentaire_id' => $request->input('commentaire_id')
             ]
         );
@@ -75,12 +75,11 @@ class ReponseController extends Controller
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
                 'id' => 'required|numeric'
             ]
         );
         $reponse = Reponse::findOrFail($request->input('id'));
-        if ($reponse->user_id===$request->user_id) {
+        if ($reponse->user_id===Auth::user()->id) {
             $reponse->contenu = $request->contenu;
             $reponse->update();
             return response()->json(['message' => "La reponse est bien modifié"]);
@@ -97,12 +96,11 @@ class ReponseController extends Controller
     {
         $request->validate(
             [
-                'user_id' => 'required|numeric',
                 'id' => 'required|numeric'
             ]
         );
         $reponse = Reponse::findOrFail($request->input('id'));
-        if ($reponse->user_id===$request->user_id) {
+        if ($reponse->user_id===Auth::user()->id) {
         $reponse->is_deleted=true;
         $reponse->update();
         return response()->json(['message' => "La reponse est bien archivé"]);
@@ -116,7 +114,7 @@ class ReponseController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         $reponse = Reponse::findOrFail($request->input('id'));
         $reponse->delete();
