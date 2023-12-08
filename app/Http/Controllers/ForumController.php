@@ -33,7 +33,6 @@ class ForumController extends Controller
         $request->validate(
             [
                 'nomRubrique' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
             ]
 
         );
@@ -42,7 +41,7 @@ class ForumController extends Controller
         Forum::create(
             [
                 'rubrique' => $request->nomRubrique,
-                'user_id' => $request->input('user_id')
+                'user_id' =>$user->id
             ]
         );
         return response()->json(['message' => "La rubrique est bien ajoutée"]);
@@ -79,7 +78,6 @@ class ForumController extends Controller
         $request->validate(
             [
                 'nomRubrique' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
                 'id' => 'required|numeric'
             ]
         );

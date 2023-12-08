@@ -94,7 +94,6 @@ class CommentaireController extends Controller
     {
         $request->validate(
             [
-                'user_id' => 'required|numeric',
                 'id' => 'required|numeric'
             ]
         );
@@ -113,7 +112,7 @@ class CommentaireController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user=Auth::user()->id;
+        $user=Auth::user();
         if ($user->role_id===1){
         $commentaire = Commentaire::findOrFail($request->input('id'));
         $commentaire->delete();

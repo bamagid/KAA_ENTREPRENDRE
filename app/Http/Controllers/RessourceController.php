@@ -102,9 +102,9 @@ class RessourceController extends Controller
     public function supprimerRessource($id)
     {
 
-        // if (!auth()->user()) {
-        //     return response()->json(['message' => 'Utilisateur non authentifié'], 401);
-        // }
+        if (!auth()->user()) {
+            return response()->json(['message' => 'Utilisateur non authentifié'], 401);
+        }
 
         $ressource = Ressource::find($id);
 
