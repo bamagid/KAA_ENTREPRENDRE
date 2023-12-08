@@ -70,9 +70,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* Gestion des ressources */
-//ajouter une ressource
+
 Route::middleware('auth:api')->group(function () {
+
+
+    /* Gestion des utilisatueurs  */
+    //modification du profile d'un entrepreneur novice
+    Route::post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
+    //modification du profile d'un entrepreneur eperimenté
+    Route::post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
+    //modification du profile d'un admin
+    Route::post('/admin/profile', [UserController::class, 'UpdateAdmin']);
+
+    /* Gestion des ressources */
+    //ajouter une ressource
     Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
     //modifier une ressource
     Route::post('/ressources/{id}', [RessourceController::class, 'modifierRessource']);
@@ -96,15 +107,6 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
 
-
-
-/* Gestion des utilisatueurs  */
-//modification du profile d'un entrepreneur novice
-Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
-//modification du profile d'un entrepreneur eperimenté
-Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
-//modification du profile d'un admin
-Route::middleware('auth:api')->post('/admin/profile', [UserController::class, 'UpdateAdmin']);
 //blockage d'un utilisateur par l'admin
 Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
 
