@@ -97,7 +97,7 @@ Route::middleware('auth:api')->group(function () {
     //archiver une ressource
     Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
 
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+    Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
 
     /* Gestion des evenements */
     //route pour evenement
@@ -113,20 +113,28 @@ Route::middleware('auth:api')->group(function () {
 
 
 //blockage d'un utilisateur par l'admin
-Route::middleware(['auth:api', 'admin'])->group(function(){
+Route::middleware(['auth:api', 'admin'])->group(function () {
 
     Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
     //gestion etude cas , ajout cas pour la premiere route
-Route::post('create/{id}', [EtudeCasController::class, 'create']);
-//modifier une etude cas
+    Route::post('create/{id}', [EtudeCasController::class, 'create']);
+    //modifier une etude cas
     Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
     //archivier une etude cas
     Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
     //supprimer une etude cas
     Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
     Route::post('/create', [EtudeCasController::class, 'create']);
+    Route::get('/index_cas', [EtudeCasController::class, 'create']);
 
-
+    //ajouter guide
+    Route::post('/create_guide', [GuideController::class, 'create']);
+    //afficher guide
+    Route::get('/index', [GuideController::class, 'index']);
+    //modifier le guide
+    Route::post('/update/{id}', [GuideController::class, 'update']);
+    //pour archiver une guide
+    Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
 });
 
 
@@ -148,19 +156,3 @@ Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilis
 Route::post('login', [UserController::class, 'login']);
 //se deconnecter
 Route::get('deconnecter', [UserController::class, 'deconnect']);
-
-
-
-
-    //ajouter guide
-Route::post('/create_guide', [GuideController::class, 'create']);
-//afficher guide
-Route::get('/index', [GuideController::class, 'index']);
-//modifier le guide
-
-Route::post('/update/{id}', [GuideController::class, 'update']);
-
-Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
-
-
-

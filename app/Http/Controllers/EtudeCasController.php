@@ -9,20 +9,15 @@ use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 class EtudeCasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //utiliser cette fonction si vous voulez  lister les etudes de cas
     public function index()
     {
-        //
+        $etudeCas=EtudeCas::all();
+        return $etudeCas;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-
-
-        public function create(Request $request)
+//cette fonction cest pour ajouter des etudes de cas
+        public function create_cas(Request $request)
         {
 
             $imagePath = null;
@@ -43,43 +38,13 @@ class EtudeCasController extends Controller
            $etudeCas->image=$imagePath;
            $etudeCas->user_id=FacadesAuth::user()->id;
            $etudeCas->secteur_id=$request->secteur_id;
-
-
             $etudeCas->save();
 
             return response()->json(['message' => 'etudeCas ajouter avec succée', 'etudeCas' => $etudeCas], 200);
 
-
         }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(EtudeCas $etudeCas)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EtudeCas $etudeCas)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+//cete fonction cest pour modifier une etude de cas
     public function update(Request $request)
     {
 
@@ -90,10 +55,7 @@ class EtudeCasController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-
         $etudeCas = EtudeCas::find($request->id);
-        // dd($etudeCas);
-
         $etudeCas->contenu=$request->contenu;
         $etudeCas->image=$imagePath;
         $etudeCas->user_id=FacadesAuth::user()->id;
@@ -102,26 +64,22 @@ class EtudeCasController extends Controller
 
         return response()->json(['message' => 'etude cas modifer avec succée', 'etudecas' => $etudeCas], 200);
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+
+   //cette fonction cest pour archiver une etude de cas
     public function archive(Request $request){
 
         $etudeCas = EtudeCas::find($request->id);
 
         $etudeCas->is_deleted=true;
-
         $etudeCas->save();
 
         return response()->json(['message' => 'etude cas archiver avec succée', 'etudecas' => $etudeCas], 200);
     }
 
-
+//si vous voulez supprimer une etude de cas utiliser cette fonction
     public function delete(Request $request)
     {
         $etudeCas = EtudeCas::find($request->id);
-
-
         $etudeCas->delete();
 
         return response()->json(['message' => 'etude cas supprimer avec succée', 'etudecas' => $etudeCas], 200);

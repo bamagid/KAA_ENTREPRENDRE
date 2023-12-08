@@ -8,19 +8,15 @@ use Ramsey\Uuid\Guid\Guid;
 
 class GuideController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   // si vous voulez  lister la liste des guides utiliser cette fonction 
     public function index()
     {
         $guides=Guide::all();
+        return $guides;
 
     }
 
-
-    /**
-     * Display the specified resource.
-     */
+    // cette fonction c'est pour creer guide (ajouter guide)
     public function create(Request $request)
     {
         $guides=$request->validate([
@@ -38,7 +34,7 @@ class GuideController extends Controller
 
     }
 
-
+//cette fonction cest pour modifier le guide
     public function update(Request $request, string $id)
     {
         $guide = Guide::find($id);
@@ -51,6 +47,7 @@ class GuideController extends Controller
         return response()->json(['message' => 'guide modifer avec succée', 'guide' => $guide], 200);
     }
 
+// cette fonction c'est pour archiver une guide
      public function archiver_guide(Request $request){
         $guide = Guide::find($request->id);
         $guide->is_deleted=true;
