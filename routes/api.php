@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SecteurController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\RessourceController;
+use App\Http\Controllers\NewsletterSubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,7 @@ Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', 
     Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
         // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
     });
-
+    Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, 'subscribe']);
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
