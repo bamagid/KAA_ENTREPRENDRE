@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SecteurController;
 use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\RessourceController;
 
 /*
@@ -87,33 +88,7 @@ Route::middleware('auth:api')->group(function () {
 
     /* Gestion des evenements */
     //route pour evenement
-    Route::get('/events', [EvenementController::class, 'index']);
-<<<<<<< HEAD
-Route::get('/events/{id}', [EvenementController::class, 'show']);
-Route::post('/events', [EvenementController::class, 'store']);
-Route::post('/events/{id}', [EvenementController::class, 'update']);
-Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
 
-Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
-});
-
-Route::post('/secteurs', [SecteurController::class, 'store']);
-    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
-    Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
-    Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
-    Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
-    Route::post('login', [UserController::class, 'login']);
-
-
-    Route::post('create', [GuideController::class, 'create']);
-    Route::post('update/{id}', [GuideController::class, 'update']);
-
-    Route::post('create/{id}', [EtudeCasController::class, 'create']);
-    Route::post('update/{id}', [EtudeCasController::class, 'update']);
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
-=======
     Route::get('/events/{id}', [EvenementController::class, 'show']);
     Route::post('/events', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
@@ -121,6 +96,7 @@ Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
+Route::get('/events', [EvenementController::class, 'index']);
 
 
 
@@ -147,8 +123,7 @@ Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 
 Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
 //ajouter un utilisateur 'admin'
 Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
-//se connecter 
+//se connecter
 Route::post('login', [UserController::class, 'login']);
-//se deconnecter 
+//se deconnecter
 Route::get('deconnecter', [UserController::class, 'deconnect']);
->>>>>>> b2353cff8ee46a8e6709e2f51b7669f0be5e6cfe
