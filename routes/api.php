@@ -86,6 +86,8 @@ Route::middleware('auth:api')->group(function () {
     //archiver une ressource
     Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
 
+    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+
     /* Gestion des evenements */
     //route pour evenement
 
@@ -128,11 +130,17 @@ Route::post('login', [UserController::class, 'login']);
 //se deconnecter
 Route::get('deconnecter', [UserController::class, 'deconnect']);
 
+
+//gestion etude cas , ajout cas pour la premiere route
 Route::post('create/{id}', [EtudeCasController::class, 'create']);
+//modifier une etude cas
     Route::post('update/{id}', [EtudeCasController::class, 'update']);
+    //archivier une etude cas
     Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
+    //supprimer une etude cas
     Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+
+
 
     //ajouter guide
 Route::post('/create', [GuideController::class, 'create']);

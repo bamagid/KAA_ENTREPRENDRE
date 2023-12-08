@@ -51,7 +51,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
             'region'=> $request->region,
-            'role_id' => $roleEntrepreneurNovice->id, 
+            'role_id' => $roleEntrepreneurNovice->id,
             'statut' => $request->statut,
             'image'=> $imagePath,
             'progression'=>$request->progression
@@ -115,7 +115,7 @@ class UserController extends Controller
             'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
-           
+
             'statut' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez des règles pour la validation de l'image si nécessaire
         ]);
@@ -165,7 +165,7 @@ class UserController extends Controller
                 "status" => true,
                 "message" => "utilisateur connecter avec succe",
                 "token" => $token
-            ]);
+            ]); 
         }
 
         return response()->json([
@@ -177,9 +177,9 @@ class UserController extends Controller
         //J'utilise la façade Auth pour faire la deconnexion
         Auth::logout();
         session()->invalidate();
- 
+
         session()->regenerateToken();
- 
+
         return redirect('/');
     }
 
@@ -187,7 +187,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $entrepreneurNovice = auth()->user();
-    
+
         $request->validate([
             'nom' => 'required|string',
             'prenom' => 'required|string',
@@ -196,17 +196,17 @@ class UserController extends Controller
             'adresse' => 'required|string',
             'region' => 'required|string',
             'statut' => 'required|string',
-           
+
         ]);
-    
+
         $imagePath = $entrepreneurNovice->image;
-    
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
-    
+
         $entrepreneurNovice->update([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
@@ -216,9 +216,9 @@ class UserController extends Controller
             'region' => $request->region,
             'statut' => $request->statut,
             'image' => $imagePath,
-          
+
         ]);
-    
+
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
 
@@ -241,7 +241,7 @@ class UserController extends Controller
         'experience' => 'required|string',
         'activite' => 'required|string',
         'realisation' => 'required|string',
-       
+
     ]);
 
     $imagePath = $entrepreneurExperimente->image;
@@ -264,7 +264,7 @@ class UserController extends Controller
         'activite' => $request->activite,
         'realisation' => $request->realisation,
         'image' => $imagePath,
-        
+
     ]);
 
     return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
@@ -284,8 +284,8 @@ public function UpdateAdmin(Request $request)
         'adresse' => 'required|string',
         'region' => 'required|string',
         'statut' => 'required|string',
-      
-       
+
+
     ]);
 
     $imagePath = $admin->image;
@@ -303,10 +303,10 @@ public function UpdateAdmin(Request $request)
         'password' => $request->password ? Hash::make($request->password) : $admin->password,
         'adresse' => $request->adresse,
         'region' => $request->region,
-     
-       
+
+
         'image' => $imagePath,
-        
+
     ]);
 
     return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
