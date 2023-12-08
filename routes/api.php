@@ -113,7 +113,7 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     /* Gestion des evenements */
     //route pour evenement
     Route::get('/events', [EvenementController::class, 'index']);
-<<<<<<<<< Temporary merge branch 1
+
 Route::get('/events/{id}', [EvenementController::class, 'show']);
 Route::post('/events', [EvenementController::class, 'store']);
 Route::post('/events/{id}', [EvenementController::class, 'update']);
@@ -138,14 +138,13 @@ Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
     Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
     Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
-=========
+
     Route::get('/events/{id}', [EvenementController::class, 'show']);
     Route::post('/events', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
     Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
     Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
-});
 
 
 
@@ -176,4 +175,4 @@ Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilis
 Route::post('login', [UserController::class, 'login']);
 //se deconnecter
 Route::get('deconnecter', [UserController::class, 'deconnect']);
->>>>>>>>> Temporary merge branch 2
+
