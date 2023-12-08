@@ -72,50 +72,56 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 /* Gestion des ressources */
 //ajouter une ressource
-
-Route::middleware('auth:api')->group(function(){
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
-//modifier une ressource
+Route::middleware('auth:api')->group(function () {
+    Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
+    //modifier une ressource
     Route::post('/ressources/{id}', [RessourceController::class, 'modifierRessource']);
-//supprimer une ressource
+    //supprimer une ressource
     Route::delete('/ressources/{id}', [RessourceController::class, 'supprimerRessource']);
-//afficher toutes les ressources disponnibles
-Route::post('/ressources', [RessourceController::class, 'index']);
-//afficher une ressource en particulier
-Route::post('/ressource', [RessourceController::class, 'show']);
-//archiver une ressource
-Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
+    //afficher toutes les ressources disponnibles
+    Route::post('/ressources', [RessourceController::class, 'index']);
+    //afficher une ressource en particulier
+    Route::post('/ressource', [RessourceController::class, 'show']);
+    //archiver une ressource
+    Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
 
-/* Gestion des utilisatueurs  */
-//ajouter un role a la table role
-
+    /* Gestion des evenements */
     //route pour evenement
     Route::get('/events', [EvenementController::class, 'index']);
-Route::get('/events/{id}', [EvenementController::class, 'show']);
-Route::post('/events', [EvenementController::class, 'store']);
-Route::post('/events/{id}', [EvenementController::class, 'update']);
-Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
-Route::post('/secteurs', [SecteurController::class, 'store']);
-Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
+    Route::get('/events/{id}', [EvenementController::class, 'show']);
+    Route::post('/events', [EvenementController::class, 'store']);
+    Route::post('/events/{id}', [EvenementController::class, 'update']);
+    Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
+    Route::post('/secteurs', [SecteurController::class, 'store']);
+    Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
 
-Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);
-Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class,'updateProfileExperimente']);
-Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'UpdateAdmin']);
-Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class,'toggleBlockAccount']);
-    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
+
+
+/* Gestion des utilisatueurs  */
+//modification du profile d'un entrepreneur novice
+Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
+//modification du profile d'un entrepreneur eperimenté
+Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
+//modification du profile d'un admin
+Route::middleware('auth:api')->post('/admin/profile', [UserController::class, 'UpdateAdmin']);
+//blockage d'un utilisateur par l'admin
+Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+
+//ajouter un role a la table role
+Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
 //ajouter un utilisateur 'entrepreneur novice'
 
-    Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
-        // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
-    });
+Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
+    // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
+});
 
-    Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
+Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
 //ajouter un utilisateur 'entrepreneur experimente'
-    Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
+Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
 //ajouter un utilisateur 'admin'
-    Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
+Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
 //se connecter 
-    Route::post('login', [UserController::class, 'login']);
+Route::post('login', [UserController::class, 'login']);
 //se deconnecter 
-Route::get('deconnecter',[UserController::class, 'deconnect']);
+Route::get('deconnecter', [UserController::class, 'deconnect']);
