@@ -40,7 +40,7 @@ class UserController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
         $roleEntrepreneurNovice = Role::where('nomRole', 'novice')->first();
@@ -53,8 +53,8 @@ class UserController extends Controller
             'region'=> $request->region,
             'role_id' => $roleEntrepreneurNovice->id,
             'statut' => $request->statut,
-            'image'=> $imagePath,
-            'progression'=>$request->progression
+            'image' => $imagePath,
+            'progression' => $request->progression
         ]);
 
         $user->roles()->attach($roleEntrepreneurNovice);
@@ -80,7 +80,7 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
@@ -96,9 +96,9 @@ class UserController extends Controller
             'role_id' => $request->role_id,
             'statut' => $request->statut,
             'image' => $imagePath,
-            'experience'=>$request->experience,
-            'activite' =>$request->activite,
-            'realisation'=>$request->realisation
+            'experience' => $request->experience,
+            'activite' => $request->activite,
+            'realisation' => $request->realisation
         ]);
 
         $user->roles()->attach($roleEntrepreneurExperimente);
@@ -123,7 +123,7 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
@@ -145,7 +145,8 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Admin ajouté avec succès'], 201);
     }
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         // data validation
         $request->validate([
@@ -159,13 +160,13 @@ class UserController extends Controller
             "password" => $request->password
         ]);
 
-        if(!empty($token)){
+        if (!empty($token)) {
 
             return response()->json([
                 "status" => true,
                 "message" => "utilisateur connecter avec succe",
                 "token" => $token
-            ]); 
+            ]);
         }
 
         return response()->json([
@@ -173,7 +174,8 @@ class UserController extends Controller
             "message" => "details invalide"
         ]);
     }
-    public function deconnect(){
+    public function deconnect()
+    {
         //J'utilise la façade Auth pour faire la deconnexion
         Auth::logout();
         session()->invalidate();
@@ -203,7 +205,7 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
@@ -227,8 +229,8 @@ class UserController extends Controller
 
 
     public function updateProfileExperimente(Request $request)
-{
-    $entrepreneurExperimente = auth()->user();
+    {
+        $entrepreneurExperimente = auth()->user();
 
     $request->validate([
         'nom' => 'required|string',
@@ -244,13 +246,13 @@ class UserController extends Controller
 
     ]);
 
-    $imagePath = $entrepreneurExperimente->image;
+        $imagePath = $entrepreneurExperimente->image;
 
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
-        $imagePath = $image->storeAs('images', $imageName, 'public');
-    }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
 
     $entrepreneurExperimente->update([
         'nom' => $request->nom,
@@ -267,14 +269,14 @@ class UserController extends Controller
 
     ]);
 
-    return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
-}
+        return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
+    }
 
-public function UpdateAdmin(Request $request)
-{
+    public function UpdateAdmin(Request $request)
+    {
 
 
-    $admin = auth()->user();
+        $admin = auth()->user();
 
     $request->validate([
         'nom' => 'required|string',
@@ -288,13 +290,13 @@ public function UpdateAdmin(Request $request)
 
     ]);
 
-    $imagePath = $admin->image;
+        $imagePath = $admin->image;
 
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
-        $imagePath = $image->storeAs('images', $imageName, 'public');
-    }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
 
     $admin->update([
         'nom' => $request->nom,
@@ -309,24 +311,22 @@ public function UpdateAdmin(Request $request)
 
     ]);
 
-    return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
-
-}
-
-
-public function toggleBlockAccount($userId)
-{
-    $user = User::find($userId);
-
-    if (!$user) {
-        return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
 
-    $user->toggleStatus();
 
-    $status = $user->statut === 'actif' ? 'débloqué' : 'bloqué';
+    public function toggleBlockAccount($userId)
+    {
+        $user = User::find($userId);
 
-    return response()->json(['message' => "Compte $status avec succès"], 200);
-}
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
 
+        $user->toggleStatus();
+
+        $status = $user->statut === 'actif' ? 'débloqué' : 'bloqué';
+
+        return response()->json(['message' => "Compte $status avec succès"], 200);
+    }
 }

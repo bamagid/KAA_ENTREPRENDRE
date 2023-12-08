@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ForumController extends Controller
 {
@@ -36,7 +37,7 @@ class ForumController extends Controller
             ]
 
         );
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         Forum::create(
             [
@@ -82,7 +83,7 @@ class ForumController extends Controller
                 'id' => 'required|numeric'
             ]
         );
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         $forum = Forum::findOrFail($request->input('id'));
         $forum->rubrique = $request->nomRubrique;
@@ -97,7 +98,7 @@ class ForumController extends Controller
      */
     public function archiveRubrique(Request $request)
     {
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         $forum = Forum::findOrFail($request->input('id'));
         $forum->is_deleted=true;

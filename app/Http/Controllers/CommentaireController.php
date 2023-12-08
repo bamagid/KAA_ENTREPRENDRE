@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Commentaire;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentaireController extends Controller
 {
@@ -33,14 +34,13 @@ class CommentaireController extends Controller
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
             ]
 
         );
         Commentaire::create(
             [
                 'contenu' => $request->contenu,
-                'user_id' => $request->input('user_id')
+                'user_id' =>Auth::user()->id,
             ]
         );
         return response()->json(['message' => "Le commentaire est bien ajouté"]);
@@ -73,12 +73,11 @@ class CommentaireController extends Controller
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
                 'id' => 'required|numeric'
             ]
         );
         $commentaire = Commentaire::findOrFail($request->input('id'));
-        if ($commentaire->user_id===$request->user_id) {
+        if ($commentaire->user_id===Auth::user()->id) {
             $commentaire->contenu = $request->contenu;
             $commentaire->update();
             return response()->json(['message' => "Le commentaire est bien modifié"]);
@@ -100,7 +99,7 @@ class CommentaireController extends Controller
             ]
         );
         $commentaire = Commentaire::findOrFail($request->input('id'));
-        if ($commentaire->user_id===$request->user_id) {
+        if ($commentaire->user_id===Auth::user()->id) {
         $commentaire->is_deleted=true;
         $commentaire->update();
         return response()->json(['message' => "Le commentaire est bien archivé"]);
@@ -114,7 +113,7 @@ class CommentaireController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user()->id;
         if ($user->role_id===1){
         $commentaire = Commentaire::findOrFail($request->input('id'));
         $commentaire->delete();
