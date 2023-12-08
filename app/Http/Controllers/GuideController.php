@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guide;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Guid\Guid;
 
 class GuideController extends Controller
 {
@@ -12,54 +13,49 @@ class GuideController extends Controller
      */
     public function index()
     {
-        //
+        $guides=Guide::all();
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      */
-    public function show(Guide $guide)
+    public function create(Request $request)
     {
-        //
+        $guides=$request->validate([
+            'titre' => 'required',
+            'contenu'=>'required',
+            'phases'=>'required',
+              'reaction'=>'required',
+        ]);
+        $guide =new Guide($guides);
+       $guide->titre = $request->titre;
+       $guide->contenu=$request->contenu;
+       $guide->phases=$request->phases;
+       $guide->reaction=$request->reaction;
+        $guide->save();
+
+        return response()->json(['message' => 'guide ajouter avec succée', 'guide' => $guide], 200);
+
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Guide $guide)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Guide $guide)
+    public function update(Request $request, string $id)
     {
-        //
+        $guide = Guide::find($id);
+        $guide->titre=$request->titre;
+        $guide->contenu=$request->contenu;
+        $guide->phases=$request->phases;
+        $guide->reaction=$request->reaction;
+        $guide->save();
+
+        return response()->json(['message' => 'guide modifer avec succée', 'guide' => $guide], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Guide $guide)
-    {
-        //
-    }
+
 }
