@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ForumController extends Controller
 {
@@ -32,16 +33,15 @@ class ForumController extends Controller
         $request->validate(
             [
                 'nomRubrique' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
             ]
 
         );
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         Forum::create(
             [
                 'rubrique' => $request->nomRubrique,
-                'user_id' => $request->input('user_id')
+                'user_id' =>$user->id
             ]
         );
         return response()->json(['message' => "La rubrique est bien ajoutée"]);
@@ -78,11 +78,10 @@ class ForumController extends Controller
         $request->validate(
             [
                 'nomRubrique' => 'required|string|min:3',
-                'user_id' => 'required|numeric',
                 'id' => 'required|numeric'
             ]
         );
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         $forum = Forum::findOrFail($request->input('id'));
         $forum->rubrique = $request->nomRubrique;
@@ -97,7 +96,7 @@ class ForumController extends Controller
      */
     public function archiveRubrique(Request $request)
     {
-        $user=User::findOrFail($request->user_id);
+        $user=Auth::user();
         if ($user->role_id===1){
         $forum = Forum::findOrFail($request->input('id'));
         $forum->is_deleted=true;
@@ -112,8 +111,9 @@ class ForumController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)
-    { 
-        $user=User::findOrFail($request->user_id);
+
+    {
+        $user=Auth::user();
         if ($user->role_id===1){
         $forum = Forum::findOrFail($request->input('id'));
         $forum->delete();

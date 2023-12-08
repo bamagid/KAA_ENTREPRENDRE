@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\EtudeCas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 class EtudeCasController extends Controller
 {
@@ -37,10 +39,9 @@ class EtudeCasController extends Controller
 
             ]);
             $etudeCas =new EtudeCas ($etudeCas);
-
            $etudeCas->contenu=$request->contenu;
-           $etudeCas->$imagePath=$request->$imagePath;
-           $etudeCas->user_id=$request->user_id;
+           $etudeCas->image=$imagePath;
+           $etudeCas->user_id=FacadesAuth::user()->id;
            $etudeCas->secteur_id=$request->secteur_id;
 
 
@@ -92,9 +93,10 @@ class EtudeCasController extends Controller
 
         $etudeCas = EtudeCas::find($request->id);
         // dd($etudeCas);
+
         $etudeCas->contenu=$request->contenu;
         $etudeCas->image=$imagePath;
-        $etudeCas->user_id=$request->user_id;
+        $etudeCas->user_id=FacadesAuth::user()->id;
         $etudeCas->secteur_id=$request->secteur_id;
         $etudeCas->save();
 
