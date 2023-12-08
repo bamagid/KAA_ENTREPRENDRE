@@ -22,57 +22,40 @@ use App\Http\Controllers\RessourceController;
 |
 */
 
-
-/* gestion des forums*/
-//lister les forums
-Route::get('/forums', [ForumController::class, 'index']);
-//creer un forum
-Route::post('/forum/create', [ForumController::class, 'store'])->name('forum.create');
-//supprimer un forum
-Route::post('/forum/delete', [ForumController::class, 'destroy'])->name('forum.delete');
-//modifier un forum
-Route::post('forum/edit', [ForumController::class, 'update'])->name('forum.edit');
-//afficher le forum selectionne
-Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
-//archiver une rubrique d'un forum
-Route::post('/forum/archiveRubrique', [ForumController::class, 'archiveRubrique'])->name('forum.archiveRubrique');
-
-/* gestion des commentaires du forums */
-//lister tous les commentaires d'un forum
-Route::get('/commentaires', [CommentaireController::class, 'index']);
-//lister  commentaire d'un forum
-Route::post('/commentaire', [CommentaireController::class, 'show']);
-//ajouter un commentaire a un forum
-Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('commentaire.add');
-//supprimer un commentaire d'un forum
-Route::post('/commentaire/delete', [CommentaireController::class, 'destroy'])->name('commentaire.delete');
-//modifier un commentaire d'un forum
-Route::post('/commentaire/edit', [CommentaireController::class, 'update'])->name('commentaire.edit');
-//archiver un commentaire de forum
-Route::post('/commentaire/archive', [CommentaireController::class, 'archiveCommentaire'])->name('commentaire.archive');
-
-
-/* gestion des reponses du forums */
-//lister tous les reponses d'un forum
-Route::get('/reponses', [ReponseController::class, 'index']);
-//lister  une reponse particulier d'un forum
-Route::post('/reponse', [ReponseController::class, 'show']);
-//ajouter une reponse a un forum
-Route::post('/reponse/create', [ReponseController::class, 'store'])->name('reponse.add');
-//supprimer une reponse d'un forum
-Route::post('/reponse/delete', [ReponseController::class, 'destroy'])->name('reponse.delete');
-//modifier une reponse d'un forum
-Route::post('/reponse/edit', [ReponseController::class, 'update'])->name('reponse.edit');
-//archiver une reponse de forum
-Route::post('/reponse/archive', [ReponseController::class, 'archivereponse'])->name('reponse.archive');
-
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
+Route::get('/events', [EvenementController::class, 'index']);
 Route::middleware('auth:api')->group(function () {
+    /* gestion des commentaires du forums */
+    //lister tous les commentaires d'un forum
+    Route::get('/commentaires', [CommentaireController::class, 'index']);
+    //lister  commentaire d'un forum
+    Route::post('/commentaire', [CommentaireController::class, 'show']);
+    //ajouter un commentaire a un forum
+    Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('commentaire.add');
+
+    //modifier un commentaire d'un forum
+    Route::post('/commentaire/edit', [CommentaireController::class, 'update'])->name('commentaire.edit');
+    //archiver un commentaire de forum
+    Route::post('/commentaire/archive', [CommentaireController::class, 'archiveCommentaire'])->name('commentaire.archive');
+
+
+    /* gestion des reponses du forums */
+    //lister tous les reponses d'un forum
+    Route::get('/reponses', [ReponseController::class, 'index']);
+    //lister  une reponse particulier d'un forum
+    Route::post('/reponse', [ReponseController::class, 'show']);
+    //ajouter une reponse a un forum
+    Route::post('/reponse/create', [ReponseController::class, 'store'])->name('reponse.add');
+
+    //modifier une reponse d'un forum
+    Route::post('/reponse/edit', [ReponseController::class, 'update'])->name('reponse.edit');
+    //archiver une reponse de forum
+    Route::post('/reponse/archive', [ReponseController::class, 'archivereponse'])->name('reponse.archive');
+
 
 
     /* Gestion des utilisatueurs  */
@@ -80,6 +63,31 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
     //modification du profile d'un entrepreneur eperimenté
     Route::post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
+});
+
+//blockage d'un utilisateur par l'admin
+Route::middleware(['auth:api', 'admin'])->group(function () {
+    /* gestion des forums*/
+    //lister les forums
+    Route::get('/forums', [ForumController::class, 'index']);
+    //creer un forum
+    Route::post('/forum/create', [ForumController::class, 'store'])->name('forum.create');
+    //supprimer un forum
+    Route::post('/forum/delete', [ForumController::class, 'destroy'])->name('forum.delete');
+    //modifier un forum
+    Route::post('forum/edit', [ForumController::class, 'update'])->name('forum.edit');
+    //afficher le forum selectionne
+    Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
+    //archiver une rubrique d'un forum
+    Route::post('/forum/archiveRubrique', [ForumController::class, 'archiveRubrique'])->name('forum.archiveRubrique');
+
+
+    //supprimer un commentaire d'un forum
+    Route::post('/commentaire/delete', [CommentaireController::class, 'destroy'])->name('commentaire.delete');
+
+    //supprimer une reponse d'un forum
+    Route::post('/reponse/delete', [ReponseController::class, 'destroy'])->name('reponse.delete');
+
     //modification du profile d'un admin
     Route::post('/admin/profile', [UserController::class, 'UpdateAdmin']);
 
@@ -97,7 +105,7 @@ Route::middleware('auth:api')->group(function () {
     //archiver une ressource
     Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
 
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+    Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
 
     /* Gestion des evenements */
     //route pour evenement
@@ -108,11 +116,20 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
     Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
-});
-Route::get('/events', [EvenementController::class, 'index']);
 
-//blockage d'un utilisateur par l'admin
-Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+    Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+    //gestion etude cas , ajout cas pour la premiere route
+    Route::post('create/{id}', [EtudeCasController::class, 'create']);
+    //modifier une etude cas
+    Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
+    //archivier une etude cas
+    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
+    //supprimer une etude cas
+    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
+    Route::post('/create', [EtudeCasController::class, 'create']);
+});
+
+
 
 //ajouter un role a la table role
 Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
@@ -133,18 +150,9 @@ Route::post('login', [UserController::class, 'login']);
 Route::get('deconnecter', [UserController::class, 'deconnect']);
 
 
-//gestion etude cas , ajout cas pour la premiere route
-Route::post('create/{id}', [EtudeCasController::class, 'create']);
-//modifier une etude cas
-    Route::post('update/{id}', [EtudeCasController::class, 'update']);
-    //archivier une etude cas
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    //supprimer une etude cas
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('/create', [EtudeCasController::class, 'create']);
 
 
-    //ajouter guide
+//ajouter guide
 Route::post('/create_guide', [GuideController::class, 'create']);
 //afficher guide
 Route::get('/index', [GuideController::class, 'index']);
@@ -153,6 +161,3 @@ Route::get('/index', [GuideController::class, 'index']);
 Route::post('/update/{id}', [GuideController::class, 'update']);
 
 Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
-
-
-
