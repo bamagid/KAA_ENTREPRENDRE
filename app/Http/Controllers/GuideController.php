@@ -53,10 +53,6 @@ class GuideController extends Controller
 
      public function archiver_guide(Request $request){
         $guide = Guide::find($request->id);
-        $guide->titre=$request->titre;
-        $guide->contenu=$request->contenu;
-        $guide->phases=$request->phases;
-        $guide->reaction=$request->reaction;
         $guide->is_deleted=true;
         $guide->save();
 

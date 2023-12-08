@@ -112,7 +112,23 @@ Route::middleware('auth:api')->group(function () {
 Route::get('/events', [EvenementController::class, 'index']);
 
 //blockage d'un utilisateur par l'admin
-Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+Route::middleware(['auth:api', 'admin'])->group(function(){
+
+    Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+    //gestion etude cas , ajout cas pour la premiere route
+Route::post('create/{id}', [EtudeCasController::class, 'create']);
+//modifier une etude cas
+    Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
+    //archivier une etude cas
+    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
+    //supprimer une etude cas
+    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
+    Route::post('/create', [EtudeCasController::class, 'create']);
+
+
+});
+
+
 
 //ajouter un role a la table role
 Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
@@ -133,15 +149,6 @@ Route::post('login', [UserController::class, 'login']);
 Route::get('deconnecter', [UserController::class, 'deconnect']);
 
 
-//gestion etude cas , ajout cas pour la premiere route
-Route::post('create/{id}', [EtudeCasController::class, 'create']);
-//modifier une etude cas
-    Route::post('update/{id}', [EtudeCasController::class, 'update']);
-    //archivier une etude cas
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    //supprimer une etude cas
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('/create', [EtudeCasController::class, 'create']);
 
 
     //ajouter guide
@@ -152,7 +159,7 @@ Route::get('/index', [GuideController::class, 'index']);
 
 Route::post('/update/{id}', [GuideController::class, 'update']);
 
-Route::post('/archiver_guide', [GuideController::class, 'archiver_guide']);
+Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
 
 
 
