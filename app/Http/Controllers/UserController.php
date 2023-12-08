@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 
@@ -172,6 +173,15 @@ class UserController extends Controller
             "status" => false,
             "message" => "details invalide"
         ]);
+    }
+    public function deconnect(){
+        //J'utilise la façade Auth pour faire la deconnexion
+        Auth::logout();
+        session()->invalidate();
+ 
+        session()->regenerateToken();
+ 
+        return redirect('/');
     }
 
 
