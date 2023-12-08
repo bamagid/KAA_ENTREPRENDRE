@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\EtudeCasController;
 use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\GuideController;
@@ -21,19 +22,25 @@ use App\Http\Controllers\RessourceController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+//lister les forums
+Route::get('/forums', [ForumController::class, 'index']);
+Route::get('/events', [EvenementController::class, 'index']);
+//lister tous les commentaires d'un forum
+Route::get('/commentaires', [CommentaireController::class, 'index']);
+//lister  commentaire d'un forum
+Route::post('/commentaire', [CommentaireController::class, 'show']);
+//lister toutes les reponses d'un forum
+Route::get('/reponses', [ReponseController::class, 'index']);
+//lister  une reponse particulier d'un forum
+Route::post('/reponse', [ReponseController::class, 'show']);
+//afficher le forum selectionne
+Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
+Route::get('/events/{id}', [EvenementController::class, 'show']);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-Route::get('/events', [EvenementController::class, 'index']);
 Route::middleware('auth:api')->group(function () {
     /* gestion des commentaires du forums */
-    //lister tous les commentaires d'un forum
-    Route::get('/commentaires', [CommentaireController::class, 'index']);
-    //lister  commentaire d'un forum
-    Route::post('/commentaire', [CommentaireController::class, 'show']);
     //ajouter un commentaire a un forum
     Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('commentaire.add');
 
@@ -44,10 +51,6 @@ Route::middleware('auth:api')->group(function () {
 
 
     /* gestion des reponses du forums */
-    //lister tous les reponses d'un forum
-    Route::get('/reponses', [ReponseController::class, 'index']);
-    //lister  une reponse particulier d'un forum
-    Route::post('/reponse', [ReponseController::class, 'show']);
     //ajouter une reponse a un forum
     Route::post('/reponse/create', [ReponseController::class, 'store'])->name('reponse.add');
 
@@ -68,16 +71,13 @@ Route::middleware('auth:api')->group(function () {
 //blockage d'un utilisateur par l'admin
 Route::middleware(['auth:api', 'admin'])->group(function () {
     /* gestion des forums*/
-    //lister les forums
-    Route::get('/forums', [ForumController::class, 'index']);
+
     //creer un forum
     Route::post('/forum/create', [ForumController::class, 'store'])->name('forum.create');
     //supprimer un forum
     Route::post('/forum/delete', [ForumController::class, 'destroy'])->name('forum.delete');
     //modifier un forum
     Route::post('forum/edit', [ForumController::class, 'update'])->name('forum.edit');
-    //afficher le forum selectionne
-    Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
     //archiver une rubrique d'un forum
     Route::post('/forum/archiveRubrique', [ForumController::class, 'archiveRubrique'])->name('forum.archiveRubrique');
 
@@ -90,6 +90,9 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
 
     //modification du profile d'un admin
     Route::post('/admin/profile', [UserController::class, 'UpdateAdmin']);
+
+    //ajouter un role a la table role
+    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
 
     /* Gestion des ressources */
     //ajouter une ressource
@@ -110,7 +113,6 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     /* Gestion des evenements */
     //route pour evenement
 
-    Route::get('/events/{id}', [EvenementController::class, 'show']);
     Route::post('/events', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
     Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
@@ -129,16 +131,10 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::post('/create', [EtudeCasController::class, 'create']);
 });
 
-
-
-//ajouter un role a la table role
-Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
-//ajouter un utilisateur 'entrepreneur novice'
-
 Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
-    // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
+    // mes routes quand lutilisateur est bloquer pour lui interdire certaine partie du site
 });
-
+//ajouter un utilisateur 'entrepreneur novice'
 Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
 //ajouter un utilisateur 'entrepreneur experimente'
 Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
@@ -157,7 +153,6 @@ Route::post('/create_guide', [GuideController::class, 'create']);
 //afficher guide
 Route::get('/index', [GuideController::class, 'index']);
 //modifier le guide
-
 Route::post('/update/{id}', [GuideController::class, 'update']);
-
+//archiver un guide
 Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
