@@ -30,10 +30,7 @@ class GuideController extends Controller
               'reaction'=>'required',
         ]);
         $guide =new Guide($guides);
-       $guide->titre = $request->titre;
-       $guide->contenu=$request->contenu;
-       $guide->phases=$request->phases;
-       $guide->reaction=$request->reaction;
+
         $guide->save();
 
         return response()->json(['message' => 'guide ajouter avec succée', 'guide' => $guide], 200);
@@ -54,8 +51,17 @@ class GuideController extends Controller
         return response()->json(['message' => 'guide modifer avec succée', 'guide' => $guide], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+     public function archiver_guide(Request $request){
+        $guide = Guide::find($request->id);
+        $guide->titre=$request->titre;
+        $guide->contenu=$request->contenu;
+        $guide->phases=$request->phases;
+        $guide->reaction=$request->reaction;
+        $guide->is_deleted=true;
+        $guide->save();
+
+        return response()->json(['message' => 'guide archiver avec succée', 'guide' => $guide], 200);
+
+     }
 
 }

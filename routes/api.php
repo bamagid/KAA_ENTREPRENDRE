@@ -141,16 +141,18 @@ Route::post('create/{id}', [EtudeCasController::class, 'create']);
     Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
     //supprimer une etude cas
     Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-
+    Route::post('/create', [EtudeCasController::class, 'create']);
 
 
     //ajouter guide
-Route::post('/create', [GuideController::class, 'create']);
+Route::post('/create_guide', [GuideController::class, 'create']);
 //afficher guide
 Route::get('/index', [GuideController::class, 'index']);
 //modifier le guide
 
 Route::post('/update/{id}', [GuideController::class, 'update']);
-Route::post('/create', [EtudeCasController::class, 'create']);
+
+Route::post('/archiver_guide', [GuideController::class, 'archiver_guide']);
+
 
 
