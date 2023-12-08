@@ -35,6 +35,7 @@ Route::post('forum/edit', [ForumController::class, 'update'])->name('forum.edit'
 Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
 //archiver une rubrique d'un forum
 Route::post('/forum/archiveRubrique', [ForumController::class, 'archiveRubrique'])->name('forum.archiveRubrique');
+
 /* gestion des commentaires du forums */
 //lister tous les commentaires d'un forum
 Route::get('/commentaires', [CommentaireController::class, 'index']);
@@ -53,15 +54,15 @@ Route::post('/commentaire/archive', [CommentaireController::class, 'archiveComme
 /* gestion des reponses du forums */
 //lister tous les reponses d'un forum
 Route::get('/reponses', [ReponseController::class, 'index']);
-//lister  reponse d'un forum
+//lister  une reponse particulier d'un forum
 Route::post('/reponse', [ReponseController::class, 'show']);
-//ajouter un reponse a un forum
+//ajouter une reponse a un forum
 Route::post('/reponse/create', [ReponseController::class, 'store'])->name('reponse.add');
-//supprimer un reponse d'un forum
+//supprimer une reponse d'un forum
 Route::post('/reponse/delete', [ReponseController::class, 'destroy'])->name('reponse.delete');
-//modifier un reponse d'un forum
+//modifier une reponse d'un forum
 Route::post('/reponse/edit', [ReponseController::class, 'update'])->name('reponse.edit');
-//archiver un reponse de forum
+//archiver une reponse de forum
 Route::post('/reponse/archive', [ReponseController::class, 'archivereponse'])->name('reponse.archive');
 
 
@@ -69,35 +70,36 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->group(function(){
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
+/* Gestion des ressources */
+//ajouter une ressource
+Route::middleware('auth:api')->group(function () {
+    Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
+    //modifier une ressource
     Route::post('/ressources/{id}', [RessourceController::class, 'modifierRessource']);
+    //supprimer une ressource
     Route::delete('/ressources/{id}', [RessourceController::class, 'supprimerRessource']);
+    //afficher toutes les ressources disponnibles
+    Route::post('/ressources', [RessourceController::class, 'index']);
+    //afficher une ressource en particulier
+    Route::post('/ressource', [RessourceController::class, 'show']);
+    //archiver une ressource
+    Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
 
+    /* Gestion des evenements */
     //route pour evenement
 
-Route::get('/events/{id}', [EvenementController::class, 'show']);
-Route::post('/events', [EvenementController::class, 'store']);
-Route::post('/events/{id}', [EvenementController::class, 'update']);
-Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
+    Route::get('/events/{id}', [EvenementController::class, 'show']);
+    Route::post('/events', [EvenementController::class, 'store']);
+    Route::post('/events/{id}', [EvenementController::class, 'update']);
+    Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
 
-Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
+    Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
 Route::get('/events', [EvenementController::class, 'index']);
 
-Route::post('/secteurs', [SecteurController::class, 'store']);
+
     Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
     Route::post('login', [UserController::class, 'login']);
-
-
-    Route::post('create', [GuideController::class, 'create']);
-    Route::post('update/{id}', [GuideController::class, 'update']);
-
-    Route::post('create/{id}', [EtudeCasController::class, 'create']);
-    Route::post('update/{id}', [EtudeCasController::class, 'update']);
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
