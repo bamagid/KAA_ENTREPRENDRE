@@ -137,3 +137,6 @@ Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', 
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
     Route::post('login', [UserController::class, 'login']);
+
+    Route::post('verifMail',[UserController::class,'verifMail']);
+    Route::post('resetPassword/{user}',[UserController::class,'resetPassword']);
