@@ -1637,6 +1637,82 @@
                     }
                 ]
             }
+        },
+        "/api/secteur/create": {
+            "post": {
+                "tags": [
+                    "Secteurs"
+                ],
+                "summary": "Ajouter un nouveau secteur",
+                "description": "Ajoute un nouveau secteur avec les détails fournis",
+                "operationId": "createsecteur",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nomSecteur": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Secteur créé avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/secteur/destroy": {
+            "post": {
+                "tags": [
+                    "secteurs"
+                ],
+                "summary": "Supprimer un secteur",
+                "description": "Supprime un secteur en fonction de l'ID fourni",
+                "operationId": "destroysecteur",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "secteur supprimé avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
         }
     },
     "tags": [

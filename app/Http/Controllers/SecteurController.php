@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Secteur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Annotations as OA;
  /**
      * @OA\Tag(
@@ -44,8 +45,32 @@ class SecteurController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
+   /**
+     * @OA\Post(
+     *      path="/api/secteur/create",
+     *      operationId="createsecteur",
+     *      tags={"Secteurs"},
+     *      summary="Ajouter un nouveau secteur",
+     *      description="Ajoute un nouveau secteur avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nomSecteur", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Secteur créé avec succès",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Non autorisé",
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
      */
     public function store(Request $request)
     {
@@ -57,7 +82,7 @@ class SecteurController extends Controller
 
         $secteur = Secteur::create([
             'nomSecteur' => $request->nomSecteur,
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
         ]);
 
         return response()->json(['message' => 'Sector created successfully', 'secteur' => $secteur], 201);
@@ -69,6 +94,34 @@ class SecteurController extends Controller
     {
         //
     }
+
+     /**
+     * @OA\Post(
+     *      path="/api/secteur/destroy",
+     *      operationId="destroysecteur",
+     *      tags={"secteurs"},
+     *      summary="Supprimer un secteur",
+     *      description="Supprime un secteur en fonction de l'ID fourni",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="id", type="integer"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="secteur supprimé avec succès",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Non autorisé",
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
     public function destroy($id)
     {
 
