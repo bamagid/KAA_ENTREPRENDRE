@@ -11,6 +11,8 @@ use App\Http\Controllers\SecteurController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\RessourceController;
+use App\Http\Controllers\NewsletterSubscriptionController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,57 +122,18 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
-Route::get('/events', [EvenementController::class, 'index']);
 
-//blockage d'un utilisateur par l'admin
-Route::middleware(['auth:api', 'admin'])->group(function(){
+Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);
+Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class,'updateProfileExperimente']);
+Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'UpdateAdmin']);
+Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class,'toggleBlockAccount']);
+    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
 
-    Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
-    //gestion etude cas , ajout cas pour la premiere route
-Route::post('create/{id}', [EtudeCasController::class, 'create']);
-//modifier une etude cas
-    Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
-    //archivier une etude cas
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    //supprimer une etude cas
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('/create', [EtudeCasController::class, 'create']);
+    Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
+        // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
+    });
 
-
-});
-
-
-
-//ajouter un role a la table role
-Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
-//ajouter un utilisateur 'entrepreneur novice'
-
-Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
-    // mes routes quand lutilisateur est bloquer pour lui interdire certaine partie du site
-});
-//ajouter un utilisateur 'entrepreneur novice'
-Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
-//ajouter un utilisateur 'entrepreneur experimente'
-Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
-//ajouter un utilisateur 'admin'
-Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
-//se connecter
-Route::post('login', [UserController::class, 'login']);
-//se deconnecter
-Route::get('deconnecter', [UserController::class, 'deconnect']);
-
-
-
-
-    //ajouter guide
-Route::post('/create_guide', [GuideController::class, 'create']);
-//afficher guide
-Route::get('/index', [GuideController::class, 'index']);
-//modifier le guide
-
-Route::post('/update/{id}', [GuideController::class, 'update']);
-
-Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
-
-
-
+    Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
+    Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
+    Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
+    Route::post('login', [UserController::class, 'login']);

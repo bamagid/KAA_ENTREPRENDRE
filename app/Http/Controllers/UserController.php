@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -329,4 +330,30 @@ class UserController extends Controller
 
         return response()->json(['message' => "Compte $status avec succès"], 200);
     }
+
+
+
+
+
+public function modifierMotDePasse(Request $request)
+    {
+        $request->validate([
+            'ancien_password' => 'required',
+            'nouveau_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+        ]);
+
+        $user = Auth::user();
+
+        // Vérifiez que l'ancien mot de passe est correct
+        if (!Hash::check($request->ancien_password, $user->password)) {
+            return response()->json(['message' => 'Mot de passe actuel incorrect'], 401);
+        }
+
+        // Mettez à jour le mot de passe avec le nouveau
+        $user->password = Hash::make($request->nouveau_password);
+        $user->save();
+
+        return response()->json(['message' => 'Mot de passe modifié avec succès'], 200);
+    }
+
 }
