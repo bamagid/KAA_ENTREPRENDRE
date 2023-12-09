@@ -115,22 +115,12 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     /* Gestion des evenements */
     //route pour evenement
 
-    Route::post('/events', [EvenementController::class, 'store']);
+    Route::get('/events', [EvenementController::class, 'index']);
+    Route::post('/events_add', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
     Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
     Route::post('/secteurs', [SecteurController::class, 'store']);
     Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
-
-    Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
-    //gestion etude cas , ajout cas pour la premiere route
-    Route::post('create/{id}', [EtudeCasController::class, 'create']);
-    //modifier une etude cas
-    Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
-    //archivier une etude cas
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    //supprimer une etude cas
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('/create', [EtudeCasController::class, 'create']);
 });
 
 Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
@@ -170,13 +160,20 @@ Route::post('/update_phase/{id}', [phaseController::class, 'update']);
 Route::post('/archiver_phase/{id}', [phaseController::class, 'archiver_phase']);
 Route::post('/modifier-mot-de-passe', [UserController::class,'modifierMotDePasse'])->middleware('auth:api');
 Route::post('/reinitialiser-mot-de-passe', [UserController::class,'reinitialiserMotDePasse'])->middleware('auth:api');
+Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);
+Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class,'updateProfileExperimente']);
+Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'UpdateAdmin']);
+Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class,'toggleBlockAccount']);
+    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
 
     Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
         // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
     });
-    Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, 'subscribe']);
-    Route::get('/search',[SearchController::class,'search']);
+
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
     Route::post('login', [UserController::class, 'login']);
+
+    Route::post('verifMail',[UserController::class,'verifMail']);
+    Route::post('resetPassword/{user}',[UserController::class,'resetPassword']);

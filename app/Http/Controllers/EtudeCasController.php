@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 use OpenApi\Annotations as OA;
+
 /**
  * @OA\Tag(
  *     name="EtudeCas",
@@ -16,6 +17,13 @@ use OpenApi\Annotations as OA;
 
 class EtudeCasController extends Controller
 {
+    //utiliser cette fonction si vous voulez  lister les etudes de cas
+    public function index()
+    {
+        $etudeCas = EtudeCas::all();
+        return $etudeCas;
+    }
+
     /**
      * @OA\Post(
      *      path="/api/etude-cas/create/{id}",
@@ -48,30 +56,32 @@ class EtudeCasController extends Controller
      *      }
      * )
      */
-    public function create(Request $request)
+    public function create_cas(Request $request)
     {
+
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-        $etudeCas=$request->validate([
-            'contenu'=>'required',
-            'image'=>'required',
-        ]);
+        $etudeCas = $request->validate([
 
+            'contenu' => 'required',
+            'image' => 'required',
+
+        ]);
         $etudeCas = new EtudeCas($etudeCas);
         $etudeCas->contenu = $request->contenu;
         $etudeCas->image = $imagePath;
         $etudeCas->user_id = FacadesAuth::user()->id;
         $etudeCas->secteur_id = $request->secteur_id;
-
         $etudeCas->save();
 
-        return response()->json(['message' => 'etudeCas ajoutée avec succès', 'etudeCas' => $etudeCas], 200);
+        return response()->json(['message' => 'etudeCas ajouter avec succée', 'etudeCas' => $etudeCas], 200);
     }
+
 
     /**
      * @OA\Post(
@@ -104,7 +114,7 @@ class EtudeCasController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 

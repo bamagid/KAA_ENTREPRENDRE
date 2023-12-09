@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\MotDePasseOublié;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 
@@ -357,8 +357,34 @@ class UserController extends Controller
 
         // Mettez à jour le mot de passe avec le nouveau
         $user->password = Hash::make($request->nouveau_password);
+        // $user->notify(new MotDePasseOublié());
         $user->save();
 
         return response()->json(['message' => 'Mot de passe modifié avec succès'], 200);
     }
+
+    public function verifMail(Request $request){
+        $user=User::where('email',$request->email)->first();
+        if($user){
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'Utilisateur trouvé',
+                'user' => $user,
+            ]);
+        }
+    }
+
+    public function resetPassword(Request $request,User $user){
+        $user->password=$request->password;
+        $user->save();
+        if($user){
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'Votre mot de passe a été modifier',
+                'user' => $user,
+            ]);
+        }
+
+    }
+
 }
