@@ -65,7 +65,6 @@ class GuideController extends Controller
         $guides = $request->validate([
             'titre' => 'required',
             'contenu' => 'required',
-            'phases' => 'required',
             'reaction' => 'required',
         ]);
 

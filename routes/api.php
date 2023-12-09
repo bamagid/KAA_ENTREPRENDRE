@@ -156,3 +156,13 @@ Route::get('/index', [GuideController::class, 'index']);
 Route::post('/update/{id}', [GuideController::class, 'update']);
 //archiver un guide
 Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
+
+/** Gestion des phases d'un guide */
+//ajouter phase
+Route::post('/create_phase', [phaseController::class, 'create']);
+//afficher phase
+Route::get('/index', [phaseController::class, 'index']);
+//modifier le phase
+Route::post('/update_phase/{id}', [phaseController::class, 'update']);
+//archiver un phase
+Route::post('/archiver_phase/{id}', [phaseController::class, 'archiver_phase']);

@@ -914,6 +914,144 @@
                 ]
             }
         },
+        "/api/phases": {
+            "get": {
+                "tags": [
+                    "Phases"
+                ],
+                "summary": "Récupérer la liste des phases",
+                "description": "Récupère la liste de toutes les phases",
+                "operationId": "getPhases",
+                "responses": {
+                    "200": {
+                        "description": "Liste des phases récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/phase/create": {
+            "post": {
+                "tags": [
+                    "phases"
+                ],
+                "summary": "Ajouter une nouvelle phase",
+                "description": "Ajoute une nouvelle phase avec les détails fournis",
+                "operationId": "createphase",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "phase créé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/phase/update_phase/{id}": {
+            "post": {
+                "tags": [
+                    "phases"
+                ],
+                "summary": "Mettre à jour une phase existant",
+                "description": "Met à jour les détails d'une phase existant en fonction de l'ID fourni",
+                "operationId": "updatephase",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la phase à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "phase mise à jour avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/phase/archiver_phase/{id}": {
+            "post": {
+                "tags": [
+                    "phases"
+                ],
+                "summary": "Archiver une phase",
+                "description": "Archive une phase en fonction de l'ID fourni",
+                "operationId": "archivephase",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du phase à archiver",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "phase archivé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
         "/api/reponses": {
             "get": {
                 "tags": [
@@ -1521,6 +1659,10 @@
         {
             "name": "Guides",
             "description": "Endpoints pour la gestion des guides "
+        },
+        {
+            "name": "Phases",
+            "description": "Endpoints pour la gestion des phases "
         },
         {
             "name": "Réponses",
