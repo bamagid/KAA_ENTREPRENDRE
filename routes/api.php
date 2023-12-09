@@ -7,6 +7,7 @@ use App\Http\Controllers\SecteurController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\NewsletterSubscriptionController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,10 +45,14 @@ Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'Upd
 Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class,'toggleBlockAccount']);
     Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
 
+Route::post('/modifier-mot-de-passe', [UserController::class,'modifierMotDePasse'])->middleware('auth:api');
+Route::post('/reinitialiser-mot-de-passe', [UserController::class,'reinitialiserMotDePasse'])->middleware('auth:api');
+
     Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
         // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
     });
     Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, 'subscribe']);
+    Route::get('/search',[SearchController::class,'search']);
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
