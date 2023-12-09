@@ -37,6 +37,7 @@ Route::post('/events/{id}', [EvenementController::class, 'update']);
 Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
 Route::post('/secteurs', [SecteurController::class, 'store']);
 Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
+Route::get('/ressources', [RessourceController::class,'listerRessources']);
 });
 
 Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);

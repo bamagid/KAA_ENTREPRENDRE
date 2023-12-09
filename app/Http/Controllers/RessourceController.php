@@ -86,6 +86,17 @@ class RessourceController extends Controller
         return response()->json(['message' => 'Ressource modifiée avec succès'], 200);
     }
 
+
+
+    public function listerRessources()
+{
+    // Récupérez toutes les ressources
+    $ressources = Ressource::all();
+
+    // Retournez la liste des ressources en tant que réponse JSON
+    return response()->json(['ressources' => $ressources], 200);
+}
+
     /**
      * Show the form for creating a new resource.
      */
