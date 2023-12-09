@@ -4,11 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Secteur;
 use Illuminate\Http\Request;
-
+use OpenApi\Annotations as OA;
+ /**
+     * @OA\Tag(
+     *     name="Secteurs",
+     *     description="Endpoints pour la gestion des secteurs."
+     * )
+     */
 class SecteurController extends Controller
 {
+     
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/Secteurs",
+     *      operationId="getSecteurs",
+     *      tags={"Secteurs"},
+     *      summary="Obtenir la liste des secteurs",
+     *      description="Récupère la liste de toutes les secteurs non supprimées.",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Liste des secteurs récupérée avec succès",
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
      */
     public function index()
     {

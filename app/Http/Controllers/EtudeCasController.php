@@ -6,83 +6,50 @@ use App\Models\EtudeCas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
+use OpenApi\Annotations as OA;
+/**
+ * @OA\Tag(
+ *     name="EtudeCas",
+ *     description="Endpoints pour la gestion des etudes de cas"
+ * )
+ */
 
 class EtudeCasController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Post(
+     *      path="/api/etude-cas/create/{id}",
+     *      operationId="createEtudeCas",
+     *      tags={"EtudeCas"},
+     *      summary="Ajouter une nouvelle étude de cas",
+     *      description="Ajoute une nouvelle étude de cas avec les détails fournis",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID du secteur",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="contenu", type="string"),
+     *              @OA\Property(property="image", type="string"),
+     *              @OA\Property(property="secteur_id", type="integer")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Etude de cas ajoutée avec succès"
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
      */
-    public function index()
+    public function create(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
-
-        public function create(Request $request)
-        {
-
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('images', $imageName, 'public');
-            }
-
-            $etudeCas=$request->validate([
-
-                'contenu'=>'required',
-                'image'=>'required',
-
-            ]);
-            $etudeCas =new EtudeCas ($etudeCas);
-           $etudeCas->contenu=$request->contenu;
-           $etudeCas->image=$imagePath;
-           $etudeCas->user_id=FacadesAuth::user()->id;
-           $etudeCas->secteur_id=$request->secteur_id;
-
-
-            $etudeCas->save();
-
-            return response()->json(['message' => 'etudeCas ajouter avec succée', 'etudeCas' => $etudeCas], 200);
-
-
-        }
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(EtudeCas $etudeCas)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EtudeCas $etudeCas)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
-
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -90,40 +57,127 @@ class EtudeCasController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
+        $etudeCas=$request->validate([
+            'contenu'=>'required',
+            'image'=>'required',
+        ]);
 
-        $etudeCas = EtudeCas::find($request->id);
-        // dd($etudeCas);
+        $etudeCas = new EtudeCas($etudeCas);
+        $etudeCas->contenu = $request->contenu;
+        $etudeCas->image = $imagePath;
+        $etudeCas->user_id = FacadesAuth::user()->id;
+        $etudeCas->secteur_id = $request->secteur_id;
 
-        $etudeCas->contenu=$request->contenu;
-        $etudeCas->image=$imagePath;
-        $etudeCas->user_id=FacadesAuth::user()->id;
-        $etudeCas->secteur_id=$request->secteur_id;
         $etudeCas->save();
 
-        return response()->json(['message' => 'etude cas modifer avec succée', 'etudecas' => $etudeCas], 200);
+        return response()->json(['message' => 'etudeCas ajoutée avec succès', 'etudeCas' => $etudeCas], 200);
     }
+
     /**
-     * Remove the specified resource from storage.
+     * @OA\Post(
+     *      path="/api/etude-cas/update_etudeCas",
+     *      operationId="updateEtudeCas",
+     *      tags={"EtudeCas"},
+     *      summary="Modifier une étude de cas existante",
+     *      description="Modifie les détails d'une étude de cas existante avec les données fournies",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="id", type="integer"),
+     *              @OA\Property(property="contenu", type="string"),
+     *              @OA\Property(property="image", type="string"),
+     *              @OA\Property(property="secteur_id", type="integer")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Etude de cas modifiée avec succès")
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
      */
-    public function archive(Request $request){
+    public function update(Request $request)
+    {
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
 
         $etudeCas = EtudeCas::find($request->id);
-
-        $etudeCas->is_deleted=true;
-
+        $etudeCas->contenu = $request->contenu;
+        $etudeCas->image = $imagePath;
+        $etudeCas->user_id = FacadesAuth::user()->id;
+        $etudeCas->secteur_id = $request->secteur_id;
         $etudeCas->save();
 
-        return response()->json(['message' => 'etude cas archiver avec succée', 'etudecas' => $etudeCas], 200);
+        return response()->json(['message' => 'etude cas modifiée avec succès', 'etudecas' => $etudeCas], 200);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/etude-cas/archive/{id}",
+     *      operationId="archiveEtudeCas",
+     *      tags={"EtudeCas"},
+     *      summary="Archiver une étude de cas",
+     *      description="Archive une étude de cas spécifique",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID de l'étude de cas",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Etude de cas archivée avec succès",
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
+    public function archive(Request $request)
+    {
+        $etudeCas = EtudeCas::find($request->id);
+        $etudeCas->is_deleted = true;
+        $etudeCas->save();
 
+        return response()->json(['message' => 'etude cas archivée avec succès', 'etudecas' => $etudeCas], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/api/etude-cas/delete/{id}",
+     *      operationId="deleteEtudeCas",
+     *      tags={"EtudeCas"},
+     *      summary="Supprimer une étude de cas",
+     *      description="Supprime une étude de cas spécifique",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID de l'étude de cas",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Etude de cas supprimée avec succès",
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
     public function delete(Request $request)
     {
         $etudeCas = EtudeCas::find($request->id);
-
-
         $etudeCas->delete();
 
-        return response()->json(['message' => 'etude cas supprimer avec succée', 'etudecas' => $etudeCas], 200);
+        return response()->json(['message' => 'etude cas supprimée avec succès', 'etudecas' => $etudeCas], 200);
     }
 }

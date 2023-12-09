@@ -8,7 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
-
+use OpenApi\Annotations as OA;
+ /**
+     * @OA\Tag(
+     *     name="Utilisateurs",
+     *     description="Endpoints pour la gestion des utilisateurs."
+     * )
+     */
 class UserController extends Controller
 {
     public function ajouterRole(Request $request)

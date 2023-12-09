@@ -1,0 +1,1546 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api Kaay entreprendre",
+        "description": "Cet api va nous permettre de faire communiquer la partie front et la partie back de notre plateforme",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/commentaires": {
+            "get": {
+                "tags": [
+                    "Commentaires"
+                ],
+                "summary": "Lister tous les commentaires d'un forum",
+                "operationId": "ee4d918480e497cee636424744ecfebb",
+                "responses": {
+                    "200": {
+                        "description": "Liste de commentaires"
+                    }
+                }
+            }
+        },
+        "/api/commentaire": {
+            "post": {
+                "tags": [
+                    "Commentaires"
+                ],
+                "summary": "Lister un commentaire d'un forum",
+                "operationId": "ce316673403fb864ec9b6a97e81af53e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Détails du commentaire"
+                    }
+                }
+            }
+        },
+        "/api/commentaire/create": {
+            "post": {
+                "tags": [
+                    "Commentaires"
+                ],
+                "summary": "Ajouter un commentaire à un forum",
+                "operationId": "4350d9aff5913143561dfac9f41cd741",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "contenu": {
+                                        "type": "string",
+                                        "example": "Contenu du commentaire"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Le commentaire est bien ajouté"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                }
+            }
+        },
+        "/api/commentaire/edit": {
+            "post": {
+                "tags": [
+                    "Commentaires"
+                ],
+                "summary": "Modifier un commentaire d'un forum",
+                "operationId": "1c089d0190e1d533568040e5ce06b74e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "contenu": {
+                                        "type": "string",
+                                        "example": "Nouveau contenu du commentaire"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Le commentaire est bien modifié"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                }
+            }
+        },
+        "/api/commentaire/archive": {
+            "post": {
+                "tags": [
+                    "Commentaires"
+                ],
+                "summary": "Archiver un commentaire de forum",
+                "operationId": "9df982e2ee36e35716538192fedf7a5b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Le commentaire est bien archivé"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                }
+            }
+        },
+        "/api/commentaire/delete": {
+            "post": {
+                "tags": [
+                    "Commentaires"
+                ],
+                "summary": "Supprimer un commentaire d'un forum",
+                "operationId": "03d04fad5791d252a4200ac9f7238190",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Le commentaire est bien supprimé"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                }
+            }
+        },
+        "/api/etude-cas/create/{id}": {
+            "post": {
+                "tags": [
+                    "EtudeCas"
+                ],
+                "summary": "Ajouter une nouvelle étude de cas",
+                "description": "Ajoute une nouvelle étude de cas avec les détails fournis",
+                "operationId": "createEtudeCas",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du secteur",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "contenu": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    },
+                                    "secteur_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Etude de cas ajoutée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/etude-cas/update_etudeCas": {
+            "post": {
+                "tags": [
+                    "EtudeCas"
+                ],
+                "summary": "Modifier une étude de cas existante",
+                "description": "Modifie les détails d'une étude de cas existante avec les données fournies",
+                "operationId": "updateEtudeCas",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "contenu": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    },
+                                    "secteur_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Etude de cas modifiée avec succès"
+                    }
+                }
+            }
+        },
+        "/api/etude-cas/archive/{id}": {
+            "post": {
+                "tags": [
+                    "EtudeCas"
+                ],
+                "summary": "Archiver une étude de cas",
+                "description": "Archive une étude de cas spécifique",
+                "operationId": "archiveEtudeCas",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'étude de cas",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Etude de cas archivée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/etude-cas/delete/{id}": {
+            "post": {
+                "tags": [
+                    "EtudeCas"
+                ],
+                "summary": "Supprimer une étude de cas",
+                "description": "Supprime une étude de cas spécifique",
+                "operationId": "deleteEtudeCas",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'étude de cas",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Etude de cas supprimée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/events": {
+            "get": {
+                "tags": [
+                    "Evenements"
+                ],
+                "summary": "Récupérer la liste des événements",
+                "description": "Récupère la liste de tous les événements non supprimés",
+                "operationId": "getEvents",
+                "responses": {
+                    "200": {
+                        "description": "Liste des événements récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Evenements"
+                ],
+                "summary": "Créer un nouvel événement",
+                "description": "Crée un nouvel événement avec les détails fournis",
+                "operationId": "createEvent",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nomEvenement": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "en ligne",
+                                            "presentiel"
+                                        ]
+                                    },
+                                    "dateEvenement": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "lieuEvenement": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "secteur_id": {
+                                        "type": "integer"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Événement créé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": [
+                    "Evenements"
+                ],
+                "summary": "Récupérer un événement par ID",
+                "description": "Récupère les détails d'un événement spécifique en fonction de l'ID fourni",
+                "operationId": "getEventById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'événement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de l'événement récupérés avec succès"
+                    },
+                    "404": {
+                        "description": "Événement non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Evenements"
+                ],
+                "summary": "Mettre à jour un événement existant",
+                "description": "Met à jour les détails d'un événement existant en fonction de l'ID fourni",
+                "operationId": "updateEvent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'événement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nomEvenement": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "en ligne",
+                                            "presentiel"
+                                        ]
+                                    },
+                                    "dateEvenement": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "lieuEvenement": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "secteur_id": {
+                                        "type": "integer"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Événement mis à jour avec succès"
+                    },
+                    "404": {
+                        "description": "Événement non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Evenements"
+                ],
+                "summary": "Supprimer un événement",
+                "description": "Supprime un événement en fonction de l'ID fourni",
+                "operationId": "deleteEvent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'événement",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Événement supprimé avec succès"
+                    },
+                    "404": {
+                        "description": "Événement non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/forums": {
+            "get": {
+                "tags": [
+                    "Forums"
+                ],
+                "summary": "Récupérer la liste des forums",
+                "description": "Récupère la liste de tous les forums non supprimés",
+                "operationId": "getForums",
+                "responses": {
+                    "200": {
+                        "description": "Liste des forums récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/forum": {
+            "post": {
+                "tags": [
+                    "Forums"
+                ],
+                "summary": "Afficher le forum sélectionné",
+                "description": "Affiche les détails du forum spécifique en fonction de l'ID fourni",
+                "operationId": "getForum",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Détails du forum récupérés avec succès"
+                    },
+                    "404": {
+                        "description": "Forum non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/forum/create": {
+            "post": {
+                "tags": [
+                    "Forums"
+                ],
+                "summary": "Ajouter un nouveau forum",
+                "description": "Ajoute un nouveau forum avec les détails fournis",
+                "operationId": "createForum",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nomRubrique": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Forum créé avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/forum/update": {
+            "post": {
+                "tags": [
+                    "Forums"
+                ],
+                "summary": "Mettre à jour un forum existant",
+                "description": "Met à jour les détails d'un forum existant en fonction de l'ID fourni",
+                "operationId": "updateForum",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "nomRubrique": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Forum mis à jour avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/forum/archive": {
+            "post": {
+                "tags": [
+                    "Forums"
+                ],
+                "summary": "Archiver un forum",
+                "description": "Archive un forum en fonction de l'ID fourni",
+                "operationId": "archiveForum",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Forum archivé avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/forum/destroy": {
+            "post": {
+                "tags": [
+                    "Forums"
+                ],
+                "summary": "Supprimer un forum",
+                "description": "Supprime un forum en fonction de l'ID fourni",
+                "operationId": "destroyForum",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Forum supprimé avec succès"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/guides": {
+            "get": {
+                "tags": [
+                    "Guides"
+                ],
+                "summary": "Récupérer la liste des guides",
+                "description": "Récupère la liste de tous les guides",
+                "operationId": "getGuides",
+                "responses": {
+                    "200": {
+                        "description": "Liste des guides récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/guide/create": {
+            "post": {
+                "tags": [
+                    "Guides"
+                ],
+                "summary": "Ajouter un nouveau guide",
+                "description": "Ajoute un nouveau guide avec les détails fournis",
+                "operationId": "createGuide",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "contenu": {
+                                        "type": "string"
+                                    },
+                                    "phases": {
+                                        "type": "string"
+                                    },
+                                    "reaction": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Guide créé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/guide/update/{id}": {
+            "post": {
+                "tags": [
+                    "Guides"
+                ],
+                "summary": "Mettre à jour un guide existant",
+                "description": "Met à jour les détails d'un guide existant en fonction de l'ID fourni",
+                "operationId": "updateGuide",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du guide à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "contenu": {
+                                        "type": "string"
+                                    },
+                                    "phases": {
+                                        "type": "string"
+                                    },
+                                    "reaction": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Guide mis à jour avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/guide/archiver_guide/{id}": {
+            "post": {
+                "tags": [
+                    "Guides"
+                ],
+                "summary": "Archiver un guide",
+                "description": "Archive un guide en fonction de l'ID fourni",
+                "operationId": "archiveGuide",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du guide à archiver",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Guide archivé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/reponses": {
+            "get": {
+                "tags": [
+                    "Réponses"
+                ],
+                "summary": "Récupérer la liste des réponses",
+                "description": "Récupère la liste de toutes les réponses",
+                "operationId": "getReponses",
+                "responses": {
+                    "200": {
+                        "description": "Liste des réponses récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/reponse/create": {
+            "post": {
+                "tags": [
+                    "Réponses"
+                ],
+                "summary": "Ajouter une nouvelle réponse",
+                "description": "Ajoute une nouvelle réponse avec les détails fournis",
+                "operationId": "createReponse",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "contenu": {
+                                        "type": "string"
+                                    },
+                                    "commentaire_id": {
+                                        "type": "numeric"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Réponse ajoutée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/reponse/edit": {
+            "post": {
+                "tags": [
+                    "Réponses"
+                ],
+                "summary": "Mettre à jour une réponse existante",
+                "description": "Met à jour les détails d'une réponse existante",
+                "operationId": "updateReponse",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "contenu": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "numeric"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Réponse mise à jour avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/reponse/archive": {
+            "post": {
+                "tags": [
+                    "Réponses"
+                ],
+                "summary": "Archiver une réponse",
+                "description": "Archive une réponse en fonction de l'ID fourni",
+                "operationId": "archiveReponse",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "numeric"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Réponse archivée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/reponse/delete": {
+            "post": {
+                "tags": [
+                    "Réponses"
+                ],
+                "summary": "Supprimer une réponse",
+                "description": "Supprime une réponse en fonction de l'ID fourni",
+                "operationId": "destroyReponse",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "numeric"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Réponse supprimée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ressources": {
+            "get": {
+                "tags": [
+                    "Ressources"
+                ],
+                "summary": "Obtenir la liste des ressources",
+                "description": "Récupère la liste de toutes les ressources non supprimées.",
+                "operationId": "getRessources",
+                "responses": {
+                    "200": {
+                        "description": "Liste des ressources récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ajouter-ressource": {
+            "post": {
+                "tags": [
+                    "Ressources"
+                ],
+                "summary": "Ajouter une nouvelle ressource",
+                "description": "Ajoute une nouvelle ressource avec les détails fournis.",
+                "operationId": "ajouterRessource",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "lien": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ressource ajoutée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ressources/{id}": {
+            "post": {
+                "tags": [
+                    "Ressources"
+                ],
+                "summary": "Modifier une ressource existante",
+                "description": "Modifie les détails d'une ressource existante en fonction de l'ID fourni.",
+                "operationId": "modifierRessource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la ressource",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "lien": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ressource modifiée avec succès"
+                    },
+                    "404": {
+                        "description": "Ressource non trouvée"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Ressources"
+                ],
+                "summary": "Supprimer une ressource",
+                "description": "Supprime une ressource en fonction de l'ID fourni.",
+                "operationId": "supprimerRessource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la ressource",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ressource supprimée avec succès"
+                    },
+                    "404": {
+                        "description": "Ressource non trouvée"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ressource": {
+            "get": {
+                "tags": [
+                    "Ressources"
+                ],
+                "summary": "Afficher une ressource",
+                "description": "Affiche les détails d'une ressource en fonction de l'ID fourni.",
+                "operationId": "getRessource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID de la ressource",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la ressource récupérés avec succès"
+                    },
+                    "404": {
+                        "description": "Ressource non trouvée"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ressource/archive": {
+            "post": {
+                "tags": [
+                    "Ressources"
+                ],
+                "summary": "Archiver une ressource",
+                "description": "Archive une ressource en fonction de l'ID fourni.",
+                "operationId": "archiverRessource",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ressource archivée avec succès"
+                    },
+                    "404": {
+                        "description": "Ressource non trouvée"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Obtenir la liste des rôles",
+                "description": "Récupère la liste de tous les rôles.",
+                "operationId": "getRoles",
+                "responses": {
+                    "200": {
+                        "description": "Liste des rôles récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Créer un nouveau rôle",
+                "description": "Crée un nouveau rôle avec les détails fournis.",
+                "operationId": "createRole",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rôle créé avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/roles/{role}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Obtenir un rôle par ID",
+                "description": "Récupère les détails d'un rôle spécifique en fonction de l'ID fourni.",
+                "operationId": "getRoleById",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "description": "ID du rôle",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails du rôle récupérés avec succès"
+                    },
+                    "404": {
+                        "description": "Rôle non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Mettre à jour un rôle existant",
+                "description": "Met à jour les détails d'un rôle existant en fonction de l'ID fourni.",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "description": "ID du rôle",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rôle mis à jour avec succès"
+                    },
+                    "404": {
+                        "description": "Rôle non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Supprimer un rôle",
+                "description": "Supprime un rôle en fonction de l'ID fourni.",
+                "operationId": "deleteRole",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "description": "ID du rôle",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rôle supprimé avec succès"
+                    },
+                    "404": {
+                        "description": "Rôle non trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/Secteurs": {
+            "get": {
+                "tags": [
+                    "Secteurs"
+                ],
+                "summary": "Obtenir la liste des secteurs",
+                "description": "Récupère la liste de toutes les secteurs non supprimées.",
+                "operationId": "getSecteurs",
+                "responses": {
+                    "200": {
+                        "description": "Liste des secteurs récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Commentaires",
+            "description": "Endpoints pour la gestion des commentaires du forum"
+        },
+        {
+            "name": "EtudeCas",
+            "description": "Endpoints pour la gestion des etudes de cas"
+        },
+        {
+            "name": "Evenements",
+            "description": "Endpoints pour la gestion des evenements "
+        },
+        {
+            "name": "Forums",
+            "description": "Endpoints pour la gestion des forums "
+        },
+        {
+            "name": "Guides",
+            "description": "Endpoints pour la gestion des guides "
+        },
+        {
+            "name": "Réponses",
+            "description": "Endpoints pour la gestion des réponses "
+        },
+        {
+            "name": "Ressources",
+            "description": "Endpoints pour la gestion des ressources "
+        },
+        {
+            "name": "Roles",
+            "description": "Endpoints pour la gestion des rôles."
+        },
+        {
+            "name": "Secteurs",
+            "description": "Endpoints pour la gestion des secteurs."
+        },
+        {
+            "name": "Utilisateurs",
+            "description": "Endpoints pour la gestion des utilisateurs."
+        }
+    ]
+}
