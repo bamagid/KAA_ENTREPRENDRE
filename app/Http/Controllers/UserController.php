@@ -7,14 +7,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
- /**
-     * @OA\Tag(
-     *     name="Utilisateurs",
-     *     description="Endpoints pour la gestion des utilisateurs."
-     * )
-     */
+
+/**
+ * @OA\Tag(
+ *     name="Utilisateurs",
+ *     description="Endpoints pour la gestion des utilisateurs."
+ * )
+ */
 class UserController extends Controller
 {
     public function ajouterRole(Request $request)
@@ -27,7 +29,7 @@ class UserController extends Controller
             'nomRole' => $request->nomRole,
         ]);
 
-        return response()->json(['message' => 'Rôle ajouté avec succès','role'=>$role], 201);
+        return response()->json(['message' => 'Rôle ajouté avec succès', 'role' => $role], 201);
     }
 
 
@@ -56,7 +58,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
-            'region'=> $request->region,
+            'region' => $request->region,
             'role_id' => $roleEntrepreneurNovice->id,
             'statut' => $request->statut,
             'image' => $imagePath,
@@ -238,19 +240,19 @@ class UserController extends Controller
     {
         $entrepreneurExperimente = auth()->user();
 
-    $request->validate([
-        'nom' => 'required|string',
-        'prenom' => 'required|string',
-        'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
-        'password' => 'nullable|min:6',
-        'adresse' => 'required|string',
-        'region' => 'required|string',
-        'statut' => 'required|string',
-        'experience' => 'required|string',
-        'activite' => 'required|string',
-        'realisation' => 'required|string',
+        $request->validate([
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
+            'password' => 'nullable|min:6',
+            'adresse' => 'required|string',
+            'region' => 'required|string',
+            'statut' => 'required|string',
+            'experience' => 'required|string',
+            'activite' => 'required|string',
+            'realisation' => 'required|string',
 
-    ]);
+        ]);
 
         $imagePath = $entrepreneurExperimente->image;
 
@@ -260,20 +262,20 @@ class UserController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-    $entrepreneurExperimente->update([
-        'nom' => $request->nom,
-        'prenom' => $request->prenom,
-        'email' => $request->email,
-        'password' => $request->password ? Hash::make($request->password) : $entrepreneurExperimente->password,
-        'adresse' => $request->adresse,
-        'region' => $request->region,
-        'statut' => $request->statut,
-        'experience' => $request->experience,
-        'activite' => $request->activite,
-        'realisation' => $request->realisation,
-        'image' => $imagePath,
+        $entrepreneurExperimente->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $entrepreneurExperimente->password,
+            'adresse' => $request->adresse,
+            'region' => $request->region,
+            'statut' => $request->statut,
+            'experience' => $request->experience,
+            'activite' => $request->activite,
+            'realisation' => $request->realisation,
+            'image' => $imagePath,
 
-    ]);
+        ]);
 
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
@@ -284,17 +286,17 @@ class UserController extends Controller
 
         $admin = auth()->user();
 
-    $request->validate([
-        'nom' => 'required|string',
-        'prenom' => 'required|string',
-        'email' => 'required|email|unique:users,email,' . $admin->id,
-        'password' => 'nullable|min:6',
-        'adresse' => 'required|string',
-        'region' => 'required|string',
-        'statut' => 'required|string',
+        $request->validate([
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $admin->id,
+            'password' => 'nullable|min:6',
+            'adresse' => 'required|string',
+            'region' => 'required|string',
+            'statut' => 'required|string',
 
 
-    ]);
+        ]);
 
         $imagePath = $admin->image;
 
@@ -304,18 +306,18 @@ class UserController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-    $admin->update([
-        'nom' => $request->nom,
-        'prenom' => $request->prenom,
-        'email' => $request->email,
-        'password' => $request->password ? Hash::make($request->password) : $admin->password,
-        'adresse' => $request->adresse,
-        'region' => $request->region,
+        $admin->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $admin->password,
+            'adresse' => $request->adresse,
+            'region' => $request->region,
 
 
-        'image' => $imagePath,
+            'image' => $imagePath,
 
-    ]);
+        ]);
 
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
@@ -334,5 +336,29 @@ class UserController extends Controller
         $status = $user->statut === 'actif' ? 'débloqué' : 'bloqué';
 
         return response()->json(['message' => "Compte $status avec succès"], 200);
+    }
+
+
+
+
+    public function modifierMotDePasse(Request $request)
+    {
+        $request->validate([
+            'ancien_password' => 'required',
+            'nouveau_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+        ]);
+
+        $user = Auth::user();
+
+        // Vérifiez que l'ancien mot de passe est correct
+        if (!Hash::check($request->ancien_password, $user->password)) {
+            return response()->json(['message' => 'Mot de passe actuel incorrect'], 401);
+        }
+
+        // Mettez à jour le mot de passe avec le nouveau
+        $user->password = Hash::make($request->nouveau_password);
+        $user->save();
+
+        return response()->json(['message' => 'Mot de passe modifié avec succès'], 200);
     }
 }
