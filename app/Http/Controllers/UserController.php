@@ -20,7 +20,7 @@ use OpenApi\Annotations as OA;
 class UserController extends Controller
 {
 
-     /**
+    /**
      * @OA\Post(
      *      path="/api/ajouter-role",
      *      operationId="createRole",
@@ -687,6 +687,36 @@ class UserController extends Controller
         return response()->json(['message' => 'Mot de passe modifié avec succès'], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/verifMail",
+     *     summary="Vérifier si un email existe",
+     *     tags={"Utilisateurs"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="L'email existe.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="exists", type="boolean", example=true),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="L'email n'existe pas.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="exists", type="boolean", example=false),
+     *         ),
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="string", example="test@example.com"),
+     *         )
+     *     ),
+     * )
+     */
+
     public function verifMail(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -699,6 +729,36 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/resetPassword/{user}",
+     *     summary="Réinitialisation du mot de passe",
+     *     tags={"Utilisateurs"},
+     *     @OA\Parameter(
+     *         name="user",
+     *         in="path",
+     *         required=true,
+     *         description="ID de l'utilisateur",
+     *         @OA\Schema(type="integer", format="int64"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mot de passe réinitialisé avec succès.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Mot de passe réinitialisé avec succès."),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Utilisateur non trouvé.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Utilisateur non trouvé."),
+     *         ),
+     *     ),
+     * )
+     */
     public function resetPassword(Request $request, User $user)
     {
         $user->password = $request->password;
