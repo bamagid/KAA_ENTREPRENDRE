@@ -25,6 +25,25 @@ use App\Http\Controllers\SearchController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+//ajouter un utilisateur 'entrepreneur novice'
+Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
+//ajouter un utilisateur 'entrepreneur experimente'
+Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
+//ajouter un utilisateur 'admin'
+Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
+//se connecter
+Route::post('login', [UserController::class, 'login']);
+//verifier si un email existe
+Route::post('verifMail', [UserController::class, 'verifMail']);
+//reinitialisation du mot de passe
+Route::post('resetPassword/{user}', [UserController::class, 'resetPassword']);
+//afficher guide
+Route::get('/index', [GuideController::class, 'index']);
+//afficher phases
+Route::get('/phases', [PhaseController::class, 'index']);
+//afficher une phase
+Route::get('/phase/{id}', [PhaseController::class, 'show']);
 //lister les forums
 Route::get('/forums', [ForumController::class, 'index']);
 Route::get('/events', [EvenementController::class, 'index']);
@@ -39,10 +58,10 @@ Route::post('/reponse', [ReponseController::class, 'show']);
 //afficher le forum selectionne
 Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
 Route::get('/events/{id}', [EvenementController::class, 'show']);
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('auth:api')->group(function () {
+Route::group(function () {
     /* gestion des commentaires du forums */
     //ajouter un commentaire a un forum
     Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('commentaire.add');
@@ -51,30 +70,42 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/commentaire/edit', [CommentaireController::class, 'update'])->name('commentaire.edit');
     //archiver un commentaire de forum
     Route::post('/commentaire/archive', [CommentaireController::class, 'archiveCommentaire'])->name('commentaire.archive');
-
-
     /* gestion des reponses du forums */
     //ajouter une reponse a un forum
     Route::post('/reponse/create', [ReponseController::class, 'store'])->name('reponse.add');
-
     //modifier une reponse d'un forum
     Route::post('/reponse/edit', [ReponseController::class, 'update'])->name('reponse.edit');
     //archiver une reponse de forum
     Route::post('/reponse/archive', [ReponseController::class, 'archivereponse'])->name('reponse.archive');
-
-
-
     /* Gestion des utilisatueurs  */
     //modification du profile d'un entrepreneur novice
     Route::post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
     //modification du profile d'un entrepreneur eperimenté
     Route::post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
+    //modifier le mot de passe d'un utilisateur
+    Route::post('/modifier-mot-de-passe', [UserController::class, 'modifierMotDePasse']);
+    //reinitialiser
+    Route::post('/reinitialiser-mot-de-passe', [UserController::class, 'reinitialiserMotDePasse']);
+    Route::post('login', [UserController::class, 'login']);
+    //se deconnecter
+    Route::get('deconnecter', [UserController::class, 'deconnect']);
 });
 
-//blockage d'un utilisateur par l'admin
 Route::middleware(['auth:api', 'admin'])->group(function () {
+    /** Gestion des phases d'un guide */
+    //ajouter phase
+    Route::post('/create_phase', [PhaseController::class, 'create']);
+    //modifier le phase
+    Route::post('/update_phase/{id}', [PhaseController::class, 'update']);
+    //archiver un phase
+    Route::post('/archiver_phase/{id}', [phaseController::class, 'archiver_phase']);
+    //ajouter guide
+    Route::post('/create_guide', [GuideController::class, 'create']);
+    //modifier le guide
+    Route::post('/update/{id}', [GuideController::class, 'update']);
+    //archiver un guide
+    Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
     /* gestion des forums*/
-
     //creer un forum
     Route::post('/forum/create', [ForumController::class, 'store'])->name('forum.create');
     //supprimer un forum
@@ -83,20 +114,20 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::post('forum/edit', [ForumController::class, 'update'])->name('forum.edit');
     //archiver une rubrique d'un forum
     Route::post('/forum/archiveRubrique', [ForumController::class, 'archiveRubrique'])->name('forum.archiveRubrique');
-
-
     //supprimer un commentaire d'un forum
     Route::post('/commentaire/delete', [CommentaireController::class, 'destroy'])->name('commentaire.delete');
-
     //supprimer une reponse d'un forum
     Route::post('/reponse/delete', [ReponseController::class, 'destroy'])->name('reponse.delete');
-
     //modification du profile d'un admin
     Route::post('/admin/profile', [UserController::class, 'UpdateAdmin']);
-
     //ajouter un role a la table role
     Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
-
+    //blockage d'un utilisateur par l'admin
+    Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+    //ajouter un role
+    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
+    //modifier le profile d'un admin 
+    Route::post('/admin/profile', [UserController::class, 'UpdateAdmin']);
     /* Gestion des ressources */
     //ajouter une ressource
     Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
@@ -112,10 +143,8 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::post('/ressource/archive', [RessourceController::class, 'archiveressource']);
 
     Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
-
     /* Gestion des evenements */
     //route pour evenement
-
     Route::get('/events', [EvenementController::class, 'index']);
     Route::post('/events_add', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
@@ -127,56 +156,3 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
 Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
     // mes routes quand lutilisateur est bloquer pour lui interdire certaine partie du site
 });
-//ajouter un utilisateur 'entrepreneur novice'
-Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
-//ajouter un utilisateur 'entrepreneur experimente'
-Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
-//ajouter un utilisateur 'admin'
-Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
-//se connecter
-Route::post('login', [UserController::class, 'login']);
-//se deconnecter
-Route::get('deconnecter', [UserController::class, 'deconnect']);
-
-
-
-
-//ajouter guide
-Route::post('/create_guide', [GuideController::class, 'create']);
-//afficher guide
-Route::get('/index', [GuideController::class, 'index']);
-//modifier le guide
-Route::post('/update/{id}', [GuideController::class, 'update']);
-//archiver un guide
-Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
-
-/** Gestion des phases d'un guide */
-//ajouter phase
-Route::post('/create_phase', [PhaseController::class, 'create']);
-//afficher phases
-Route::get('/phases', [PhaseController::class, 'index']);
-//afficher une phase
-Route::get('/phase/{id}', [PhaseController::class, 'show']);
-//modifier le phase
-Route::post('/update_phase/{id}', [PhaseController::class, 'update']);
-//archiver un phase
-Route::post('/archiver_phase/{id}', [phaseController::class, 'archiver_phase']);
-Route::post('/modifier-mot-de-passe', [UserController::class, 'modifierMotDePasse'])->middleware('auth:api');
-Route::post('/reinitialiser-mot-de-passe', [UserController::class, 'reinitialiserMotDePasse'])->middleware('auth:api');
-Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
-Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
-Route::middleware('auth:api')->post('/admin/profile', [UserController::class, 'UpdateAdmin']);
-Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
-Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
-
-Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
-    // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
-});
-
-Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
-Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
-Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
-Route::post('login', [UserController::class, 'login']);
-
-Route::post('verifMail', [UserController::class, 'verifMail']);
-Route::post('resetPassword/{user}', [UserController::class, 'resetPassword']);
