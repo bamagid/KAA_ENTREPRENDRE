@@ -6,15 +6,16 @@ use App\Models\Secteur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Annotations as OA;
- /**
-     * @OA\Tag(
-     *     name="Secteurs",
-     *     description="Endpoints pour la gestion des secteurs."
-     * )
-     */
+
+/**
+ * @OA\Tag(
+ *     name="Secteurs",
+ *     description="Endpoints pour la gestion des secteurs."
+ * )
+ */
 class SecteurController extends Controller
 {
-     
+
 
     /**
      * @OA\Get(
@@ -45,7 +46,7 @@ class SecteurController extends Controller
         //
     }
 
-   /**
+    /**
      * @OA\Post(
      *      path="/api/secteur/create",
      *      operationId="createsecteur",
@@ -68,12 +69,15 @@ class SecteurController extends Controller
      *          description="Non autorisé",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
     public function store(Request $request)
     {
+        if (!auth()->check() || auth()->user()->role_id !== 1) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
 
         $request->validate([
             'nomSecteur' => 'required|string',
@@ -95,7 +99,7 @@ class SecteurController extends Controller
         //
     }
 
-     /**
+    /**
      * @OA\Post(
      *      path="/api/secteur/destroy",
      *      operationId="destroysecteur",
@@ -118,15 +122,15 @@ class SecteurController extends Controller
      *          description="Non autorisé",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *         {"Bearer": {}}
      *      }
      * )
      */
     public function destroy($id)
     {
 
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        if (!auth()->check() || auth()->user()->role_id !==1 ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
         }
 
 
@@ -159,5 +163,4 @@ class SecteurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ressource;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
+
 /**
  * @OA\Tag(
  *     name="Ressources",
@@ -36,7 +37,7 @@ class RessourceController extends Controller
         $ressources = Ressource::where('is_deleted', 0)->get();
         return $ressources;
     }
-      /**
+    /**
      * @OA\Post(
      *      path="/api/ajouter-ressource",
      *      operationId="ajouterRessource",
@@ -58,7 +59,7 @@ class RessourceController extends Controller
      *          description="Ressource ajoutée avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -103,7 +104,7 @@ class RessourceController extends Controller
         return response()->json(['message' => 'Ressource ajoutée avec succès'], 201);
     }
 
-/**
+    /**
      * @OA\Post(
      *      path="/api/ressources/{id}",
      *      operationId="modifierRessource",
@@ -136,7 +137,7 @@ class RessourceController extends Controller
      *          description="Ressource non trouvée",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -161,7 +162,7 @@ class RessourceController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
         $ressource->fill([
@@ -170,7 +171,7 @@ class RessourceController extends Controller
             'image' =>  $imagePath,
             'lien' => $request->lien,
         ]);
-    
+
         return response()->json(['message' => 'Ressource modifiée avec succès'], 200);
     }
 
@@ -181,7 +182,7 @@ class RessourceController extends Controller
     {
         //
     }
-     /**
+    /**
      * @OA\Delete(
      *      path="/api/ressources/{id}",
      *      operationId="supprimerRessource",
@@ -204,7 +205,7 @@ class RessourceController extends Controller
      *          description="Ressource non trouvée",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -264,7 +265,7 @@ class RessourceController extends Controller
      */
     public function show(Request $request)
     {
-        $ressource=Ressource::findOrFail($request->id);
+        $ressource = Ressource::findOrFail($request->id);
         return $ressource;
     }
 
@@ -275,7 +276,7 @@ class RessourceController extends Controller
     {
         //
     }
-  /**
+    /**
      * @OA\Post(
      *      path="/api/ressource/archive",
      *      operationId="archiverRessource",
@@ -298,16 +299,25 @@ class RessourceController extends Controller
      *          description="Ressource non trouvée",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
     public function archive(Request $request)
     {
-        $ressource=Ressource::findOrFail($request->id);
-        $ressource->is_deleted=true;
-        $ressource->save();
-        return $ressource;
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
+        $ressource = Ressource::findOrFail($request->id);
+        if (auth()->user()->id !== $ressource->user_id) {
+            $ressource->is_deleted = true;
+            $ressource->save();
+            return response()->json([
+                "message"=>"Ressource archivé avec succés",
+                "ressource"=>$ressource
+            ]);
+        }
+      
     }
 
     /**

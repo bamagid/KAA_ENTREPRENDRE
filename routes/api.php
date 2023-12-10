@@ -58,10 +58,25 @@ Route::post('/reponse', [ReponseController::class, 'show']);
 //afficher le forum selectionne
 Route::post('/forum', [ForumController::class, 'show'])->name('forum.show');
 Route::get('/events/{id}', [EvenementController::class, 'show']);
-Route::get('/user', function (Request $request) {
+//souscrire a la newsletter
+Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, 'subscribe']);
+//faire une recherche
+Route::get('/search',[SearchController::class,'search']);
+Route::get('/index_cas', [EtudeCasController::class, 'index']);
+//afficher l'utilisateur connecté
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(function () {
+Route::middleware('auth:api')->group(function () {
+      /**Gestion etudes cas */
+    // ajout cas pour 
+    Route::post('create', [EtudeCasController::class, 'create']);
+    //modifier une etude cas
+    Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
+    //archivier une etude cas
+    Route::post('etude-cas/archive/{id}', [EtudeCasController::class, 'archive']);
+    //supprimer une etude cas
+    Route::post('etude-cas/delete/{id}', [EtudeCasController::class, 'delete']);
     /* gestion des commentaires du forums */
     //ajouter un commentaire a un forum
     Route::post('/commentaire/create', [CommentaireController::class, 'store'])->name('commentaire.add');
@@ -120,8 +135,6 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::post('/reponse/delete', [ReponseController::class, 'destroy'])->name('reponse.delete');
     //modification du profile d'un admin
     Route::post('/admin/profile', [UserController::class, 'UpdateAdmin']);
-    //ajouter un role a la table role
-    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
     //blockage d'un utilisateur par l'admin
     Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
     //ajouter un role

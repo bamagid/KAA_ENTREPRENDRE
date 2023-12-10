@@ -19,6 +19,30 @@ use OpenApi\Annotations as OA;
  */
 class UserController extends Controller
 {
+
+     /**
+     * @OA\Post(
+     *      path="/api/ajouter-role",
+     *      operationId="createRole",
+     *      tags={"Roles"},
+     *      summary="Ajouter un role",
+     *      description="Ajout d'un role par l'admin",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nomRole", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Role ajouté avec succés"
+     *      ),
+     *      security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
     public function ajouterRole(Request $request)
     {
         $request->validate([
@@ -318,7 +342,7 @@ class UserController extends Controller
      *          description="Aucun utilisateur connecté"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *         {"Bearer": {}}
      *      }
      * )
      */
@@ -364,7 +388,7 @@ class UserController extends Controller
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *         {"Bearer": {}}
      *      }
      * )
      */
@@ -440,7 +464,7 @@ class UserController extends Controller
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *         {"Bearer": {}}
      *      }
      * )
      */
@@ -518,7 +542,7 @@ class UserController extends Controller
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -589,7 +613,7 @@ class UserController extends Controller
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -635,7 +659,7 @@ class UserController extends Controller
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */

@@ -80,7 +80,12 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
         "/api/commentaire/edit": {
@@ -117,7 +122,12 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
         "/api/commentaire/archive": {
@@ -150,7 +160,12 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
         "/api/commentaire/delete": {
@@ -183,10 +198,29 @@
                     "401": {
                         "description": "Non autorisé"
                     }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/index_cas": {
+            "get": {
+                "tags": [
+                    "EtudeCas"
+                ],
+                "summary": "Lister tous les  cas de la plateforme",
+                "operationId": "54fba74b48a20251b05bd22e453a6f3a",
+                "responses": {
+                    "200": {
+                        "description": "Liste de tous les cas"
+                    }
                 }
             }
         },
-        "/api/etude-cas/create/{id}": {
+        "/api/etude-cas/create": {
             "post": {
                 "tags": [
                     "EtudeCas"
@@ -233,12 +267,12 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
         },
-        "/api/etude-cas/update_etudeCas": {
+        "/api/update_etudeCas": {
             "post": {
                 "tags": [
                     "EtudeCas"
@@ -303,7 +337,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -334,7 +368,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -410,7 +444,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -514,7 +548,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             },
@@ -546,7 +580,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -823,7 +857,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -878,7 +912,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -909,7 +943,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1001,7 +1035,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1050,7 +1084,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1081,7 +1115,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1139,7 +1173,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1177,7 +1211,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1212,7 +1246,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1247,7 +1281,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1312,7 +1346,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1371,7 +1405,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             },
@@ -1403,7 +1437,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1475,7 +1509,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1491,158 +1525,6 @@
                 "responses": {
                     "200": {
                         "description": "Liste des rôles récupérée avec succès"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Roles"
-                ],
-                "summary": "Créer un nouveau rôle",
-                "description": "Crée un nouveau rôle avec les détails fournis.",
-                "operationId": "createRole",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nom": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Rôle créé avec succès"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/api/roles/{role}": {
-            "get": {
-                "tags": [
-                    "Roles"
-                ],
-                "summary": "Obtenir un rôle par ID",
-                "description": "Récupère les détails d'un rôle spécifique en fonction de l'ID fourni.",
-                "operationId": "getRoleById",
-                "parameters": [
-                    {
-                        "name": "role",
-                        "in": "path",
-                        "description": "ID du rôle",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Détails du rôle récupérés avec succès"
-                    },
-                    "404": {
-                        "description": "Rôle non trouvé"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Roles"
-                ],
-                "summary": "Mettre à jour un rôle existant",
-                "description": "Met à jour les détails d'un rôle existant en fonction de l'ID fourni.",
-                "operationId": "updateRole",
-                "parameters": [
-                    {
-                        "name": "role",
-                        "in": "path",
-                        "description": "ID du rôle",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nom": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Rôle mis à jour avec succès"
-                    },
-                    "404": {
-                        "description": "Rôle non trouvé"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Roles"
-                ],
-                "summary": "Supprimer un rôle",
-                "description": "Supprime un rôle en fonction de l'ID fourni.",
-                "operationId": "deleteRole",
-                "parameters": [
-                    {
-                        "name": "role",
-                        "in": "path",
-                        "description": "ID du rôle",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Rôle supprimé avec succès"
-                    },
-                    "404": {
-                        "description": "Rôle non trouvé"
                     }
                 },
                 "security": [
@@ -1705,7 +1587,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -1743,7 +1625,42 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/ajouter-role": {
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Ajouter un role",
+                "description": "Ajout d'un role par l'admin",
+                "operationId": "createRole",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nomRole": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role ajouté avec succés"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
                     }
                 ]
             }
@@ -1978,7 +1895,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -2037,7 +1954,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -2105,7 +2022,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -2158,7 +2075,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -2192,7 +2109,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }
@@ -2233,7 +2150,7 @@
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer": []
                     }
                 ]
             }

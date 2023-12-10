@@ -67,7 +67,9 @@ class ForumController extends Controller
     {
         $forum = Forum::findOrFail($request->input('id'));
         if ($forum) {
-            return $forum;
+            return response()->json([
+                "Voici le forum"=>$forum
+            ]);
         }
     }
 
@@ -100,6 +102,9 @@ class ForumController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->check() || auth()->user()->role_id !==1 ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate([
             'nomRubrique' => 'required|string|min:3',
         ]);
@@ -148,6 +153,9 @@ class ForumController extends Controller
      */
     public function update(Request $request)
     {
+        if (!auth()->check() || auth()->user()->role_id !==1 ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate([
             'nomRubrique' => 'required|string|min:3',
             'id' => 'required|numeric',
@@ -195,6 +203,9 @@ class ForumController extends Controller
      */
     public function archiveRubrique(Request $request)
     {
+        if (!auth()->check() || auth()->user()->role_id !==1 ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $user = Auth::user();
 
         if ($user->role_id === 1) {
@@ -202,7 +213,10 @@ class ForumController extends Controller
             $forum->is_deleted = true;
             $forum->update();
 
-            return response()->json(['message' => "La rubrique a été bien archivée"]);
+            return response()->json([
+                'message' => "La rubrique a été bien archivée",
+                "forum"=>$forum
+        ]);
         } else {
             return response()->json(['error' => "Vous n'avez pas les droits pour effectuer cette action"], 401);
         }
@@ -237,6 +251,9 @@ class ForumController extends Controller
      */
     public function destroy(Request $request)
     {
+        if (!auth()->check() || auth()->user()->role_id !==1 ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $user = Auth::user();
 
         if ($user->role_id === 1) {

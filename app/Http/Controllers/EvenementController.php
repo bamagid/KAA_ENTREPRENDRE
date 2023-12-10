@@ -94,12 +94,15 @@ class EvenementController extends Controller
      *          description="Événement créé avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $user = auth()->user();
 
         $request->validate([
@@ -168,13 +171,16 @@ class EvenementController extends Controller
      *          response=404,
      *          description="Événement non trouvé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
+     *       security={
+     *          {"Bearer": {}}
      *      }
      * )
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate([
             'nomEvenement' => 'required|string',
             'type' => 'required|in:en ligne,presentiel',
@@ -183,7 +189,9 @@ class EvenementController extends Controller
             'description' => 'required|string',
             'secteur_id' => 'required|exists:secteurs,id',
         ]);
-
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $event = Evenement::find($id);
 
         if (!$event) {
@@ -235,8 +243,8 @@ class EvenementController extends Controller
      *          response=404,
      *          description="Événement non trouvé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
+     *       security={
+     *          {"Bearer": {}}
      *      }
      * )
      */

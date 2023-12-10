@@ -56,7 +56,7 @@ class GuideController extends Controller
      *          description="Guide créé avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -103,7 +103,7 @@ class GuideController extends Controller
      *          description="Guide mis à jour avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *       {"Bearer": {}}
      *      }
      * )
      */
@@ -138,7 +138,7 @@ class GuideController extends Controller
      *          description="Guide archivé avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */

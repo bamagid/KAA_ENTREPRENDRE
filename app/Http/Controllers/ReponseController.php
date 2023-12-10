@@ -32,7 +32,7 @@ class ReponseController extends Controller
     public function index()
     {
         $reponses = Reponse::where('is_deleted', 0)->get();
-        return $reponses;
+        return response()->json(['message'=>"voici toutes les reponses du site",'reponses'=>$reponses]);
     }
 
     /**
@@ -55,7 +55,7 @@ class ReponseController extends Controller
      *          description="Réponse ajoutée avec succès",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -66,13 +66,13 @@ class ReponseController extends Controller
             'commentaire_id' => 'required|numeric',
         ]);
 
-        Reponse::create([
+      $reponse= Reponse::create([
             'contenu' => $request->contenu,
             'user_id' => auth()->user()->id,
             'commentaire_id' => $request->input('commentaire_id'),
         ]);
 
-        return response()->json(['message' => "La réponse a bien été ajoutée"]);
+        return response()->json(['message' => "La réponse a bien été ajoutée",'reponse'=>$reponse]);
     }
 
     /**
@@ -95,7 +95,7 @@ class ReponseController extends Controller
      *          description="Réponse mise à jour avec succès",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -110,7 +110,7 @@ class ReponseController extends Controller
         if ($reponse->user_id === auth()->user()->id) {
             $reponse->contenu = $request->contenu;
             $reponse->update();
-            return response()->json(['message' => "La réponse a bien été modifiée"]);
+            return response()->json(['message' => "La réponse a bien été modifiée",'reponse'=>$reponse]);
         } else {
             return response()->json(['error' => "Vous n'avez pas le droit de modifier cette réponse"], 401);
         }
@@ -135,12 +135,15 @@ class ReponseController extends Controller
      *          description="Réponse archivée avec succès",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
     public function archivereponse(Request $request)
     {
+         if (!auth()->check() ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate([
             'id' => 'required|numeric',
         ]);
@@ -149,7 +152,7 @@ class ReponseController extends Controller
         if ($reponse->user_id === auth()->user()->id) {
             $reponse->is_deleted = true;
             $reponse->update();
-            return response()->json(['message' => "La réponse a bien été archivée"]);
+            return response()->json(['message' => "La réponse a bien été archivée",'reponse'=>$reponse]);
         } else {
             return response()->json(['error' => "Vous n'avez pas le droit de supprimer cette réponse"], 401);
         }
@@ -174,7 +177,7 @@ class ReponseController extends Controller
      *          description="Réponse supprimée avec succès",
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */

@@ -28,7 +28,7 @@ class CommentaireController extends Controller
     public function index()
     {
         $commentaires = Commentaire::where('is_deleted', 0)->get();
-        return $commentaires;
+        return response()->json(["message"=>"voici les commentaires ",'commentaires'=>$commentaires]);
     }
 
     /**
@@ -52,7 +52,12 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::findOrFail($request->input('id'));
         if ($commentaire) {
-            return $commentaire;
+            return response()->json([
+                "message"=>"voici le commentaire que vous chercher et les reponses qu'il detient",
+                "commentaire"=>$commentaire,
+                "auteur du commentaire"=>$commentaire->user,
+                "reponses"=>$commentaire->reponses
+            ]);
         }
     }
 
@@ -75,22 +80,31 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
      * )
      */
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
             ]
         );
-        Commentaire::create(
+       $commentaire= Commentaire::create(
             [
                 'contenu' => $request->contenu,
                 'user_id' => Auth::user()->id,
             ]
         );
-        return response()->json(['message' => "Le commentaire est bien ajouté"]);
+        return response()->json([
+            'message' => "Le commentaire est bien ajouté",
+            "commentaire"=>$commentaire
+        ]);
     }
 
     /**
@@ -113,10 +127,16 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
      * )
      */
     public function update(Request $request)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
@@ -127,7 +147,10 @@ class CommentaireController extends Controller
         if ($commentaire->user_id === Auth::user()->id) {
             $commentaire->contenu = $request->contenu;
             $commentaire->update();
-            return response()->json(['message' => "Le commentaire est bien modifié"]);
+            return response()->json([
+                'message' => "Le commentaire est bien modifié",
+                "commentaire"=>$commentaire
+        ]);
         } else {
             return response()->json(['error' => "Vous n'avez pas le droit de modifier ce commentaire"], 401);
         }
@@ -152,10 +175,16 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
      * )
      */
     public function archiveCommentaire(Request $request)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate(
             [
                 'id' => 'required|numeric',
@@ -165,7 +194,10 @@ class CommentaireController extends Controller
         if ($commentaire->user_id === Auth::user()->id) {
             $commentaire->is_deleted = true;
             $commentaire->update();
-            return response()->json(['message' => "Le commentaire est bien archivé"]);
+            return response()->json([
+                'message' => "Le commentaire est bien archivé",
+                "commentaire"=>$commentaire
+            ]);
         } else {
             return response()->json(['error' => "Vous n'avez pas le droit de supprimer ce commentaire"], 401);
         }
@@ -190,10 +222,16 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
      * )
      */
     public function destroy(Request $request)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $user = Auth::user();
         if ($user->role_id === 1) {
             $commentaire = Commentaire::findOrFail($request->input('id'));

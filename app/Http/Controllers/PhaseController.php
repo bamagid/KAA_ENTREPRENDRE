@@ -85,7 +85,7 @@ class phaseController extends Controller
      *          description="phase créé avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *         {"Bearer": {}}
      *      }
      * )
      */
@@ -130,7 +130,7 @@ class phaseController extends Controller
      *          description="phase mise à jour avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
@@ -163,7 +163,7 @@ class phaseController extends Controller
      *          description="phase archivé avec succès"
      *      ),
      *      security={
-     *          {"api_key": {}}
+     *          {"Bearer": {}}
      *      }
      * )
      */
