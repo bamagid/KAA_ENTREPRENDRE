@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Phase;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
+
 /**
  * @OA\Tag(
  *     name="Phases",
@@ -13,6 +14,34 @@ use OpenApi\Annotations as OA;
  */
 class phaseController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/api/phase/{id}",
+     *      operationId="getPhase",
+     *      tags={"Phases"},
+     *      summary="Récupérer une phase en particulier",
+     *      description="Récupère la phase specifier avec l'id",
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID de la phase à mettre à jour",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Liste des phases récupérée avec succès"
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
+    public function show(int $id)
+    {
+        $phase = Phase::findOrFail($id);
+        return response()->json(['message' => 'phases trouvé avec succès', 'phases' => $phase], 200);
+    }
     /**
      * @OA\Get(
      *      path="/api/phases",
@@ -31,14 +60,15 @@ class phaseController extends Controller
      */
     public function index()
     {
-        $phases = Phase::all();
+        $phases = Phase::where('is_deleted', 0)->get();
+        return response()->json(['message' => 'phases trouvé avec succès', 'phases' => $phases], 200);
     }
 
     /**
      * @OA\Post(
-     *      path="/api/phase/create",
+     *      path="/api/create_phase",
      *      operationId="createphase",
-     *      tags={"phases"},
+     *      tags={"Phases"},
      *      summary="Ajouter une nouvelle phase",
      *      description="Ajoute une nouvelle phase avec les détails fournis",
      *      @OA\RequestBody(
@@ -47,6 +77,7 @@ class phaseController extends Controller
      *              type="object",
      *              @OA\Property(property="titre", type="string"),
      *              @OA\Property(property="description", type="string"),
+     *              @OA\Property(property="guide_id", type="integer"),
      *          )
      *      ),
      *      @OA\Response(
@@ -63,9 +94,10 @@ class phaseController extends Controller
         $phases = $request->validate([
             'titre' => 'required',
             'description' => 'required',
+            'guide_id' => 'required|numeric'
         ]);
 
-        $phase = new phase($phases);
+        $phase = new Phase($phases);
         $phase->save();
 
         return response()->json(['message' => 'phase ajouté avec succès', 'phase' => $phase], 200);
@@ -73,9 +105,9 @@ class phaseController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/phase/update_phase/{id}",
+     *      path="/api/update_phase/{id}",
      *      operationId="updatephase",
-     *      tags={"phases"},
+     *      tags={"Phases"},
      *      summary="Mettre à jour une phase existant",
      *      description="Met à jour les détails d'une phase existant en fonction de l'ID fourni",
      *      @OA\Parameter(
@@ -104,7 +136,7 @@ class phaseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $phase = phase::find($id);
+        $phase = Phase::find($id);
         $phase->titre = $request->titre;
         $phase->description = $request->description;
         $phase->save();
@@ -114,9 +146,9 @@ class phaseController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/phase/archiver_phase/{id}",
+     *      path="/api/archiver_phase/{id}",
      *      operationId="archivephase",
-     *      tags={"phases"},
+     *      tags={"Phases"},
      *      summary="Archiver une phase",
      *      description="Archive une phase en fonction de l'ID fourni",
      *      @OA\Parameter(
@@ -137,7 +169,7 @@ class phaseController extends Controller
      */
     public function archiver_phase(Request $request, int $id)
     {
-        $phase = phase::find($id);
+        $phase = Phase::find($id);
         $phase->is_deleted = true;
         $phase->save();
 

@@ -99,7 +99,7 @@ class SecteurController extends Controller
      * @OA\Post(
      *      path="/api/secteur/destroy",
      *      operationId="destroysecteur",
-     *      tags={"secteurs"},
+     *      tags={"Secteurs"},
      *      summary="Supprimer un secteur",
      *      description="Supprime un secteur en fonction de l'ID fourni",
      *      @OA\RequestBody(

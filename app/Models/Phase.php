@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Phase extends Model
 {
     use HasFactory;
+    protected $guarded=[];
     public function guide(){
         return $this->belongsTo(Guide::class);
     }

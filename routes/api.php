@@ -12,6 +12,7 @@ use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\NewsletterSubscriptionController;
+use App\Http\Controllers\phaseController;
 use App\Http\Controllers\SearchController;
 
 /*
@@ -151,29 +152,31 @@ Route::post('/archiver_guide/{id}', [GuideController::class, 'archiver_guide']);
 
 /** Gestion des phases d'un guide */
 //ajouter phase
-Route::post('/create_phase', [phaseController::class, 'create']);
-//afficher phase
-Route::get('/index', [phaseController::class, 'index']);
+Route::post('/create_phase', [PhaseController::class, 'create']);
+//afficher phases
+Route::get('/phases', [PhaseController::class, 'index']);
+//afficher une phase
+Route::get('/phase/{id}', [PhaseController::class, 'show']);
 //modifier le phase
-Route::post('/update_phase/{id}', [phaseController::class, 'update']);
+Route::post('/update_phase/{id}', [PhaseController::class, 'update']);
 //archiver un phase
 Route::post('/archiver_phase/{id}', [phaseController::class, 'archiver_phase']);
-Route::post('/modifier-mot-de-passe', [UserController::class,'modifierMotDePasse'])->middleware('auth:api');
-Route::post('/reinitialiser-mot-de-passe', [UserController::class,'reinitialiserMotDePasse'])->middleware('auth:api');
-Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);
-Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class,'updateProfileExperimente']);
-Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'UpdateAdmin']);
-Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class,'toggleBlockAccount']);
-    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
+Route::post('/modifier-mot-de-passe', [UserController::class, 'modifierMotDePasse'])->middleware('auth:api');
+Route::post('/reinitialiser-mot-de-passe', [UserController::class, 'reinitialiserMotDePasse'])->middleware('auth:api');
+Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class, 'updateProfile']);
+Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class, 'updateProfileExperimente']);
+Route::middleware('auth:api')->post('/admin/profile', [UserController::class, 'UpdateAdmin']);
+Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
+Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
 
-    Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
-        // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
-    });
+Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
+    // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
+});
 
-    Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
-    Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
-    Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
-    Route::post('login', [UserController::class, 'login']);
+Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
+Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
+Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
+Route::post('login', [UserController::class, 'login']);
 
-    Route::post('verifMail',[UserController::class,'verifMail']);
-    Route::post('resetPassword/{user}',[UserController::class,'resetPassword']);
+Route::post('verifMail', [UserController::class, 'verifMail']);
+Route::post('resetPassword/{user}', [UserController::class, 'resetPassword']);

@@ -914,6 +914,37 @@
                 ]
             }
         },
+        "/api/phase/{id}": {
+            "get": {
+                "tags": [
+                    "Phases"
+                ],
+                "summary": "Récupérer une phase en particulier",
+                "description": "Récupère la phase specifier avec l'id",
+                "operationId": "getPhase",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la phase à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des phases récupérée avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
         "/api/phases": {
             "get": {
                 "tags": [
@@ -934,10 +965,10 @@
                 ]
             }
         },
-        "/api/phase/create": {
+        "/api/create_phase": {
             "post": {
                 "tags": [
-                    "phases"
+                    "Phases"
                 ],
                 "summary": "Ajouter une nouvelle phase",
                 "description": "Ajoute une nouvelle phase avec les détails fournis",
@@ -953,6 +984,9 @@
                                     },
                                     "description": {
                                         "type": "string"
+                                    },
+                                    "guide_id": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -972,10 +1006,10 @@
                 ]
             }
         },
-        "/api/phase/update_phase/{id}": {
+        "/api/update_phase/{id}": {
             "post": {
                 "tags": [
-                    "phases"
+                    "Phases"
                 ],
                 "summary": "Mettre à jour une phase existant",
                 "description": "Met à jour les détails d'une phase existant en fonction de l'ID fourni",
@@ -1021,10 +1055,10 @@
                 ]
             }
         },
-        "/api/phase/archiver_phase/{id}": {
+        "/api/archiver_phase/{id}": {
             "post": {
                 "tags": [
-                    "phases"
+                    "Phases"
                 ],
                 "summary": "Archiver une phase",
                 "description": "Archive une phase en fonction de l'ID fourni",
@@ -1679,7 +1713,7 @@
         "/api/secteur/destroy": {
             "post": {
                 "tags": [
-                    "secteurs"
+                    "Secteurs"
                 ],
                 "summary": "Supprimer un secteur",
                 "description": "Supprime un secteur en fonction de l'ID fourni",
@@ -1705,6 +1739,496 @@
                     },
                     "401": {
                         "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ajouter-utilisateur-entrepreneur-novice": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Inscrire un entrepreneur novice",
+                "description": "Inscription d'un entrepreneur novice  avec les détails fournis",
+                "operationId": "createEntrepreneurNovice",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "region": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Entrepreneur inscrit avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ajouter-utilisateur-entrepreneur-expreimente": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Inscrire un entrepreneur expreimenté",
+                "description": "Inscription d'un entrepreneur expreimenté  avec les détails fournis",
+                "operationId": "createEntrepreneurExpreimente",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "region": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    },
+                                    "experience": {
+                                        "type": "string"
+                                    },
+                                    "activite": {
+                                        "type": "string"
+                                    },
+                                    "realisation": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Entrepreneur inscrit avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/ajouter-utilisateur-admin": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Inscrire un admin",
+                "description": "Inscription d'un admin  avec les détails fournis",
+                "operationId": "createAdmin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Admin inscrit avec succès"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Connecter un utilisateur",
+                "description": "Connexion d'un utilisteurs  avec les détails fournis",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur connecté avec succès"
+                    },
+                    "401": {
+                        "description": "Informations invalid"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/deconnecter": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Deconnecter un utilisateur",
+                "description": "Deconnexion d'un utilisteurs  et invalidation de son token jwt",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur deconnecté  avec succès"
+                    },
+                    "401": {
+                        "description": "Aucun utilisateur connecté"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/entrepreneur-novice/profile": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Modifier les informations d'un entrepreneur novice",
+                "description": "Modification des informations d'un entrepreneur novice  avec les détails fournis",
+                "operationId": "updateEntrepreneurNovice",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "region": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Informations mise a jour avec succès"
+                    },
+                    "404": {
+                        "description": "L'utilisateur n'a pas été trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/entrepreneur-experimente/profile": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Modifier les informations d'un entrepreneur expreimenté",
+                "description": "Modification des informations d'un entrepreneur expreimenté  avec les détails fournis",
+                "operationId": "updateEntrepreneurExpreimente",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "region": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    },
+                                    "experience": {
+                                        "type": "string"
+                                    },
+                                    "activite": {
+                                        "type": "string"
+                                    },
+                                    "realisation": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Informations de l'entrepreneur modifié avec succès"
+                    },
+                    "404": {
+                        "description": "L'utilisateur n'a pas été trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/profile": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Modifier les informations d'un admin",
+                "description": "Modification des informations d'un admin  avec les détails fournis",
+                "operationId": "updateAdmin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "statut": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Informations admin modifié avec succès"
+                    },
+                    "404": {
+                        "description": "L'utilisateur n'a pas été trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/block-account/{userId}": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "bloquer un utilisateur",
+                "description": "bloquer un utilisateur en specifiant son id",
+                "operationId": "Blockuser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur a bloquer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Informations admin modifié avec succès"
+                    },
+                    "404": {
+                        "description": "L'utilisateur n'a pas été trouvé"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/api/modifier-mot-de-passe": {
+            "post": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Modifier le mot de passe d'un utilisateur",
+                "description": "Modification du mot de passe d'un utilisateur  avec les détails fournis",
+                "operationId": "updatePassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "ancien_password": {
+                                        "type": "string"
+                                    },
+                                    "nouveau_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe mise a jour avec succés"
+                    },
+                    "404": {
+                        "description": "L'utilisateur n'a pas été trouvé"
                     }
                 },
                 "security": [
