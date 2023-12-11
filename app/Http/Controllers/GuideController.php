@@ -6,6 +6,7 @@ use App\Models\Guide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
+
 /**
  * @OA\Tag(
  *     name="Guides",
@@ -29,9 +30,9 @@ class GuideController extends Controller
      */
     public function index()
     {
-        $guides = Guide::all()->first();
+        $guides = Guide::all();
         return response()->json([
-            "La listes de toutes les guides "=>$guides
+            "La listes de toutes les guides " => $guides
         ], 200);
     }
 
@@ -63,7 +64,7 @@ class GuideController extends Controller
      */
     public function create(Request $request)
     {
-        $validator=Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'titre' => 'required',
             'contenu' => 'required',
             'reaction' => 'required',
@@ -73,9 +74,9 @@ class GuideController extends Controller
         }
 
         $guide = new Guide();
-        $guide->titre=$request->titre;
-        $guide->titre=$request->contenu;
-        $guide->reaction=$request->reaction;
+        $guide->titre = $request->titre;
+        $guide->titre = $request->contenu;
+        $guide->reaction = $request->reaction;
         $guide->save();
 
         return response()->json(['message' => 'Guide ajouté avec succès', 'guide' => $guide], 200);
@@ -116,7 +117,7 @@ class GuideController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validator=Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'titre' => 'required',
             'contenu' => 'required',
             'reaction' => 'required',

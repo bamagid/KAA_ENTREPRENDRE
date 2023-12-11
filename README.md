@@ -10,4 +10,3 @@ débutants. La plateforme souhaite démocratiser l'accès à l'entrepreneuriat e
 une source fiable d'informations et d'outils pratiques pour aider les utilisateurs à concrétiser
 leur projet avec succès.
 Sur ce repository on developpe la partie back-end (api) de l'application
-# debbugBackend
