@@ -16,23 +16,6 @@ use OpenApi\Annotations as OA;
 class SecteurController extends Controller
 {
 
-
-    /**
-     * @OA\Get(
-     *      path="/api/Secteurs",
-     *      operationId="getSecteurs",
-     *      tags={"Secteurs"},
-     *      summary="Obtenir la liste des secteurs",
-     *      description="Récupère la liste de toutes les secteurs non supprimées.",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Liste des secteurs récupérée avec succès",
-     *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
-     * )
-     */
     public function index()
     {
         //

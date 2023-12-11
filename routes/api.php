@@ -158,7 +158,6 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     Route::post('ajouter-ressource', [RessourceController::class, 'ajouterRessource'])->name('ajouter-ressource');
     /* Gestion des evenements */
     //route pour evenement
-    Route::get('/events', [EvenementController::class, 'index']);
 
 Route::get('/events/{id}', [EvenementController::class, 'show']);
 Route::post('/events', [EvenementController::class, 'store']);

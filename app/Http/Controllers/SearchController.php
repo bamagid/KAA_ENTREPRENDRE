@@ -7,31 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
-
-    /**
-     * @OA\Get(
-     *     path="/search",
-     *     summary="Effectuer une recherche",
-     *     tags={"Recherche"},
-     *     @OA\Parameter(
-     *         name="q",
-     *         in="query",
-     *         required=true,
-     *         description="Terme de recherche",
-     *         @OA\Schema(type="string"),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Résultats de la recherche",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="ressources", type="array", @OA\Items(ref="#/components/schemas/Ressource")),
-     *             @OA\Property(property="secteurs", type="array", @OA\Items(ref="#/components/schemas/Secteur")),
-     *             @OA\Property(property="evenements", type="array", @OA\Items(ref="#/components/schemas/Evenement")),
-     *         ),
-     *     ),
-     * )
-     */
     public function search(Request $request)
     {
         $searchTerm = $request->query('q');
