@@ -61,16 +61,16 @@ Route::get('/events/{id}', [EvenementController::class, 'show']);
 //souscrire a la newsletter
 Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, 'subscribe']);
 //faire une recherche
-Route::get('/search',[SearchController::class,'search']);
+Route::get('/search', [SearchController::class, 'search']);
 Route::get('/index_cas', [EtudeCasController::class, 'index']);
-//ajoute
+//affichage du guide
 Route::get('/guides', [GuideController::class, 'index']);
 //afficher l'utilisateur connecté
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware('auth:api')->group(function () {
-      /**Gestion etudes cas */
+    /**Gestion etudes cas */
     // ajout cas pour
     Route::post('create', [EtudeCasController::class, 'create']);
     //modifier une etude cas
@@ -161,48 +161,12 @@ Route::middleware(['auth:api', 'admin'])->group(function () {
     /* Gestion des evenements */
     //route pour evenement
 
-Route::get('/events/{id}', [EvenementController::class, 'show']);
-Route::post('/events', [EvenementController::class, 'store']);
-Route::post('/events/{id}', [EvenementController::class, 'update']);
-Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
-
-Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
-});
-
-Route::post('/secteurs', [SecteurController::class, 'store']);
-    Route::post('/ajouter-role', [UserController::class, 'ajouterRole']);
-    Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
-    Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
-    Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
-    Route::post('login', [UserController::class, 'login']);
-
-
-    Route::post('create', [GuideController::class, 'create']);
-    Route::post('update/{id}', [GuideController::class, 'update']);
-
-    Route::post('create/{id}', [EtudeCasController::class, 'create']);
-    Route::post('update/{id}', [EtudeCasController::class, 'update']);
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('ajouter-ressource',[RessourceController::class,'ajouterRessource'])->name('ajouter-ressource');
-
-    Route::get('/events/{id}', [EvenementController::class, 'show']);    Route::get('/events', [EvenementController::class, 'index']);
-    Route::post('/events_add', [EvenementController::class, 'store']);
+    Route::get('/events/{id}', [EvenementController::class, 'show']);
+    Route::post('/events', [EvenementController::class, 'store']);
     Route::post('/events/{id}', [EvenementController::class, 'update']);
     Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
-    Route::post('/secteurs', [SecteurController::class, 'store']);
-    Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 
-    Route::post('/admin/block-account/{userId}', [UserController::class, 'toggleBlockAccount']);
-    //gestion etude cas , ajout cas pour la premiere route
-    Route::post('create/{id}', [EtudeCasController::class, 'create']);
-    //modifier une etude cas
-    Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
-    //archivier une etude cas
-    Route::post('archive/{id}', [EtudeCasController::class, 'archive']);
-    //supprimer une etude cas
-    Route::post('delete/{id}', [EtudeCasController::class, 'delete']);
-    Route::post('/create', [EtudeCasController::class, 'create']);
+    Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
 });
 
 Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
