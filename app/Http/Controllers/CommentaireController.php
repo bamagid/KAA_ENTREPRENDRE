@@ -3,122 +3,242 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @OA\Tag(
+ *     name="Commentaires",
+ *     description="Endpoints pour la gestion des commentaires du forum"
+ * )
+ */
 class CommentaireController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/commentaires",
+     *     summary="Lister tous les commentaires d'un forum",
+     *     tags={"Commentaires"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste de commentaires",
+     *     ),
+     * )
      */
     public function index()
     {
-        $commentaires=Commentaire::where('is_deleted', 0)->get();
-        return $commentaires;
+        $commentaires = Commentaire::where('is_deleted', 0)->get();
+        return response()->json(["message"=>"voici les commentaires ",'commentaires'=>$commentaires]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate(
-            [
-                'contenu' => 'required|string|min:3',
-            ]
-
-        );
-        Commentaire::create(
-            [
-                'contenu' => $request->contenu,
-                'user_id' =>Auth::user()->id,
-            ]
-        );
-        return response()->json(['message' => "Le commentaire est bien ajouté"]);
-    }
-
-    /**
-     * Display the specified resource.
+     * @OA\Post(
+     *     path="/api/commentaire",
+     *     summary="Lister un commentaire d'un forum",
+     *     tags={"Commentaires"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Détails du commentaire",
+     *     ),
+     * )
      */
     public function show(Request $request)
     {
-         $commentaire = Commentaire::findOrFail($request->input('id'));
+        $commentaire = Commentaire::findOrFail($request->input('id'));
         if ($commentaire) {
-            return $commentaire;
+            return response()->json([
+                "message"=>"voici le commentaire que vous chercher et les reponses qu'il detient",
+                "commentaire"=>$commentaire,
+                "auteur du commentaire"=>$commentaire->user,
+                "reponses"=>$commentaire->reponses
+            ]);
         }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @OA\Post(
+     *     path="/api/commentaire/create",
+     *     summary="Ajouter un commentaire à un forum",
+     *     tags={"Commentaires"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="contenu", type="string", example="Contenu du commentaire"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Le commentaire est bien ajouté",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non autorisé",
+     *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
+     * )
      */
-    public function edit(Commentaire $commentaire)
+    public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
         $request->validate(
             [
                 'contenu' => 'required|string|min:3',
-                'id' => 'required|numeric'
             ]
         );
-        $commentaire = Commentaire::findOrFail($request->input('id'));
-        if ($commentaire->user_id===Auth::user()->id) {
-            $commentaire->contenu = $request->contenu;
-            $commentaire->update();
-            return response()->json(['message' => "Le commentaire est bien modifié"]);
-        }
-        else{
-            return response()->json(['error'=>"Vous n'avez pas le droit de modifier ce commentaire"],401);
-            }
-            
-    }
-    /**
-     * Archive the specified resource in storage.
-     */
-    public function archiveCommentaire(Request $request)
-    {
-        $request->validate(
+       $commentaire= Commentaire::create(
             [
-                'id' => 'required|numeric'
+                'contenu' => $request->contenu,
+                'user_id' => Auth::user()->id,
             ]
         );
-        $commentaire = Commentaire::findOrFail($request->input('id'));
-        if ($commentaire->user_id===Auth::user()->id) {
-        $commentaire->is_deleted=true;
-        $commentaire->update();
-        return response()->json(['message' => "Le commentaire est bien archivé"]);
-        }else{
-            return response()->json(['error'=>"Vous n'avez pas le droit de supprimer ce commentaire"],401);
-            }
+        return response()->json([
+            'message' => "Le commentaire est bien ajouté",
+            "commentaire"=>$commentaire
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Post(
+     *     path="/api/commentaire/edit",
+     *     summary="Modifier un commentaire d'un forum",
+     *     tags={"Commentaires"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="contenu", type="string", example="Nouveau contenu du commentaire"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Le commentaire est bien modifié",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non autorisé",
+     *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
+    public function update(Request $request)
+    {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
+        $request->validate(
+            [
+                'contenu' => 'required|string|min:3',
+                'id' => 'required|numeric',
+            ]
+        );
+        $commentaire = Commentaire::findOrFail($request->input('id'));
+        if ($commentaire->user_id === Auth::user()->id) {
+            $commentaire->contenu = $request->contenu;
+            $commentaire->update();
+            return response()->json([
+                'message' => "Le commentaire est bien modifié",
+                "commentaire"=>$commentaire
+        ]);
+        } else {
+            return response()->json(['error' => "Vous n'avez pas le droit de modifier ce commentaire"], 401);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/commentaire/archive",
+     *     summary="Archiver un commentaire de forum",
+     *     tags={"Commentaires"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Le commentaire est bien archivé",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non autorisé",
+     *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
+    public function archiveCommentaire(Request $request)
+    {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
+        $request->validate(
+            [
+                'id' => 'required|numeric',
+            ]
+        );
+        $commentaire = Commentaire::findOrFail($request->input('id'));
+        if ($commentaire->user_id === Auth::user()->id) {
+            $commentaire->is_deleted = true;
+            $commentaire->update();
+            return response()->json([
+                'message' => "Le commentaire est bien archivé",
+                "commentaire"=>$commentaire
+            ]);
+        } else {
+            return response()->json(['error' => "Vous n'avez pas le droit de supprimer ce commentaire"], 401);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/commentaire/delete",
+     *     summary="Supprimer un commentaire d'un forum",
+     *     tags={"Commentaires"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Le commentaire est bien supprimé",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Non autorisé",
+     *     ),
+     *  security={
+     *          {"Bearer": {}}
+     *      }
+     * )
      */
     public function destroy(Request $request)
     {
-        $user=Auth::user();
-        if ($user->role_id===1){
-        $commentaire = Commentaire::findOrFail($request->input('id'));
-        $commentaire->delete();
-        return response()->json(['message' => "La commentaire est bien supprimé"]);
-    }else{
-        return response()->json(['error'=>"Vous n'avez pas les droits pour effectuer cette action"],401);
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
+        $user = Auth::user();
+        if ($user->role_id === 1) {
+            $commentaire = Commentaire::findOrFail($request->input('id'));
+            $commentaire->delete();
+            return response()->json(['message' => "La commentaire est bien supprimé"]);
+        } else {
+            return response()->json(['error' => "Vous n'avez pas les droits pour effectuer cette action"], 401);
         }
     }
 }

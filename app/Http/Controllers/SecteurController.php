@@ -4,11 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Secteur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Tag(
+ *     name="Secteurs",
+ *     description="Endpoints pour la gestion des secteurs."
+ * )
+ */
 class SecteurController extends Controller
 {
+
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/Secteurs",
+     *      operationId="getSecteurs",
+     *      tags={"Secteurs"},
+     *      summary="Obtenir la liste des secteurs",
+     *      description="Récupère la liste de toutes les secteurs non supprimées.",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Liste des secteurs récupérée avec succès",
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
      */
     public function index()
     {
@@ -24,10 +47,37 @@ class SecteurController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *      path="/api/secteur/create",
+     *      operationId="createsecteur",
+     *      tags={"Secteurs"},
+     *      summary="Ajouter un nouveau secteur",
+     *      description="Ajoute un nouveau secteur avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nomSecteur", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Secteur créé avec succès",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Non autorisé",
+     *      ),
+     *      security={
+     *          {"Bearer": {}}
+     *      }
+     * )
      */
     public function store(Request $request)
     {
+        if (!auth()->check() || auth()->user()->role_id !== 1) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
 
         $request->validate([
             'nomSecteur' => 'required|string',
@@ -36,7 +86,7 @@ class SecteurController extends Controller
 
         $secteur = Secteur::create([
             'nomSecteur' => $request->nomSecteur,
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
         ]);
 
         return response()->json(['message' => 'Sector created successfully', 'secteur' => $secteur], 201);
@@ -48,11 +98,39 @@ class SecteurController extends Controller
     {
         //
     }
+
+    /**
+     * @OA\Post(
+     *      path="/api/secteur/destroy",
+     *      operationId="destroysecteur",
+     *      tags={"Secteurs"},
+     *      summary="Supprimer un secteur",
+     *      description="Supprime un secteur en fonction de l'ID fourni",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="id", type="integer"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="secteur supprimé avec succès",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Non autorisé",
+     *      ),
+     *      security={
+     *         {"Bearer": {}}
+     *      }
+     * )
+     */
     public function destroy($id)
     {
 
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        if (!auth()->check() || auth()->user()->role_id !==1 ) {
+            return response()->json(['message' => 'Non autorisé'], 401);
         }
 
 
@@ -85,5 +163,4 @@ class SecteurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
 }

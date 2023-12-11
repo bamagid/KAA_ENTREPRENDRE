@@ -4,13 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\MotDePasseOublié;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Tag(
+ *     name="Utilisateurs",
+ *     description="Endpoints pour la gestion des utilisateurs."
+ * )
+ */
 class UserController extends Controller
 {
+
+    /**
+     * @OA\Post(
+     *      path="/api/ajouter-role",
+     *      operationId="createRole",
+     *      tags={"Roles"},
+     *      summary="Ajouter un role",
+     *      description="Ajout d'un role par l'admin",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nomRole", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Role ajouté avec succés"
+     *      ),
+     *      security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
     public function ajouterRole(Request $request)
     {
         $request->validate([
@@ -21,9 +53,39 @@ class UserController extends Controller
             'nomRole' => $request->nomRole,
         ]);
 
-        return response()->json(['message' => 'Rôle ajouté avec succès','role'=>$role], 201);
+        return response()->json(['message' => 'Rôle ajouté avec succès', 'role' => $role], 201);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/ajouter-utilisateur-entrepreneur-novice",
+     *      operationId="createEntrepreneurNovice",
+     *      tags={"Utilisateurs"},
+     *      summary="Inscrire un entrepreneur novice",
+     *      description="Inscription d'un entrepreneur novice  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nom", type="string"),
+     *              @OA\Property(property="prenom", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="adresse", type="string"),
+     *              @OA\Property(property="region", type="string"),
+     *              @OA\Property(property="statut", type="string"),
+     *              @OA\Property(property="image", type="file"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Entrepreneur inscrit avec succès"
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
 
     public function ajouterUtilisateurEntrepreneurNovice(Request $request)
     {
@@ -50,7 +112,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
-            'region'=> $request->region,
+            'region' => $request->region,
             'role_id' => $roleEntrepreneurNovice->id,
             'statut' => $request->statut,
             'image' => $imagePath,
@@ -62,7 +124,39 @@ class UserController extends Controller
         return response()->json(['message' => 'Utilisateur ajouté avec succès'], 201);
     }
 
-
+    /**
+     * @OA\Post(
+     *      path="/api/ajouter-utilisateur-entrepreneur-expreimente",
+     *      operationId="createEntrepreneurExpreimente",
+     *      tags={"Utilisateurs"},
+     *      summary="Inscrire un entrepreneur expreimenté",
+     *      description="Inscription d'un entrepreneur expreimenté  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nom", type="string"),
+     *              @OA\Property(property="prenom", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="adresse", type="string"),
+     *              @OA\Property(property="region", type="string"),
+     *              @OA\Property(property="statut", type="string"),
+     *              @OA\Property(property="image", type="file"),
+     *              @OA\Property(property="experience", type="string"),
+     *              @OA\Property(property="activite", type="string"),
+     *              @OA\Property(property="realisation", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Entrepreneur inscrit avec succès"
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
 
     public function ajouterUtilisateurEntrepreneurExperimente(Request $request)
     {
@@ -106,6 +200,34 @@ class UserController extends Controller
         return response()->json(['message' => 'Entrepreneur expérimenté ajouté avec succès'], 201);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/ajouter-utilisateur-admin",
+     *      operationId="createAdmin",
+     *      tags={"Utilisateurs"},
+     *      summary="Inscrire un admin",
+     *      description="Inscription d'un admin  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nom", type="string"),
+     *              @OA\Property(property="prenom", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="statut", type="string"),
+     *              @OA\Property(property="image", type="file"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Admin inscrit avec succès"
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
 
 
     public function ajouterUtilisateurAdmin(Request $request)
@@ -145,6 +267,35 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Admin ajouté avec succès'], 201);
     }
+
+    /**
+     * @OA\Post(
+     *      path="/api/login",
+     *      operationId="login",
+     *      tags={"Utilisateurs"},
+     *      summary="Connecter un utilisateur",
+     *      description="Connexion d'un utilisteurs  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Utilisateur connecté avec succès"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Informations invalid"
+     *      ),
+     *      security={
+     *          {"api_key": {}}
+     *      }
+     * )
+     */
     public function login(Request $request)
     {
 
@@ -174,6 +325,28 @@ class UserController extends Controller
             "message" => "details invalide"
         ]);
     }
+
+    /**
+     * @OA\Post(
+     *      path="/api/deconnecter",
+     *      operationId="logout",
+     *      tags={"Utilisateurs"},
+     *      summary="Deconnecter un utilisateur",
+     *      description="Deconnexion d'un utilisteurs  et invalidation de son token jwt",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Utilisateur deconnecté  avec succès"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Aucun utilisateur connecté"
+     *      ),
+     *      security={
+     *         {"Bearer": {}}
+     *      }
+     * )
+     */
+
     public function deconnect()
     {
         //J'utilise la façade Auth pour faire la deconnexion
@@ -185,6 +358,40 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/entrepreneur-novice/profile",
+     *      operationId="updateEntrepreneurNovice",
+     *      tags={"Utilisateurs"},
+     *      summary="Modifier les informations d'un entrepreneur novice",
+     *      description="Modification des informations d'un entrepreneur novice  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nom", type="string"),
+     *              @OA\Property(property="prenom", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="adresse", type="string"),
+     *              @OA\Property(property="region", type="string"),
+     *              @OA\Property(property="statut", type="string"),
+     *              @OA\Property(property="image", type="file"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Informations mise a jour avec succès"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="L'utilisateur n'a pas été trouvé"
+     *      ),
+     *      security={
+     *         {"Bearer": {}}
+     *      }
+     * )
+     */
 
     public function updateProfile(Request $request)
     {
@@ -224,27 +431,62 @@ class UserController extends Controller
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
 
-
-
+    /**
+     * @OA\Post(
+     *      path="/api/entrepreneur-experimente/profile",
+     *      operationId="updateEntrepreneurExpreimente",
+     *      tags={"Utilisateurs"},
+     *      summary="Modifier les informations d'un entrepreneur expreimenté",
+     *      description="Modification des informations d'un entrepreneur expreimenté  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nom", type="string"),
+     *              @OA\Property(property="prenom", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="adresse", type="string"),
+     *              @OA\Property(property="region", type="string"),
+     *              @OA\Property(property="statut", type="string"),
+     *              @OA\Property(property="image", type="file"),
+     *              @OA\Property(property="experience", type="string"),
+     *              @OA\Property(property="activite", type="string"),
+     *              @OA\Property(property="realisation", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Informations de l'entrepreneur modifié avec succès"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="L'utilisateur n'a pas été trouvé"
+     *      ),
+     *      security={
+     *         {"Bearer": {}}
+     *      }
+     * )
+     */
 
 
     public function updateProfileExperimente(Request $request)
     {
         $entrepreneurExperimente = auth()->user();
 
-    $request->validate([
-        'nom' => 'required|string',
-        'prenom' => 'required|string',
-        'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
-        'password' => 'nullable|min:6',
-        'adresse' => 'required|string',
-        'region' => 'required|string',
-        'statut' => 'required|string',
-        'experience' => 'required|string',
-        'activite' => 'required|string',
-        'realisation' => 'required|string',
+        $request->validate([
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
+            'password' => 'nullable|min:6',
+            'adresse' => 'required|string',
+            'region' => 'required|string',
+            'statut' => 'required|string',
+            'experience' => 'required|string',
+            'activite' => 'required|string',
+            'realisation' => 'required|string',
 
-    ]);
+        ]);
 
         $imagePath = $entrepreneurExperimente->image;
 
@@ -254,23 +496,56 @@ class UserController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-    $entrepreneurExperimente->update([
-        'nom' => $request->nom,
-        'prenom' => $request->prenom,
-        'email' => $request->email,
-        'password' => $request->password ? Hash::make($request->password) : $entrepreneurExperimente->password,
-        'adresse' => $request->adresse,
-        'region' => $request->region,
-        'statut' => $request->statut,
-        'experience' => $request->experience,
-        'activite' => $request->activite,
-        'realisation' => $request->realisation,
-        'image' => $imagePath,
+        $entrepreneurExperimente->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $entrepreneurExperimente->password,
+            'adresse' => $request->adresse,
+            'region' => $request->region,
+            'statut' => $request->statut,
+            'experience' => $request->experience,
+            'activite' => $request->activite,
+            'realisation' => $request->realisation,
+            'image' => $imagePath,
 
-    ]);
+        ]);
 
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
+
+    /**
+     * @OA\Post(
+     *      path="/api/admin/profile",
+     *      operationId="updateAdmin",
+     *      tags={"Utilisateurs"},
+     *      summary="Modifier les informations d'un admin",
+     *      description="Modification des informations d'un admin  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="nom", type="string"),
+     *              @OA\Property(property="prenom", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="statut", type="string"),
+     *              @OA\Property(property="image", type="file"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Informations admin modifié avec succès"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="L'utilisateur n'a pas été trouvé"
+     *      ),
+     *      security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
 
     public function UpdateAdmin(Request $request)
     {
@@ -278,17 +553,17 @@ class UserController extends Controller
 
         $admin = auth()->user();
 
-    $request->validate([
-        'nom' => 'required|string',
-        'prenom' => 'required|string',
-        'email' => 'required|email|unique:users,email,' . $admin->id,
-        'password' => 'nullable|min:6',
-        'adresse' => 'required|string',
-        'region' => 'required|string',
-        'statut' => 'required|string',
+        $request->validate([
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $admin->id,
+            'password' => 'nullable|min:6',
+            'adresse' => 'required|string',
+            'region' => 'required|string',
+            'statut' => 'required|string',
 
 
-    ]);
+        ]);
 
         $imagePath = $admin->image;
 
@@ -298,24 +573,52 @@ class UserController extends Controller
             $imagePath = $image->storeAs('images', $imageName, 'public');
         }
 
-    $admin->update([
-        'nom' => $request->nom,
-        'prenom' => $request->prenom,
-        'email' => $request->email,
-        'password' => $request->password ? Hash::make($request->password) : $admin->password,
-        'adresse' => $request->adresse,
-        'region' => $request->region,
+        $admin->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $admin->password,
+            'adresse' => $request->adresse,
+            'region' => $request->region,
 
 
-        'image' => $imagePath,
+            'image' => $imagePath,
 
-    ]);
+        ]);
 
         return response()->json(['message' => 'Profil mis à jour avec succès'], 200);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/admin/block-account/{userId}",
+     *      operationId="Blockuser",
+     *      tags={"Utilisateurs"},
+     *      summary="bloquer un utilisateur",
+     *      description="bloquer un utilisateur en specifiant son id",
+     *
+     *  @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID de l'utilisateur a bloquer",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Informations admin modifié avec succès"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="L'utilisateur n'a pas été trouvé"
+     *      ),
+     *      security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
 
-    public function toggleBlockAccount($userId)
+    public function toggleBlockAccount(int $userId)
     {
         $user = User::find($userId);
 
@@ -328,5 +631,144 @@ class UserController extends Controller
         $status = $user->statut === 'actif' ? 'débloqué' : 'bloqué';
 
         return response()->json(['message' => "Compte $status avec succès"], 200);
+    }
+
+
+
+    /**
+     * @OA\Post(
+     *      path="/api/modifier-mot-de-passe",
+     *      operationId="updatePassword",
+     *      tags={"Utilisateurs"},
+     *      summary="Modifier le mot de passe d'un utilisateur",
+     *      description="Modification du mot de passe d'un utilisateur  avec les détails fournis",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="ancien_password", type="string"),
+     *              @OA\Property(property="nouveau_password", type="string"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Mot de passe mise a jour avec succés"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="L'utilisateur n'a pas été trouvé"
+     *      ),
+     *      security={
+     *          {"Bearer": {}}
+     *      }
+     * )
+     */
+
+
+    public function modifierMotDePasse(Request $request)
+    {
+        $request->validate([
+            'ancien_password' => 'required',
+            'nouveau_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+        ]);
+
+        $user = Auth::user();
+
+        // Vérifiez que l'ancien mot de passe est correct
+        if (!Hash::check($request->ancien_password, $user->password)) {
+            return response()->json(['message' => 'Mot de passe actuel incorrect'], 401);
+        }
+
+        // Mettez à jour le mot de passe avec le nouveau
+        $user->password = Hash::make($request->nouveau_password);
+        // $user->notify(new MotDePasseOublié());
+        $user->save();
+
+        return response()->json(['message' => 'Mot de passe modifié avec succès'], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/verifMail",
+     *     summary="Vérifier si un email existe",
+     *     tags={"Utilisateurs"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="L'email existe.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="exists", type="boolean", example=true),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="L'email n'existe pas.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="exists", type="boolean", example=false),
+     *         ),
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="string", example="test@example.com"),
+     *         )
+     *     ),
+     * )
+     */
+
+    public function verifMail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'Utilisateur trouvé',
+                'user' => $user,
+            ]);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/resetPassword/{user}",
+     *     summary="Réinitialisation du mot de passe",
+     *     tags={"Utilisateurs"},
+     *     @OA\Parameter(
+     *         name="user",
+     *         in="path",
+     *         required=true,
+     *         description="ID de l'utilisateur",
+     *         @OA\Schema(type="integer", format="int64"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mot de passe réinitialisé avec succès.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Mot de passe réinitialisé avec succès."),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Utilisateur non trouvé.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Utilisateur non trouvé."),
+     *         ),
+     *     ),
+     * )
+     */
+    public function resetPassword(Request $request, User $user)
+    {
+        $user->password = $request->password;
+        $user->save();
+        if ($user) {
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'Votre mot de passe a été modifier',
+                'user' => $user,
+            ]);
+        }
     }
 }
