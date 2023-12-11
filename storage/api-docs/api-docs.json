@@ -1534,26 +1534,6 @@
                 ]
             }
         },
-        "/api/Secteurs": {
-            "get": {
-                "tags": [
-                    "Secteurs"
-                ],
-                "summary": "Obtenir la liste des secteurs",
-                "description": "Récupère la liste de toutes les secteurs non supprimées.",
-                "operationId": "getSecteurs",
-                "responses": {
-                    "200": {
-                        "description": "Liste des secteurs récupérée avec succès"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
         "/api/secteur/create": {
             "post": {
                 "tags": [
