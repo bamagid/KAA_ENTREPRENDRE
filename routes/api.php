@@ -37,9 +37,9 @@ Route::post('/events/{id}', [EvenementController::class, 'update']);
 Route::delete('/events/{id}', [EvenementController::class, 'destroy']);
 Route::post('/secteurs', [SecteurController::class, 'store']);
 Route::delete('/secteurs/{id}', [SecteurController::class, 'destroy']);
-Route::get('/ressources', [RessourceController::class,'listerRessources']);
+Route::get('liste_user',[UserController::class,'ListeUser']);
 });
-
+Route::get('/ressources', [RessourceController::class,'listerRessources']);
 Route::middleware('auth:api')->post('/entrepreneur-novice/profile', [UserController::class,'updateProfile']);
 Route::middleware('auth:api')->post('/entrepreneur-experimente/profile', [UserController::class,'updateProfileExperimente']);
 Route::middleware('auth:api')->post('/admin/profile',[UserController::class,'UpdateAdmin']);
@@ -49,12 +49,13 @@ Route::middleware(['auth:api', 'admin'])->post('/admin/block-account/{userId}', 
 Route::post('/modifier-mot-de-passe', [UserController::class,'modifierMotDePasse'])->middleware('auth:api');
 Route::post('/reinitialiser-mot-de-passe', [UserController::class,'reinitialiserMotDePasse'])->middleware('auth:api');
 
-    Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
-        // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
-    });
+    // Route::middleware(['web', 'auth', 'checkStatus'])->group(function () {
+    //     // mes routes quand lutilisateur est bloquer pour lui interdire certiane partied du site
+    // });
     Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, 'subscribe']);
     Route::get('/search',[SearchController::class,'search']);
     Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 'ajouterUtilisateurEntrepreneurNovice']);
     Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class,'ajouterUtilisateurEntrepreneurExperimente']);
     Route::post('/ajouter-utilisateur-admin', [UserController::class,'ajouterUtilisateurAdmin']);
     Route::post('login', [UserController::class, 'login']);
+  

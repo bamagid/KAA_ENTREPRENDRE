@@ -345,5 +345,14 @@ public function modifierMotDePasse(Request $request)
         return response()->json(['message' => 'Mot de passe modifié avec succès'], 200);
     }
 
-
+    public function ListeUser()
+    {
+        $user = Auth::user();
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated.'], 401);
+        }
+    
+        return response()->json(['user' => $user], 200);
+    }
 }
