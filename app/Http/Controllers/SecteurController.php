@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Secteur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -62,10 +63,12 @@ class SecteurController extends Controller
             return response()->json(['message' => 'Non autorisé'], 401);
         }
 
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'nomSecteur' => 'required|string',
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $secteur = Secteur::create([
             'nomSecteur' => $request->nomSecteur,

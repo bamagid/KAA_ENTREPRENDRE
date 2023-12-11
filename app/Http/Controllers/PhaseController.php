@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Phase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -91,12 +92,15 @@ class phaseController extends Controller
      */
     public function create(Request $request)
     {
-        $phases = $request->validate([
+        $validator=Validator::make($request->all(),[
             'titre' => 'required',
             'description' => 'required',
             'guide_id' => 'required|numeric'
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $phases=$validator->toarray();
         $phase = new Phase($phases);
         $phase->save();
 
@@ -136,6 +140,13 @@ class phaseController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validator=Validator::make($request->all(),[
+            'titre' => 'required',
+            'description' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $phase = Phase::find($id);
         $phase->titre = $request->titre;
         $phase->description = $request->description;

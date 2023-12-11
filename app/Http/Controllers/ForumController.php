@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
  * @OA\Tag(
@@ -105,9 +106,12 @@ class ForumController extends Controller
         if (!auth()->check() || auth()->user()->role_id !==1 ) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'nomRubrique' => 'required|string|min:3',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $user = Auth::user();
 
@@ -156,11 +160,13 @@ class ForumController extends Controller
         if (!auth()->check() || auth()->user()->role_id !==1 ) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'nomRubrique' => 'required|string|min:3',
             'id' => 'required|numeric',
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $user = Auth::user();
 
         if ($user->role_id === 1) {
