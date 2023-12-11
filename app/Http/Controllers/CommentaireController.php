@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * @OA\Tag(
@@ -28,7 +29,7 @@ class CommentaireController extends Controller
     public function index()
     {
         $commentaires = Commentaire::where('is_deleted', 0)->get();
-        return response()->json(["message"=>"voici les commentaires ",'commentaires'=>$commentaires]);
+        return response()->json(["message" => "voici les commentaires ", 'commentaires' => $commentaires]);
     }
 
     /**
@@ -52,11 +53,17 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::findOrFail($request->input('id'));
         if ($commentaire) {
+            $reponses = $commentaire->reponses;
+            foreach ($reponses as $reponse) {
+                $reponse->user;
+            }
+
             return response()->json([
-                "message"=>"voici le commentaire que vous chercher et les reponses qu'il detient",
-                "commentaire"=>$commentaire,
-                "auteur du commentaire"=>$commentaire->user,
-                "reponses"=>$commentaire->reponses
+                "message" => "voici le commentaire que vous chercher et les reponses qu'il detient",
+                "auteur du commentaire" => $commentaire->user,
+                "commentaire" => $commentaire,
+                "reponses" => $reponses
+                // "Auteur de la reponse"
             ]);
         }
     }
@@ -90,12 +97,16 @@ class CommentaireController extends Controller
         if (!auth()->check()) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 'contenu' => 'required|string|min:3',
             ]
         );
-       $commentaire= Commentaire::create(
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $commentaire = Commentaire::create(
             [
                 'contenu' => $request->contenu,
                 'user_id' => Auth::user()->id,
@@ -103,7 +114,7 @@ class CommentaireController extends Controller
         );
         return response()->json([
             'message' => "Le commentaire est bien ajouté",
-            "commentaire"=>$commentaire
+            "commentaire" => $commentaire
         ]);
     }
 
@@ -137,20 +148,24 @@ class CommentaireController extends Controller
         if (!auth()->check()) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 'contenu' => 'required|string|min:3',
                 'id' => 'required|numeric',
             ]
         );
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $commentaire = Commentaire::findOrFail($request->input('id'));
         if ($commentaire->user_id === Auth::user()->id) {
             $commentaire->contenu = $request->contenu;
             $commentaire->update();
             return response()->json([
                 'message' => "Le commentaire est bien modifié",
-                "commentaire"=>$commentaire
-        ]);
+                "commentaire" => $commentaire
+            ]);
         } else {
             return response()->json(['error' => "Vous n'avez pas le droit de modifier ce commentaire"], 401);
         }
@@ -185,18 +200,22 @@ class CommentaireController extends Controller
         if (!auth()->check()) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 'id' => 'required|numeric',
             ]
         );
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $commentaire = Commentaire::findOrFail($request->input('id'));
         if ($commentaire->user_id === Auth::user()->id) {
             $commentaire->is_deleted = true;
             $commentaire->update();
             return response()->json([
                 'message' => "Le commentaire est bien archivé",
-                "commentaire"=>$commentaire
+                "commentaire" => $commentaire
             ]);
         } else {
             return response()->json(['error' => "Vous n'avez pas le droit de supprimer ce commentaire"], 401);

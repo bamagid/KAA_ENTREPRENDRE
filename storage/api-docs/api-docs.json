@@ -804,18 +804,13 @@
                     "Guides"
                 ],
                 "summary": "Récupérer la liste des guides",
-                "description": "Récupère la liste de tous les guides",
+                "description": "Récupère  le guide",
                 "operationId": "getGuides",
                 "responses": {
                     "200": {
-                        "description": "Liste des guides récupérée avec succès"
+                        "description": "Guides récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/guide/create": {
@@ -1693,12 +1688,7 @@
                     "200": {
                         "description": "Entrepreneur inscrit avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/ajouter-utilisateur-entrepreneur-expreimente": {
@@ -1758,12 +1748,7 @@
                     "200": {
                         "description": "Entrepreneur inscrit avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/ajouter-utilisateur-admin": {
@@ -1808,12 +1793,7 @@
                     "200": {
                         "description": "Admin inscrit avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/login": {
@@ -1849,12 +1829,7 @@
                     "401": {
                         "description": "Informations invalid"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/deconnecter": {

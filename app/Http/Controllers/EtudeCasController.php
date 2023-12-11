@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EtudeCas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 use OpenApi\Annotations as OA;
 
@@ -80,13 +81,16 @@ class EtudeCasController extends Controller
                 $imagePath = $image->storeAs('images', $imageName, 'public');
             }
     
-            $etudeCas = $request->validate([
+            $validator=Validator::make($request->all(),[
     
                 'contenu' => 'required',
                 'image' => 'required',
     
             ]);
-            $etudeCas = new EtudeCas($etudeCas);
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+            $etudeCas = new EtudeCas();
             $etudeCas->contenu = $request->contenu;
             $etudeCas->image = $imagePath;
             $etudeCas->user_id = FacadesAuth::user()->id;
@@ -134,6 +138,15 @@ class EtudeCasController extends Controller
     {
         if (!auth()->check()) {
             return response()->json(['message' => 'Non autorisé'], 401);
+        }
+        $validator=Validator::make($request->all(),[
+    
+            'contenu' => 'required',
+            'image' => 'required',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
        
         $etudeCas = EtudeCas::find($request->id);

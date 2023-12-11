@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guide;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
  * @OA\Tag(
@@ -19,19 +20,19 @@ class GuideController extends Controller
      *      operationId="getGuides",
      *      tags={"Guides"},
      *      summary="Récupérer la liste des guides",
-     *      description="Récupère la liste de tous les guides",
+     *      description="Récupère  le guide",
      *      @OA\Response(
      *          response=200,
-     *          description="Liste des guides récupérée avec succès"
+     *          description="Guides récupérée avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function index()
     {
-        $guides = Guide::all();
+        $guides = Guide::all()->first();
+        return response()->json([
+            "La listes de toutes les guides "=>$guides
+        ], 200);
     }
 
     /**
@@ -62,13 +63,19 @@ class GuideController extends Controller
      */
     public function create(Request $request)
     {
-        $guides = $request->validate([
+        $validator=Validator::make($request->all(),[
             'titre' => 'required',
             'contenu' => 'required',
             'reaction' => 'required',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-        $guide = new Guide($guides);
+        $guide = new Guide();
+        $guide->titre=$request->titre;
+        $guide->titre=$request->contenu;
+        $guide->reaction=$request->reaction;
         $guide->save();
 
         return response()->json(['message' => 'Guide ajouté avec succès', 'guide' => $guide], 200);
@@ -109,10 +116,17 @@ class GuideController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validator=Validator::make($request->all(),[
+            'titre' => 'required',
+            'contenu' => 'required',
+            'reaction' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $guide = Guide::find($id);
         $guide->titre = $request->titre;
         $guide->contenu = $request->contenu;
-        $guide->phases = $request->phases;
         $guide->reaction = $request->reaction;
         $guide->save();
 

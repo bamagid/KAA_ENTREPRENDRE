@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -81,24 +82,26 @@ class UserController extends Controller
      *          response=200,
      *          description="Entrepreneur inscrit avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
+     * 
      * )
      */
 
     public function ajouterUtilisateurEntrepreneurNovice(Request $request)
     {
-        $request->validate([
-            'nom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
-            'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
-            'adresse' => 'required|string|regex:/^[a-zA-Z0-9 ]+$/',
-            'region' => 'required|string|regex:/^[a-zA-Z ]+$/',
-            'statut' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        $validator = Validator::make($request->all(), [
+            'nom' => ['required', 'string', 'min:4', 'regex:/^[a-zA-Z]+$/'],
+            'prenom' => ['required', 'string', 'min:4', 'regex:/^[a-zA-Z]+$/'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'],
+            'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/'],
+            'region' => ['required', 'string', 'regex:/^[a-zA-Z ]+$/'],
+            'statut' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $imagePath = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -152,15 +155,12 @@ class UserController extends Controller
      *          response=200,
      *          description="Entrepreneur inscrit avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
 
     public function ajouterUtilisateurEntrepreneurExperimente(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'email' => 'required|email|unique:users,email',
@@ -170,6 +170,9 @@ class UserController extends Controller
             'statut' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $imagePath = null;
 
         if ($request->hasFile('image')) {
@@ -223,16 +226,13 @@ class UserController extends Controller
      *          response=200,
      *          description="Admin inscrit avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
 
 
     public function ajouterUtilisateurAdmin(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'email' => 'required|email|unique:users,email',
@@ -241,6 +241,9 @@ class UserController extends Controller
             'statut' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez des règles pour la validation de l'image si nécessaire
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $imagePath = null;
 
         if ($request->hasFile('image')) {
@@ -291,19 +294,19 @@ class UserController extends Controller
      *          response=401,
      *          description="Informations invalid"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function login(Request $request)
     {
 
         // data validation
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             "email" => "required|email",
             "password" => "required"
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         // JWTAuth
         $token = JWTAuth::attempt([
@@ -397,7 +400,7 @@ class UserController extends Controller
     {
         $entrepreneurNovice = auth()->user();
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nom' => 'required|string',
             'prenom' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $entrepreneurNovice->id,
@@ -407,6 +410,9 @@ class UserController extends Controller
             'statut' => 'required|string',
 
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $imagePath = $entrepreneurNovice->image;
 
@@ -474,7 +480,7 @@ class UserController extends Controller
     {
         $entrepreneurExperimente = auth()->user();
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nom' => 'required|string',
             'prenom' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $entrepreneurExperimente->id,
@@ -488,8 +494,10 @@ class UserController extends Controller
 
         ]);
 
-        $imagePath = $entrepreneurExperimente->image;
-
+        // $imagePath = $entrepreneurExperimente->image;
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -553,7 +561,7 @@ class UserController extends Controller
 
         $admin = auth()->user();
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nom' => 'required|string',
             'prenom' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $admin->id,
@@ -564,7 +572,9 @@ class UserController extends Controller
 
 
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $imagePath = $admin->image;
 
         if ($request->hasFile('image')) {
@@ -667,10 +677,13 @@ class UserController extends Controller
 
     public function modifierMotDePasse(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'ancien_password' => 'required',
             'nouveau_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $user = Auth::user();
 

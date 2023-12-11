@@ -63,6 +63,8 @@ Route::post('/subscribe-newsletter', [NewsletterSubscriptionController::class, '
 //faire une recherche
 Route::get('/search',[SearchController::class,'search']);
 Route::get('/index_cas', [EtudeCasController::class, 'index']);
+//ajoute
+Route::get('/guides', [GuideController::class, 'index']);
 //afficher l'utilisateur connecté
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

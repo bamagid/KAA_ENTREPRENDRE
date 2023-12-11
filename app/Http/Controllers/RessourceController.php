@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ressource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -65,13 +66,15 @@ class RessourceController extends Controller
      */
     public function ajouterRessource(Request $request)
     {
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'titre' => 'required|string',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'lien' => 'required|string',
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         // Gestion du téléchargement de l'image
         $imagePath = null;
         if ($request->hasFile('image')) {
@@ -147,13 +150,15 @@ class RessourceController extends Controller
             return response()->json(['message' => 'Utilisateur non authentifié'], 401);
         }
 
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'titre' => 'required|string',
             'description' => 'required|string',
             'image' => 'required|string',
             'lien' => 'required|string',
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $ressource = Ressource::find($id);
 
         if (!$ressource) {
@@ -266,7 +271,10 @@ class RessourceController extends Controller
     public function show(Request $request)
     {
         $ressource = Ressource::findOrFail($request->id);
-        return $ressource;
+        return response()->json([
+            "message"=>"Voici la resource que vous chercher",
+            "ressource"=>$ressource
+            ], 200);
     }
 
     /**

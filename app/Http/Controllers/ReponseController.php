@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
  * @OA\Tag(
@@ -61,10 +62,13 @@ class ReponseController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'contenu' => 'required|string|min:3',
             'commentaire_id' => 'required|numeric',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
       $reponse= Reponse::create([
             'contenu' => $request->contenu,
@@ -101,10 +105,13 @@ class ReponseController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'contenu' => 'required|string|min:3',
             'id' => 'required|numeric',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $reponse = Reponse::findOrFail($request->input('id'));
         if ($reponse->user_id === auth()->user()->id) {
@@ -144,10 +151,12 @@ class ReponseController extends Controller
          if (!auth()->check() ) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'id' => 'required|numeric',
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $reponse = Reponse::findOrFail($request->input('id'));
         if ($reponse->user_id === auth()->user()->id) {
             $reponse->is_deleted = true;
@@ -185,10 +194,12 @@ class ReponseController extends Controller
     {
         $user = auth()->user();
         if ($user->role_id === 1) {
-            $request->validate([
+            $validator=Validator::make($request->all(),[
                 'id' => 'required|numeric',
             ]);
-
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
             $reponse = Reponse::findOrFail($request->input('id'));
             $reponse->delete();
             return response()->json(['message' => "La réponse a bien été supprimée"]);

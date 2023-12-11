@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Evenement;
 use App\Models\Secteur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
  * @OA\Tag(
@@ -105,7 +106,7 @@ class EvenementController extends Controller
         }
         $user = auth()->user();
 
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'nomEvenement' => 'required|string',
             'type' => 'required|in:en ligne,presentiel',
             'dateEvenement' => 'required|date',
@@ -113,7 +114,9 @@ class EvenementController extends Controller
             'description' => 'required|string',
             'secteur_id' => 'required|exists:secteurs,id',
         ]);
-
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $imagePath = null;
 
         if ($request->hasFile('image')) {
@@ -181,7 +184,7 @@ class EvenementController extends Controller
         if (!auth()->check()) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'nomEvenement' => 'required|string',
             'type' => 'required|in:en ligne,presentiel',
             'dateEvenement' => 'required|date',
@@ -189,6 +192,9 @@ class EvenementController extends Controller
             'description' => 'required|string',
             'secteur_id' => 'required|exists:secteurs,id',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         if (!auth()->check()) {
             return response()->json(['message' => 'Non autorisé'], 401);
         }
