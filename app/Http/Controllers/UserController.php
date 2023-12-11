@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules;
 use OpenApi\Annotations as OA;
 
 /**
@@ -92,7 +93,7 @@ class UserController extends Controller
             'nom' => ['required', 'string', 'min:4', 'regex:/^[a-zA-Z]+$/'],
             'prenom' => ['required', 'string', 'min:4', 'regex:/^[a-zA-Z]+$/'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'],
+            'password' => Rules\Password::defaults(),
             'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/'],
             'region' => ['required', 'string', 'regex:/^[a-zA-Z ]+$/'],
             'statut' => ['required', 'string'],
@@ -161,10 +162,10 @@ class UserController extends Controller
     public function ajouterUtilisateurEntrepreneurExperimente(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
+            'nom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
             'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+            'password' =>Rules\Password::defaults(),
             'adresse' => 'required|string|regex:/^[a-zA-Z0-9 ]+$/',
             'region' => 'required|string|regex:/^[a-zA-Z ]+$/',
             'statut' => 'required|string',
@@ -233,10 +234,10 @@ class UserController extends Controller
     public function ajouterUtilisateurAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
+            'nom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
             'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+            'password' =>Rules\Password::defaults(),
 
             'statut' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez des règles pour la validation de l'image si nécessaire
@@ -302,7 +303,7 @@ class UserController extends Controller
         // data validation
         $validator = Validator::make($request->all(), [
             "email" => "required|email",
-            "password" => "required"
+            "password" => Rules\Password::defaults()
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -679,7 +680,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'ancien_password' => 'required',
-            'nouveau_password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
+            'nouveau_password' =>Rules\Password::defaults(),
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
