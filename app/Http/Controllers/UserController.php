@@ -93,19 +93,19 @@ class UserController extends Controller
             'password' => Rules\Password::defaults(),
             'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/'],
             'region' => ['required', 'string', 'regex:/^[a-zA-Z ]+$/'],
-            'statut' => ['required', 'string'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            // 'statut' => ['required', 'string'],
+            // 'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('images', $imageName, 'public');
-        }
+        // $imagePath = null;
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image');
+        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
+        //     $imagePath = $image->storeAs('images', $imageName, 'public');
+        // }
         $roleEntrepreneurNovice = Role::where('nomRole', 'novice')->first();
         $user = User::create([
             'nom' => $request->nom,
@@ -115,9 +115,9 @@ class UserController extends Controller
             'adresse' => $request->adresse,
             'region' => $request->region,
             'role_id' => $roleEntrepreneurNovice->id,
-            'statut' => $request->statut,
-            'image' => $imagePath,
-            'progression' => $request->progression
+            // 'statut' => $request->statut,
+            // 'image' => $imagePath,
+            // 'progression' => $request->progression
         ]);
 
         $user->roles()->attach($roleEntrepreneurNovice);
@@ -353,7 +353,11 @@ class UserController extends Controller
 
         session()->regenerateToken();
 
-        return redirect('/');
+        return response()->json([
+            'status' => true,
+            'message' => 'Déconnecté avec succès',
+            ], 200
+        );
     }
 
     /**

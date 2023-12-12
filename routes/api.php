@@ -103,7 +103,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/modifier-mot-de-passe', [UserController::class, 'modifierMotDePasse']);
     //reinitialiser
     Route::post('/reinitialiser-mot-de-passe', [UserController::class, 'reinitialiserMotDePasse']);
-    // Route::post('login', [UserController::class, 'login']);
     //se deconnecter
     Route::get('deconnecter', [UserController::class, 'deconnect']);
 });
