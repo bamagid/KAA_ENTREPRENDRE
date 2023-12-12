@@ -32,8 +32,7 @@ Route::post('/ajouter-utilisateur-entrepreneur-novice', [UserController::class, 
 Route::post('/ajouter-utilisateur-entrepreneur-experimente', [UserController::class, 'ajouterUtilisateurEntrepreneurExperimente']);
 //ajouter un utilisateur 'admin'
 Route::post('/ajouter-utilisateur-admin', [UserController::class, 'ajouterUtilisateurAdmin']);
-//se connecter
-Route::post('login', [UserController::class, 'login']);
+
 //verifier si un email existe
 Route::post('verifMail', [UserController::class, 'verifMail']);
 //reinitialisation du mot de passe
@@ -67,12 +66,16 @@ Route::get('/index_cas', [EtudeCasController::class, 'index']);
 Route::get('/guides', [GuideController::class, 'index']);
 //afficher l'utilisateur connecté
 Route::middleware('auth:api')->get('/user', function (Request $request) {
+
     return $request->user();
 });
+Route::post('create', [EtudeCasController::class, 'create']);
 Route::middleware('auth:api')->group(function () {
     /**Gestion etudes cas */
+  
+    //se connecter
+   
     // ajout cas pour
-    Route::post('create', [EtudeCasController::class, 'create']);
     //modifier une etude cas
     Route::post('update_etudeCas', [EtudeCasController::class, 'update']);
     //archivier une etude cas
@@ -103,13 +106,15 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/modifier-mot-de-passe', [UserController::class, 'modifierMotDePasse']);
     //reinitialiser
     Route::post('/reinitialiser-mot-de-passe', [UserController::class, 'reinitialiserMotDePasse']);
-    Route::post('login', [UserController::class, 'login']);
+  
     //se deconnecter
     Route::get('deconnecter', [UserController::class, 'deconnect']);
 });
+Route::post('login', [UserController::class, 'login']);
 
 Route::middleware(['auth:api', 'admin'])->group(function () {
     /** Gestion des phases d'un guide */
+  
     //ajouter phase
     Route::post('/create_phase', [PhaseController::class, 'create']);
     //modifier le phase

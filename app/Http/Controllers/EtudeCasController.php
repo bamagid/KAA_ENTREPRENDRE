@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\EtudeCas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
-use Tymon\JWTAuth\Contracts\Providers\Auth;
+// use Tymon\JWTAuth\Contracts\Providers\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use OpenApi\Annotations as OA;
 
 /**
@@ -65,46 +67,9 @@ class EtudeCasController extends Controller
      *          {"Bearer": {}}
      *      }
      * )
-     */
-    public function create(Request $request)
-    {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Non autorisé'], 401);
-        }
-        $user=auth()->user();
-        if ($user->role->id===2) {
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('images', $imageName, 'public');
-            }
-
-            $etudeCas = $request->validate([
-
-                'contenu' => 'required',
-                'image' => 'required',
-
-            ]);
-            $etudeCas = new EtudeCas($etudeCas);
-            $etudeCas->contenu = $request->contenu;
-            $etudeCas->image = $imagePath;
-            $etudeCas->user_id = FacadesAuth::user()->id;
-            $etudeCas->secteur_id = $request->secteur_id;
-            $etudeCas->save();
-
-            return response()->json(['message' => 'etudeCas ajouter avec succée', 'etudeCas' => $etudeCas], 200);
-        }
-
-            return response()->json(
-                [
-                    "message"=>"Vous n'avez pas les droits pour ajouter une étude de cas",
-                    403
-                ],
-            );
-        }
-
-    /**
+     *
+     * 
+     * 
      * @OA\Post(
      *      path="/api/update_etudeCas",
      *      operationId="updateEtudeCas",
@@ -130,6 +95,30 @@ class EtudeCasController extends Controller
      *      }
      * )
      */
+
+     public function create(Request $request)
+{
+    // Check if the user is authenticated
+    // if (!auth()->check()) {
+    //     return response()->json(['message' => 'Non autorisé'], 401);
+    // }
+
+    // Get the authenticated user
+    $user = auth()->user();
+
+    // Create EtudeCas instance
+    $etudeCas = new EtudeCas();
+    $etudeCas->contenu = $request->contenu;
+    // Other properties...
+
+    // Associate EtudeCas with the authenticated user
+    $etudeCas->user_id = 3;
+    $etudeCas->secteur_id = 1;
+    // Save the EtudeCas instance
+    $etudeCas->save();
+
+    return response()->json(['message' => 'etudeCas ajouté avec succès', 'etudeCas' => $etudeCas], 200);
+}
     public function update(Request $request)
     {
         if (!auth()->check()) {
