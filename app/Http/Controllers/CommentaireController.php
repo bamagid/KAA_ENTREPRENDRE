@@ -87,9 +87,6 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
-     *  security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function store(Request $request)
@@ -138,9 +135,6 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
-     *  security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function update(Request $request)
@@ -190,9 +184,6 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
-     *  security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function archiveCommentaire(Request $request)
@@ -241,9 +232,6 @@ class CommentaireController extends Controller
      *         response=401,
      *         description="Non autorisé",
      *     ),
-     *  security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function destroy(Request $request)

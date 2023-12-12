@@ -5,6 +5,20 @@
         "description": "Cet api va nous permettre de faire communiquer la partie front et la partie back de notre plateforme",
         "version": "1.0.0"
     },
+    "components": {
+        "securitySchemes": {
+          "BearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ], 
     "paths": {
         "/api/commentaires": {
             "get": {
@@ -80,12 +94,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/commentaire/edit": {
@@ -122,12 +131,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/commentaire/archive": {
@@ -160,12 +164,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/commentaire/delete": {
@@ -198,12 +197,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/index_cas": {
@@ -220,7 +214,7 @@
                 }
             }
         },
-        "/api/etude-cas/create": {
+        "/api/create": {
             "post": {
                 "tags": [
                     "EtudeCas"
@@ -228,17 +222,6 @@
                 "summary": "Ajouter une nouvelle étude de cas",
                 "description": "Ajoute une nouvelle étude de cas avec les détails fournis",
                 "operationId": "createEtudeCas",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID du secteur",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -264,12 +247,7 @@
                     "200": {
                         "description": "Etude de cas ajoutée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/update_etudeCas": {
@@ -334,12 +312,7 @@
                     "200": {
                         "description": "Etude de cas archivée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/etude-cas/delete/{id}": {
@@ -365,12 +338,7 @@
                     "200": {
                         "description": "Etude de cas supprimée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/events": {
@@ -385,12 +353,7 @@
                     "200": {
                         "description": "Liste des événements récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
@@ -441,12 +404,7 @@
                     "201": {
                         "description": "Événement créé avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/events/{id}": {
@@ -475,12 +433,7 @@
                     "404": {
                         "description": "Événement non trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
@@ -545,12 +498,7 @@
                     "404": {
                         "description": "Événement non trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             },
             "delete": {
                 "tags": [
@@ -577,12 +525,7 @@
                     "404": {
                         "description": "Événement non trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/forums": {
@@ -597,12 +540,7 @@
                     "200": {
                         "description": "Liste des forums récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/forum": {
@@ -635,12 +573,7 @@
                     "404": {
                         "description": "Forum non trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/forum/create": {
@@ -673,12 +606,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/forum/update": {
@@ -714,12 +642,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/forum/archive": {
@@ -752,12 +675,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/forum/destroy": {
@@ -790,12 +708,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/guides": {
@@ -849,12 +762,7 @@
                     "200": {
                         "description": "Guide créé avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/guide/update/{id}": {
@@ -904,12 +812,7 @@
                     "200": {
                         "description": "Guide mis à jour avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/guide/archiver_guide/{id}": {
@@ -935,12 +838,7 @@
                     "200": {
                         "description": "Guide archivé avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/phase/{id}": {
@@ -966,12 +864,7 @@
                     "200": {
                         "description": "Liste des phases récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/phases": {
@@ -986,12 +879,7 @@
                     "200": {
                         "description": "Liste des phases récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/create_phase": {
@@ -1027,12 +915,7 @@
                     "200": {
                         "description": "phase créé avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/update_phase/{id}": {
@@ -1076,12 +959,7 @@
                     "200": {
                         "description": "phase mise à jour avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/archiver_phase/{id}": {
@@ -1107,12 +985,7 @@
                     "200": {
                         "description": "phase archivé avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/reponses": {
@@ -1127,12 +1000,7 @@
                     "200": {
                         "description": "Liste des réponses récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/reponse/create": {
@@ -1165,12 +1033,7 @@
                     "200": {
                         "description": "Réponse ajoutée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/reponse/edit": {
@@ -1203,12 +1066,7 @@
                     "200": {
                         "description": "Réponse mise à jour avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/reponse/archive": {
@@ -1238,12 +1096,7 @@
                     "200": {
                         "description": "Réponse archivée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/reponse/delete": {
@@ -1273,12 +1126,7 @@
                     "200": {
                         "description": "Réponse supprimée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/ressources": {
@@ -1293,12 +1141,7 @@
                     "200": {
                         "description": "Liste des ressources récupérée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/ajouter-ressource": {
@@ -1338,12 +1181,7 @@
                     "201": {
                         "description": "Ressource ajoutée avec succès"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/ressources/{id}": {
@@ -1397,12 +1235,7 @@
                     "404": {
                         "description": "Ressource non trouvée"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             },
             "delete": {
                 "tags": [
@@ -1429,12 +1262,7 @@
                     "404": {
                         "description": "Ressource non trouvée"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/ressource": {
@@ -1463,12 +1291,7 @@
                     "404": {
                         "description": "Ressource non trouvée"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
         "/api/ressource/archive": {
@@ -1501,12 +1324,7 @@
                     "404": {
                         "description": "Ressource non trouvée"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/roles": {
@@ -1559,12 +1377,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/secteur/destroy": {
@@ -1597,12 +1410,7 @@
                     "401": {
                         "description": "Non autorisé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/ajouter-role": {
@@ -1632,12 +1440,7 @@
                     "200": {
                         "description": "Role ajouté avec succés"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/ajouter-utilisateur-entrepreneur-novice": {
@@ -1847,12 +1650,7 @@
                     "401": {
                         "description": "Aucun utilisateur connecté"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/entrepreneur-novice/profile": {
@@ -1906,12 +1704,7 @@
                     "404": {
                         "description": "L'utilisateur n'a pas été trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/entrepreneur-experimente/profile": {
@@ -1974,12 +1767,7 @@
                     "404": {
                         "description": "L'utilisateur n'a pas été trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/admin/profile": {
@@ -2027,12 +1815,7 @@
                     "404": {
                         "description": "L'utilisateur n'a pas été trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/admin/block-account/{userId}": {
@@ -2061,12 +1844,7 @@
                     "404": {
                         "description": "L'utilisateur n'a pas été trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/api/modifier-mot-de-passe": {
@@ -2102,12 +1880,7 @@
                     "404": {
                         "description": "L'utilisateur n'a pas été trouvé"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
         "/verifMail": {

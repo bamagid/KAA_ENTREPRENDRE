@@ -26,9 +26,6 @@ class ForumController extends Controller
      *          response=200,
      *          description="Liste des forums récupérée avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function index()
@@ -59,9 +56,6 @@ class ForumController extends Controller
      *          response=404,
      *          description="Forum non trouvé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function show(Request $request)
@@ -96,9 +90,6 @@ class ForumController extends Controller
      *          response=401,
      *          description="Non autorisé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function store(Request $request)
@@ -150,9 +141,6 @@ class ForumController extends Controller
      *          response=401,
      *          description="Non autorisé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function update(Request $request)
@@ -202,9 +190,6 @@ class ForumController extends Controller
      *          response=401,
      *          description="Non autorisé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function archiveRubrique(Request $request)
@@ -250,9 +235,6 @@ class ForumController extends Controller
      *          response=401,
      *          description="Non autorisé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function destroy(Request $request)

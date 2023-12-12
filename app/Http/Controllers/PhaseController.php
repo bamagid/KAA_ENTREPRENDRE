@@ -33,9 +33,6 @@ class phaseController extends Controller
      *          response=200,
      *          description="Liste des phases récupérée avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function show(int $id)
@@ -54,9 +51,6 @@ class phaseController extends Controller
      *          response=200,
      *          description="Liste des phases récupérée avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function index()
@@ -85,9 +79,6 @@ class phaseController extends Controller
      *          response=200,
      *          description="phase créé avec succès"
      *      ),
-     *      security={
-     *         {"Bearer": {}}
-     *      }
      * )
      */
     public function create(Request $request)
@@ -133,9 +124,6 @@ class phaseController extends Controller
      *          response=200,
      *          description="phase mise à jour avec succès"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function update(Request $request, string $id)
@@ -173,9 +161,6 @@ class phaseController extends Controller
      *          response=200,
      *          description="phase archivé avec succès"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function archiver_phase(Request $request, int $id)

@@ -52,9 +52,6 @@ class SecteurController extends Controller
      *          response=401,
      *          description="Non autorisé",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function store(Request $request)
@@ -107,9 +104,6 @@ class SecteurController extends Controller
      *          response=401,
      *          description="Non autorisé",
      *      ),
-     *      security={
-     *         {"Bearer": {}}
-     *      }
      * )
      */
     public function destroy($id)

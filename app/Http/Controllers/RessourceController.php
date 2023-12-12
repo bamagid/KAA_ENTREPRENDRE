@@ -27,9 +27,6 @@ class RessourceController extends Controller
      *          response=200,
      *          description="Liste des ressources récupérée avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
 
@@ -59,9 +56,6 @@ class RessourceController extends Controller
      *          response=201,
      *          description="Ressource ajoutée avec succès"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function ajouterRessource(Request $request)
@@ -139,9 +133,6 @@ class RessourceController extends Controller
      *          response=404,
      *          description="Ressource non trouvée",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function modifierRessource(Request $request, $id)
@@ -209,9 +200,6 @@ class RessourceController extends Controller
      *          response=404,
      *          description="Ressource non trouvée",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function supprimerRessource($id)
@@ -263,9 +251,6 @@ class RessourceController extends Controller
      *          response=404,
      *          description="Ressource non trouvée",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function show(Request $request)
@@ -306,9 +291,6 @@ class RessourceController extends Controller
      *          response=404,
      *          description="Ressource non trouvée",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function archive(Request $request)

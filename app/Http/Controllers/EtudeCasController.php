@@ -36,18 +36,11 @@ class EtudeCasController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/etude-cas/create",
+     *      path="/api/create",
      *      operationId="createEtudeCas",
      *      tags={"EtudeCas"},
      *      summary="Ajouter une nouvelle étude de cas",
      *      description="Ajoute une nouvelle étude de cas avec les détails fournis",
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="ID du secteur",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(type="integer")
-     *      ),
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(
@@ -61,9 +54,6 @@ class EtudeCasController extends Controller
      *          response=200,
      *          description="Etude de cas ajoutée avec succès"
      *      ),
-     *       security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function create(Request $request)
@@ -125,9 +115,6 @@ class EtudeCasController extends Controller
      *          response=200,
      *          description="Etude de cas modifiée avec succès")
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function update(Request $request)
@@ -176,9 +163,6 @@ class EtudeCasController extends Controller
      *          response=200,
      *          description="Etude de cas archivée avec succès",
      *      ),
-     *       security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function archive(Request $request)
@@ -214,9 +198,6 @@ class EtudeCasController extends Controller
      *          response=200,
      *          description="Etude de cas supprimée avec succès",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function delete(Request $request)

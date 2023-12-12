@@ -26,9 +26,6 @@ class EvenementController extends Controller
      *          response=200,
      *          description="Liste des événements récupérée avec succès"
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function index()
@@ -59,9 +56,6 @@ class EvenementController extends Controller
      *          response=404,
      *          description="Événement non trouvé",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function show($id)
@@ -94,9 +88,6 @@ class EvenementController extends Controller
      *          response=201,
      *          description="Événement créé avec succès"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function store(Request $request)
@@ -176,9 +167,6 @@ class EvenementController extends Controller
      *          response=404,
      *          description="Événement non trouvé",
      *      ),
-     *       security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function update(Request $request, $id)
@@ -252,9 +240,6 @@ class EvenementController extends Controller
      *          response=404,
      *          description="Événement non trouvé",
      *      ),
-     *       security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function destroy($id)

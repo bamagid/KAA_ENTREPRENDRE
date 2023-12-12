@@ -40,9 +40,6 @@ class UserController extends Controller
      *          response=200,
      *          description="Role ajouté avec succés"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function ajouterRole(Request $request)
@@ -345,9 +342,6 @@ class UserController extends Controller
      *          response=401,
      *          description="Aucun utilisateur connecté"
      *      ),
-     *      security={
-     *         {"Bearer": {}}
-     *      }
      * )
      */
 
@@ -391,9 +385,6 @@ class UserController extends Controller
      *          response=404,
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
-     *      security={
-     *         {"Bearer": {}}
-     *      }
      * )
      */
 
@@ -470,9 +461,6 @@ class UserController extends Controller
      *          response=404,
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
-     *      security={
-     *         {"Bearer": {}}
-     *      }
      * )
      */
 
@@ -550,9 +538,6 @@ class UserController extends Controller
      *          response=404,
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
 
@@ -623,9 +608,6 @@ class UserController extends Controller
      *          response=404,
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
 
@@ -669,9 +651,6 @@ class UserController extends Controller
      *          response=404,
      *          description="L'utilisateur n'a pas été trouvé"
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
 

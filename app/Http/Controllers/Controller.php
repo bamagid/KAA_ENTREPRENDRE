@@ -14,6 +14,14 @@ use Illuminate\Routing\Controller as BaseController;
  */
 class Controller extends BaseController
 {
+  /**
+ * @OA\SecurityScheme(
+ *      type="http",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
+ *      securityScheme="BearerAuth"
+ * )
+ */
     use AuthorizesRequests, ValidatesRequests;
  
 }

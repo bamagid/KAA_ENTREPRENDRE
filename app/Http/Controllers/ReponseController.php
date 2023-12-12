@@ -25,9 +25,6 @@ class ReponseController extends Controller
      *          response=200,
      *          description="Liste des réponses récupérée avec succès",
      *      ),
-     *      security={
-     *          {"api_key": {}}
-     *      }
      * )
      */
     public function index()
@@ -55,9 +52,6 @@ class ReponseController extends Controller
      *          response=200,
      *          description="Réponse ajoutée avec succès",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function store(Request $request)
@@ -98,9 +92,6 @@ class ReponseController extends Controller
      *          response=200,
      *          description="Réponse mise à jour avec succès",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function update(Request $request)
@@ -141,9 +132,6 @@ class ReponseController extends Controller
      *          response=200,
      *          description="Réponse archivée avec succès",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function archivereponse(Request $request)
@@ -185,9 +173,6 @@ class ReponseController extends Controller
      *          response=200,
      *          description="Réponse supprimée avec succès",
      *      ),
-     *      security={
-     *          {"Bearer": {}}
-     *      }
      * )
      */
     public function destroy(Request $request)
