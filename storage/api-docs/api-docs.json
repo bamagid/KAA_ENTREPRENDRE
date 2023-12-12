@@ -5,20 +5,6 @@
         "description": "Cet api va nous permettre de faire communiquer la partie front et la partie back de notre plateforme",
         "version": "1.0.0"
     },
-    "components": {
-        "securitySchemes": {
-          "BearerAuth": {
-            "type": "http",
-            "scheme": "bearer",
-            "bearerFormat": "JWT"
-          }
-        }
-      },
-      "security": [
-        {
-          "BearerAuth": []
-        }
-      ], 
     "paths": {
         "/api/commentaires": {
             "get": {

@@ -87,27 +87,25 @@ class UserController extends Controller
     public function ajouterUtilisateurEntrepreneurNovice(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nom' => ['required', 'string', 'min:2', 'regex:/^[a-zA-Z]+$/'],
-            'prenom' => ['required', 'string', 'min:2', 'regex:/^[a-zA-Z]+$/'],
+            'nom' => ['required', 'string', 'min:4', 'regex:/^[a-zA-Z]+$/'],
+            'prenom' => ['required', 'string', 'min:4', 'regex:/^[a-zA-Z ]+$/'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => Rules\Password::defaults(),
             'adresse' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/'],
             'region' => ['required', 'string', 'regex:/^[a-zA-Z ]+$/'],
-            // 'statut' => ['required', 'string'],
-            // 'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            // 'statut' => ['required', 'string'],
-            // 'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'statut' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // $imagePath = null;
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-        //     $imagePath = $image->storeAs('images', $imageName, 'public');
-        // }
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
         $roleEntrepreneurNovice = Role::where('nomRole', 'entrepreneur_novice')->first();
         $user = User::create([
             'nom' => $request->nom,
@@ -117,9 +115,9 @@ class UserController extends Controller
             'adresse' => $request->adresse,
             'region' => $request->region,
             'role_id' => $roleEntrepreneurNovice->id,
-            // 'statut' => $request->statut,
-            // 'image' => $imagePath,
-            // 'progression' => $request->progression
+            'statut' => $request->statut,
+            'image' => $imagePath,
+            'progression' => $request->progression
         ]);
 
         $user->roles()->attach($roleEntrepreneurNovice);
@@ -156,32 +154,30 @@ class UserController extends Controller
      *          description="Entrepreneur inscrit avec succès"
      *      ),
      * )
-     */ 
+     */
 
     public function ajouterUtilisateurEntrepreneurExperimente(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'nom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
-            'prenom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
-            'nom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
-            'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
+            'prenom' => 'required|string|min:4|regex:/^[a-zA-Z ]+$/',
             'email' => 'required|email|unique:users,email',
-            'password' =>Rules\Password::defaults(),
+            'password' => Rules\Password::defaults(),
             'adresse' => 'required|string|regex:/^[a-zA-Z0-9 ]+$/',
             'region' => 'required|string|regex:/^[a-zA-Z ]+$/',
-            // 'statut' => 'required|string',
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'statut' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-        // $imagePath = null;
+        $imagePath = null;
 
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-        //     $imagePath = $image->storeAs('images', $imageName, 'public');
-        // }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
 
         $roleEntrepreneurExperimente = Role::where('nomRole', 'entrepreneur_experimente')->first();
 
@@ -192,9 +188,9 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
             'region' => $request->region,
-            'role_id' => $request->role_id,
-            // 'statut' => $request->statut,
-            // 'image' => $imagePath,
+            'role_id' => $roleEntrepreneurExperimente->id,
+            'statut' => $request->statut,
+            'image' => $imagePath,
             'experience' => $request->experience,
             'activite' => $request->activite,
             'realisation' => $request->realisation
@@ -236,25 +232,23 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
-            'prenom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
-            'nom' => 'required|string|min:2|regex:/^[a-zA-Z]+$/',
             'prenom' => 'required|string|min:4|regex:/^[a-zA-Z]+$/',
             'email' => 'required|email|unique:users,email',
-            'password' =>Rules\Password::defaults(),
+            'password' => Rules\Password::defaults(),
 
-            // 'statut' => 'required|string',
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez des règles pour la validation de l'image si nécessaire
+            'statut' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ajoutez des règles pour la validation de l'image si nécessaire
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-        // $imagePath = null;
+        $imagePath = null;
 
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-        //     $imagePath = $image->storeAs('images', $imageName, 'public');
-        // }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+        }
 
         $roleAdmin = Role::where('nomRole', 'admin')->first();
 
@@ -265,9 +259,9 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'adresse' => $request->adresse,
             'region' => $request->region,
-            'role_id' => $request->role_id,
-            // 'statut' => $request->statut,
-            // 'image' => $imagePath
+            'role_id' => $roleAdmin->id,
+            'statut' => $request->statut,
+            'image' => $imagePath
         ]);
 
         $user->roles()->attach($roleAdmin);
@@ -303,11 +297,14 @@ class UserController extends Controller
     public function login(Request $request)
     {
 
-          // data validation
-          $request->validate([
+        // data validation
+        $validator = Validator::make($request->all(), [
             "email" => "required|email",
             "password" => Rules\Password::defaults()
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         // JWTAuth
         $token = JWTAuth::attempt([
@@ -316,15 +313,19 @@ class UserController extends Controller
         ]);
 
         if (!empty($token)) {
-            $user=Auth::user();
+
             return response()->json([
                 "status" => true,
                 "message" => "utilisateur connecter avec succe",
-                "token" => $token,
-                "user"=>$user
+                "token" => $token
             ]);
+        }
+
+        return response()->json([
+            "status" => false,
+            "message" => "details invalide"
+        ]);
     }
-}
 
     /**
      * @OA\Post(
@@ -352,10 +353,12 @@ class UserController extends Controller
 
         session()->regenerateToken();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Déconnecté avec succès',
-            ], 200
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Déconnecté avec succès',
+            ],
+            200
         );
     }
 
@@ -662,7 +665,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'ancien_password' => 'required',
-            'nouveau_password' =>Rules\Password::defaults(),
+            'nouveau_password' => Rules\Password::defaults(),
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -722,6 +725,10 @@ class UserController extends Controller
                 'status_message' => 'Utilisateur trouvé',
                 'user' => $user,
             ]);
+        } else {
+            return response()->json([
+                'message' => "Cet e-mail n'existe pas dans notre base de données."
+            ], 404);
         }
     }
 
@@ -757,6 +764,13 @@ class UserController extends Controller
      */
     public function resetPassword(Request $request, User $user)
     {
+        $validator =
+            Validator::make($request->all(), [
+                'password' => Rules\Password::defaults(),
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $user->password = $request->password;
         $user->save();
         if ($user) {
