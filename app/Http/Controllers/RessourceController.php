@@ -33,7 +33,7 @@ class RessourceController extends Controller
     public function index()
     {
         $ressources = Ressource::where('is_deleted', 0)->get();
-        return $ressources;
+        return response()->json(['ressources'=>$ressources]);
     }
     /**
      * @OA\Post(

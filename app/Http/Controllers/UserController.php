@@ -317,7 +317,8 @@ class UserController extends Controller
             return response()->json([
                 "status" => true,
                 "message" => "utilisateur connecter avec succe",
-                "token" => $token
+                "token" => $token,
+                "user"=>auth()->user()
             ]);
         }
 
